@@ -1,9 +1,12 @@
+import { ChartAreaInteractive } from '@/components/app/sidebar/chart-area-interactive';
+import { LowerAreaInteractive } from '@/components/app/sidebar/lower-area-interactive';
 import ContentLayout from '@/layouts/content-layout';
 
 export default function Dashboard() {
     return (
         <ContentLayout>
-            <h1>anjing</h1>
+            <ChartAreaInteractive />
+            <LowerAreaInteractive />
         </ContentLayout>
     );
 }
