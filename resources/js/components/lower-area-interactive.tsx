@@ -3,6 +3,17 @@
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
 import * as React from 'react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from './ui/alert-dialog';
 
 export const description = 'An interactive area chart';
 
@@ -34,15 +45,29 @@ export function LowerAreaInteractive() {
                                 <p className="text-xs text-muted-foreground">michael.main@ac.id</p>
                             </div>
                         </div>
-                        <button
-                            className="ml-auto size-8 rounded-full bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80"
-                            type="button"
-                        >
-                            <a href="#" className="text-2xl text-indigo-500 dark:text-indigo-400">
-                                +
-                            </a>
-                            <span className="sr-only">New message</span>
-                        </button>
+
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <button
+                                    className="ml-auto size-8 rounded-full bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80"
+                                    type="button"
+                                >
+                                    <a href="#" className="text-2xl text-indigo-500 dark:text-indigo-400">
+                                        +
+                                    </a>
+                                    <span className="sr-only">New message</span>
+                                </button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Navigate to the chosen page ?</AlertDialogTitle>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction>Continue</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </div>
 
                     {/* Chat Content */}
@@ -91,10 +116,13 @@ export function LowerAreaInteractive() {
             </div>
 
             <div className="col-span-8 h-[50vh] overflow-hidden rounded-lg border bg-muted/20 p-2">
-                <a href="" className="text-md mt-4 mb-4 block text-center font-semibold tabular-nums @[250px]/card:text-3xl">
+                <a
+                    href=""
+                    className="text-md mt-4 mb-4 block text-center font-semibold text-indigo-500 tabular-nums @[250px]/card:text-3xl dark:text-indigo-400"
+                >
                     Upcoming Events
                 </a>
-                <div
+                {/* <div
                     className="flex h-full space-x-4 overflow-x-auto p-2 whitespace-nowrap"
                     ref={sliderRef}
                     onWheel={(e) => {
@@ -108,6 +136,27 @@ export function LowerAreaInteractive() {
 
                     {Array.from({ length: 30 }).map((_, index) => (
                         <div key={index} className="w-[200px] shrink-0">
+                            <Card>
+                                <CardContent className="ml-2 flex h-[32vh] items-center justify-start p-6">
+                                    <span className="text-md font-semibold">{index + 1}</span>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    ))}
+                </div> */}
+
+                <div
+                    className="flex h-full space-x-4 overflow-x-auto whitespace-nowrap"
+                    ref={sliderRef}
+                    onWheel={(e) => {
+                        if (sliderRef.current) {
+                            sliderRef.current.scrollLeft += e.deltaY;
+                            e.preventDefault();
+                        }
+                    }}
+                >
+                    {Array.from({ length: 30 }).map((_, index) => (
+                        <div key={index} className="w-full shrink-0">
                             <Card>
                                 <CardContent className="ml-2 flex h-[32vh] items-center justify-start p-6">
                                     <span className="text-md font-semibold">{index + 1}</span>

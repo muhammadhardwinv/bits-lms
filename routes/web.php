@@ -7,6 +7,10 @@ Route::get('/', function () {
     return Inertia::render('login');
 })->name('login');
 
+Route::get('/login', function () {
+    return Inertia::render('login');
+})->name('login');
+
 Route::get('/dashboard', function () {
     return Inertia::render('dashboard');
 })->name('dashboard');
@@ -29,13 +33,17 @@ Route::get('courses/mathematics/quiz', function(){
 
 Route::get('/courses/{course}/slideshow', function ($course) {
     return Inertia::render('slideshow', [
-        'course' => $course, // optional data
+        'course' => $course,
     ]);
 })->name('courses.slideshow');
 
 Route::get('/dummytest', function (){
     return Inertia::render('try-dummy');
 })->name('dummytest');
+
+Route::get('/lecturer-dashboard', function () {
+    return Inertia::render('lecturerdashboard');
+})->name('lecturerdashboard');
 
 Route::post('/logout', function () {
     Auth::logout();

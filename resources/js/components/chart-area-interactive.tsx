@@ -2,8 +2,20 @@
 
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
+import { UserModel } from '@/lib/types';
 import { ActivitySquare, ClipboardList } from 'lucide-react';
 import * as React from 'react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from './ui/alert-dialog';
 
 export const description = 'An interactive area chart';
 
@@ -11,11 +23,11 @@ function CalendarDemo() {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
 
     return (
-        <div className="col-span-1 h-[60vh] max-w-[32vw] flex-1 rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-4 shadow-md dark:from-[#1a1a2e] dark:to-[#2c2c3a]">
+        <div className="flex h-[60vh] w-[24vw] max-w-[32vw] flex-col rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-4 shadow-md dark:from-[#1a1a2e] dark:to-[#2c2c3a]">
             <div className="flex justify-center pb-2">
                 <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">📅 Schedule Overview</h2>
             </div>
-            <div className="h-[calc(100%-2.5rem)] w-full">
+            <div className="h-[45vh] w-full">
                 <Calendar
                     mode="single"
                     selected={date}
@@ -24,16 +36,47 @@ function CalendarDemo() {
                     captionLayout="dropdown"
                 />
             </div>
+            <div className="my-4 flex flex-col rounded-lg border bg-white from-white shadow-md dark:from-[#1a1a2e] dark:to-[#2c2c3a]">
+                <h4 className="text-md font-regular my-2 mb-2 flex items-center justify-center text-gray-800 dark:text-gray-100">
+                    {date?.toDateString()}
+                </h4>
+                {/* untuk gunakan data, gunakan line dibawah! */}
+                {/* <h4 className="text-md font-regular flex justify-center text-gray-800 dark:text-gray-100">Today Activity: {data}</h4> */}
+            </div>
         </div>
     );
 }
 
-function SectionCard({ title, icon: Icon, items }: { title: string; icon: React.ElementType; items: string[] }) {
+function SectionCard({ title, icon: Icon, items, user }: { title: string; icon: React.ElementType; items: string[]; user: UserModel }) {
     return (
         <div className="col-span-1 h-[60vh] max-w-[32vw] flex-1 overflow-y-auto rounded-lg border bg-gradient-to-br from-white to-blue-50 p-4 shadow-md dark:from-[#121212] dark:to-[#1f1f1f]">
-            <div className="flex items-center justify-center gap-2 pb-4">
-                <Icon className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+            <div className="flex items-center justify-between gap-2 pb-4">
+                <div className="flex items-center gap-2">
+                    <Icon className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+                </div>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <button
+                            className={`text-bold-400 flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 bg-gray-100 p-4 text-2xl ${user.role == 'student' ? 'hidden' : ''} `}
+                        >
+                            +
+                        </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently add a new response to the system and make it visible to all
+                                students.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
             <div className="space-y-2">
                 {items.map((label, index) => (
@@ -54,7 +97,7 @@ function SectionCard({ title, icon: Icon, items }: { title: string; icon: React.
     );
 }
 
-export function ChartAreaInteractive() {
+export function DashboardAreaInteractive({ user }: { user: UserModel }) {
     const recentActivity = [
         'Nadia submitted Lab 3',
         'Ali started Discussion on Module 2',
@@ -83,8 +126,8 @@ export function ChartAreaInteractive() {
 
     return (
         <div className="mb-6 flex flex-wrap items-start justify-center gap-6 px-4 lg:px-6">
-            <SectionCard title="Recent Activity" icon={ActivitySquare} items={recentActivity} />
-            <SectionCard title="Assignments" icon={ClipboardList} items={assignments} />
+            <SectionCard title="Recent Activity" icon={ActivitySquare} items={recentActivity} user={user} />
+            <SectionCard title="Assignments" icon={ClipboardList} items={assignments} user={user} />
             <CalendarDemo />
         </div>
     );
