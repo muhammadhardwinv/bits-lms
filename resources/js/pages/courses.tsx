@@ -1,10 +1,14 @@
-import { CourseAreaInteractive } from '@/components/app/sidebar/course-area-interactive';
+import { CourseAreaInteractive } from '@/components/course-area-interactive';
 import ContentLayout from '@/layouts/content-layout';
+import { Head } from '@inertiajs/react';
 
 export default function Courses() {
     return (
-        <ContentLayout>
-            <CourseAreaInteractive />
-        </ContentLayout>
+        <>
+            <Head title="Courses" />
+            <ContentLayout>
+                <CourseAreaInteractive />
+            </ContentLayout>
+        </>
     );
 }

@@ -13,31 +13,32 @@ import {
 // import TopSidebar from './top-sidebar';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+// import { title } from 'process';
 
 const items = [
     {
         title: 'Dashboard',
-        url: 'dashboard',
+        url: '/dashboard',
         icon: LayoutDashboardIcon,
     },
     {
         title: 'Courses',
-        url: 'courses',
+        url: '/courses',
         icon: Library,
     },
     {
         title: 'Forums',
-        url: '#',
+        url: '/forums',
         icon: Group,
     },
     {
         title: 'Grade Books',
-        url: '#',
+        url: '/grade-books',
         icon: BarChart,
     },
     {
         title: 'Events',
-        url: '#',
+        url: '/events',
         icon: Calendar,
     },
 ];
@@ -47,7 +48,6 @@ export function ContentSidebar() {
         <Sidebar>
             <SidebarContent>
                 <SidebarGroup>
-                    {/* <TopSidebar /> */}
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
@@ -74,10 +74,7 @@ export function ContentSidebar() {
                                     <ChevronUp className="ml-auto" />
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-                                <DropdownMenuItem>
-                                    <span>Account</span>
-                                </DropdownMenuItem>
+                            <DropdownMenuContent side="right" className="w-[--radix-popper-anchor-width]">
                                 <DropdownMenuItem>
                                     <span>Sign out</span>
                                 </DropdownMenuItem>

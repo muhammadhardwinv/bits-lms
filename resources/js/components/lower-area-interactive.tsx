@@ -30,15 +30,15 @@ export function LowerAreaInteractive() {
                                 <img src="assets/logo-user.png" alt="" />
                             </span>
                             <div className="flex flex-col gap-0.5">
-                                <p className="text-sm leading-none font-medium">Chris</p>
-                                <p className="text-xs text-muted-foreground">chris@g.c</p>
+                                <p className="leading-none font-medium text-indigo-500 dark:text-indigo-400">Michael</p>
+                                <p className="text-xs text-muted-foreground">michael.main@ac.id</p>
                             </div>
                         </div>
                         <button
                             className="ml-auto size-8 rounded-full bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80"
                             type="button"
                         >
-                            <a href="#" className="text-2xl">
+                            <a href="#" className="text-2xl text-indigo-500 dark:text-indigo-400">
                                 +
                             </a>
                             <span className="sr-only">New message</span>
@@ -51,14 +51,17 @@ export function LowerAreaInteractive() {
                             <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
                                 Hi, how can I help you today?
                             </div>
-                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground">
+                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-indigo-500 px-3 py-2 text-sm text-primary-foreground">
                                 Hey, I'm having trouble with my account.
                             </div>
                             <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
                                 What seems to be the problem?
                             </div>
-                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground">
+                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-indigo-500 px-3 py-2 text-sm text-primary-foreground">
                                 I can't log in.
+                            </div>
+                            <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
+                                Make sure you encounter correct email and password.
                             </div>
                         </div>
                     </div>
@@ -77,7 +80,7 @@ export function LowerAreaInteractive() {
                                 type="submit"
                                 className="absolute top-1/2 right-2 size-6 -translate-y-1/2 rounded-full bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
                             >
-                                <a href="#" type="submit text-2xl">
+                                <a href="#" type="submit" className="text-md text-white">
                                     +
                                 </a>
                                 <span className="sr-only">Send</span>

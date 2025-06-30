@@ -1,18 +1,16 @@
-import { ChartAreaInteractive } from '@/components/chart-area-interactive';
-import { LowerAreaInteractive } from '@/components/lower-area-interactive';
+import ForumsContent from '@/components/forums-contents';
 import ContentLayout from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard() {
+export default function Forums() {
     return (
         <>
-            <Head title="Dashboard">
+            <Head title="Forums">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
             <ContentLayout>
-                <ChartAreaInteractive />
-                <LowerAreaInteractive />
+                <ForumsContent />
             </ContentLayout>
         </>
     );
