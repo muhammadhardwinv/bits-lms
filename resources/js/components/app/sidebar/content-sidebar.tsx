@@ -1,4 +1,4 @@
-import { BarChart, Calendar, ChevronUp, Group, LayoutDashboardIcon, Library, User2 } from 'lucide-react';
+import { BarChart, Calendar, ChevronUp, ClipboardList, Group, LayoutDashboardIcon, Library, User2 } from 'lucide-react';
 
 import {
     Sidebar,
@@ -32,6 +32,11 @@ const items = [
         icon: Group,
     },
     {
+        title: 'Assignment',
+        url: '/assignment',
+        icon: ClipboardList,
+    },
+    {
         title: 'Grade Books',
         url: '/grade-books',
         icon: BarChart,
@@ -46,6 +51,10 @@ const items = [
 export function ContentSidebar() {
     return (
         <Sidebar>
+            <div className="font-weight-900 flex items-center text-3xl">
+                <img className="m-2 flex h-12 w-12 items-center justify-center" src="assets/logo-bits.png" alt="" />
+                <h2 className="items-center text-3xl font-semibold text-gray-800 dark:text-gray-100">BITS</h2>
+            </div>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>

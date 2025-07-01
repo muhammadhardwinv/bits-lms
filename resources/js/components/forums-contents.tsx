@@ -1,4 +1,18 @@
-import { Link } from '@inertiajs/react';
+import { Card, CardContent } from '@/components/ui/card';
+import { UserModel } from '@/lib/types';
+import { BookIcon, Minus, Plus } from 'lucide-react';
+import * as React from 'react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from './ui/alert-dialog';
 
 const courseDetails = [
     {
@@ -39,41 +53,95 @@ const courseDetails = [
     },
 ];
 
-export default function ForumsContent() {
+export default function ForumsContent({
+    title,
+    icon: {},
+    items,
+    user,
+}: {
+    title: string;
+    icon: React.ElementType;
+    items: string[];
+    user: UserModel;
+}) {
     return (
-        <div className="space-y-8 p-6">
+        <div className="w-full space-y-8 p-6">
             <div className="w-full space-y-1">
                 <h1 className="text-4xl font-bold">Forums</h1>
                 <p className="text-xl text-gray-600">LK001-LEC</p>
-                <p className="mt-8 ml-16 text-lg font-semibold">Prof. Bastian Schweinsteiger</p>
-                <p className="text-md ml-16 text-gray-500">CDM0031</p>
             </div>
 
             {/* Separator Line */}
-            <div className="border-t py-2" />
+            {/* <div className="w-[85vw] border-t py-2" /> */}
 
             {/* Grid Section */}
-            <div className="flex flex-col gap-6 lg:flex-row">
-                <div className="grid grid-cols-6 gap-8">
-                    {courseDetails.map((info) => {
-                        if (!info) return null;
+            <div className="grid grid-cols-6 gap-4 border-y py-6">
+                {/* buat scrollable content buat forum, beserta dengan breadcrumbs action */}
 
-                        const slug = info.name.toLowerCase().replace(/\s+/g, '-');
-
-                        return (
-                            <Link
-                                key={info.courseId}
-                                href={`/courses/${slug}`}
-                                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md"
+                <div className="col-span-1 grid h-[60vh] w-[80vw] flex-1 overflow-y-auto rounded-lg border bg-gradient-to-br from-white to-blue-50 p-4 shadow-md dark:from-[#121212] dark:to-[#1f1f1f]">
+                    <div className="flex items-center justify-between gap-2 pb-2">
+                        <div className="my-4 flex items-center gap-2">
+                            <BookIcon className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                            <h2 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+                        </div>
+                        <div className="flex w-[5vw] justify-between">
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <button className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-2xl font-bold">
+                                        <Plus />
+                                    </button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Add New Thread</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Are you sure you want to add a new discussion thread to the forum? This action will notify all students
+                                            and make the thread publicly visible.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction>Yes, Add</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <button className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-xl font-bold">
+                                        <Minus />
+                                    </button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete Thread</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Are you sure you want to permanently delete this discussion thread? This action cannot be undone and the
+                                            thread will be removed for all users.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction>Yes, Delete</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        {items.map((label, index) => (
+                            <Card
+                                key={index}
+                                className="border border-gray-200 bg-white/80 transition-all duration-300 hover:scale-[1.01] hover:shadow-md dark:border-gray-700 dark:bg-[#181818]"
                             >
-                                <div className="space-y-1">
-                                    <h2 className="text-xl font-bold text-indigo-700 group-hover:underline">{info.name}</h2>
-                                    <p className="text-xs text-gray-500">Course ID: {info.courseId}</p>
-                                    <p className="text-xs text-gray-500">Class ID: {info.classId}</p>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                                <CardContent className="ml-2 flex items-center gap-3 p-4">
+                                    <span className="rounded bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300">
+                                        {index + 1}
+                                    </span>
+                                    <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

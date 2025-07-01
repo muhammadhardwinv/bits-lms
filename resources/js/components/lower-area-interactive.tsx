@@ -3,12 +3,12 @@
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
 import * as React from 'react';
+import { useRef, useState } from 'react';
 import {
     AlertDialog,
     AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
-    AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
@@ -17,24 +17,72 @@ import {
 
 export const description = 'An interactive area chart';
 
+export function SliderBox() {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [activeSlide, setActiveSlide] = useState(0);
+    const itemWidth = 200 + 16;
+    const totalSlides = 10;
+
+    const scrollToSlide = (index: number) => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTo({
+                left: index * itemWidth,
+                behavior: 'smooth',
+            });
+        }
+    };
+
+    const handleNext = () => {
+        const next = Math.min(activeSlide + 1, totalSlides - 1);
+        setActiveSlide(next);
+        scrollToSlide(next);
+    };
+
+    const handlePrev = () => {
+        const prev = Math.max(activeSlide - 1, 0);
+        setActiveSlide(prev);
+        scrollToSlide(prev);
+    };
+
+    return null;
+}
+
 export function CalendarDemo() {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
     return <Calendar mode="single" selected={date} onSelect={setDate} className="flex-1 rounded-md border shadow-sm" captionLayout="dropdown" />;
 }
-export function LowerAreaInteractive() {
-    const sliderRef = React.useRef<HTMLDivElement>(null);
 
-    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-        const direction = e.deltaY > 0 ? 'down' : 'up';
-        console.log('Scroll direction:', direction);
+export function LowerAreaInteractive() {
+    const sliderRef = useRef<HTMLDivElement>(null);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [itemWidth, setItemWidth] = useState(0);
+    const totalSlides = 10;
+
+    React.useEffect(() => {
+        const calculateWidth = () => {
+            if (sliderRef.current) {
+                setItemWidth(sliderRef.current.offsetWidth);
+            }
+        };
+        calculateWidth();
+        window.addEventListener('resize', calculateWidth);
+        return () => window.removeEventListener('resize', calculateWidth);
+    }, []);
+
+    const scrollToSlide = (index: number) => {
+        if (sliderRef.current) {
+            sliderRef.current.scrollTo({
+                left: index * itemWidth,
+                behavior: 'smooth',
+            });
+        }
     };
 
     return (
-        <div className="grid grid-cols-12 gap-6 px-1 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs sm:flex-wrap lg:px-6 dark:*:data-[slot=card]:bg-card">
-            {/* Box 3 (Left) */}
-            <div className="col-span-4 h-[50vh] overflow-y-auto rounded-lg border bg-muted/20 p-1">
+        <div className="mx-auto mb-6 flex max-w-[95vw] flex-wrap justify-between gap-4 px-4 lg:px-6">
+            {/* Left Chat Box */}
+            <div className="h-[50vh] basis-[32%] overflow-y-auto rounded-lg border bg-muted/20 p-1">
                 <div data-slot="card" className="flex h-full flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm">
-                    {/* Header */}
                     <div data-slot="card-header" className="flex flex-row items-center px-6">
                         <div className="flex items-center gap-4">
                             <span data-slot="avatar" className="relative flex size-8 shrink-0 overflow-hidden rounded-full border">
@@ -45,7 +93,6 @@ export function LowerAreaInteractive() {
                                 <p className="text-xs text-muted-foreground">michael.main@ac.id</p>
                             </div>
                         </div>
-
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <button
@@ -60,7 +107,7 @@ export function LowerAreaInteractive() {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle>Navigate to the chosen page ?</AlertDialogTitle>
+                                    <AlertDialogTitle>Navigate to the chosen page?</AlertDialogTitle>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -69,8 +116,6 @@ export function LowerAreaInteractive() {
                             </AlertDialogContent>
                         </AlertDialog>
                     </div>
-
-                    {/* Chat Content */}
                     <div data-slot="card-content" className="flex-1 overflow-y-auto px-6">
                         <div className="flex flex-col gap-4">
                             <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
@@ -90,8 +135,6 @@ export function LowerAreaInteractive() {
                             </div>
                         </div>
                     </div>
-
-                    {/* Footer / Input */}
                     <div data-slot="card-footer" className="flex items-center px-6">
                         <form className="relative w-full">
                             <input
@@ -105,7 +148,7 @@ export function LowerAreaInteractive() {
                                 type="submit"
                                 className="absolute top-1/2 right-2 size-6 -translate-y-1/2 rounded-full bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
                             >
-                                <a href="#" type="submit" className="text-md text-white">
+                                <a href="#" className="text-md text-white">
                                     +
                                 </a>
                                 <span className="sr-only">Send</span>
@@ -115,55 +158,46 @@ export function LowerAreaInteractive() {
                 </div>
             </div>
 
-            <div className="col-span-8 h-[50vh] overflow-hidden rounded-lg border bg-muted/20 p-2">
+            {/* Right Slider Box */}
+            <div className="h-[50vh] basis-[65%] overflow-hidden rounded-lg border bg-muted/20 p-2">
                 <a
-                    href=""
+                    href="#"
                     className="text-md mt-4 mb-4 block text-center font-semibold text-indigo-500 tabular-nums @[250px]/card:text-3xl dark:text-indigo-400"
                 >
                     Upcoming Events
                 </a>
-                {/* <div
-                    className="flex h-full space-x-4 overflow-x-auto p-2 whitespace-nowrap"
-                    ref={sliderRef}
-                    onWheel={(e) => {
-                        if (sliderRef.current) {
-                            sliderRef.current.scrollLeft += e.deltaY;
-                            e.preventDefault();
-                        }
-                    }}
-                >
-                    <div className="shrink-0"></div>
-
-                    {Array.from({ length: 30 }).map((_, index) => (
-                        <div key={index} className="w-[200px] shrink-0">
-                            <Card>
-                                <CardContent className="ml-2 flex h-[32vh] items-center justify-start p-6">
-                                    <span className="text-md font-semibold">{index + 1}</span>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    ))}
-                </div> */}
-
-                <div
-                    className="flex h-full space-x-4 overflow-x-auto whitespace-nowrap"
-                    ref={sliderRef}
-                    onWheel={(e) => {
-                        if (sliderRef.current) {
-                            sliderRef.current.scrollLeft += e.deltaY;
-                            e.preventDefault();
-                        }
-                    }}
-                >
-                    {Array.from({ length: 30 }).map((_, index) => (
-                        <div key={index} className="w-full shrink-0">
-                            <Card>
-                                <CardContent className="ml-2 flex h-[32vh] items-center justify-start p-6">
-                                    <span className="text-md font-semibold">{index + 1}</span>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    ))}
+                <div className="relative h-[40vh]">
+                    <button
+                        onClick={() => {
+                            const newSlide = Math.max(currentSlide - 1, 0);
+                            setCurrentSlide(newSlide);
+                            scrollToSlide(newSlide);
+                        }}
+                        className="absolute top-1/2 left-0 z-10 -translate-y-1/2 rounded-full bg-muted p-2 shadow hover:bg-muted/70"
+                    >
+                        ◀
+                    </button>
+                    <button
+                        onClick={() => {
+                            const newSlide = Math.min(currentSlide + 1, totalSlides - 1);
+                            setCurrentSlide(newSlide);
+                            scrollToSlide(newSlide);
+                        }}
+                        className="absolute top-1/2 right-0 z-10 -translate-y-1/2 rounded-full bg-muted p-2 shadow hover:bg-muted/70"
+                    >
+                        ▶
+                    </button>
+                    <div ref={sliderRef} className="flex h-full w-full overflow-x-hidden scroll-smooth">
+                        {Array.from({ length: totalSlides }).map((_, index) => (
+                            <div key={index} className="h-full w-full shrink-0">
+                                <Card className="h-full w-full">
+                                    <CardContent className="flex h-full items-center justify-center p-6">
+                                        <span className="text-md font-semibold">Slide {index + 1}</span>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

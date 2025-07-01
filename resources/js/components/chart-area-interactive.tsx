@@ -97,7 +97,7 @@ function SectionCard({ title, icon: Icon, items, user }: { title: string; icon: 
     );
 }
 
-export function DashboardAreaInteractive({ user }: { user: UserModel }) {
+export function ChartAreaInteractive({ user }: { user: UserModel }) {
     const recentActivity = [
         'Nadia submitted Lab 3',
         'Ali started Discussion on Module 2',
@@ -125,7 +125,7 @@ export function DashboardAreaInteractive({ user }: { user: UserModel }) {
     ];
 
     return (
-        <div className="mb-6 flex flex-wrap items-start justify-center gap-6 px-4 lg:px-6">
+        <div className="mx-auto mb-6 flex max-w-[95vw] flex-wrap justify-between gap-4 px-4 lg:px-6">
             <SectionCard title="Recent Activity" icon={ActivitySquare} items={recentActivity} user={user} />
             <SectionCard title="Assignments" icon={ClipboardList} items={assignments} user={user} />
             <CalendarDemo />
