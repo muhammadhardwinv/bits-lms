@@ -19,10 +19,12 @@ export default function StudentCard({ user }: Props) {
     if (user.role === 'lecturer') return null;
 
     return (
-        <nav className="flex flex-col gap-2 text-blue-600">
+        <nav className="flex flex-col gap-2 text-sm text-blue-600">
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="hover:underline">[PPT] Introduction to Algebra</a>
+                    <a href="" className="hover:underline">
+                        [PPT] Introduction to Algebra
+                    </a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

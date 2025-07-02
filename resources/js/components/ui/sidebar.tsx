@@ -259,22 +259,40 @@ function SidebarTrigger({
   const { toggleSidebar } = useSidebar()
 
   return (
+    // <Button
+    //   data-sidebar="trigger"
+    //   data-slot="sidebar-trigger"
+    //   variant="ghost"
+    //   size="icon"
+    //   className={cn("size-3 p-1", className)}
+    //   onClick={(event) => {
+    //     onClick?.(event)
+    //     toggleSidebar()
+    //   }}
+    //   {...props}
+    // >
+    //   <PanelLeftIcon className="!size-5" size={30}/> 
+    //   {/* di edit chris */}
+    //   {/* <Home size={50}/> */}
+    //   <span className="sr-only">Toggle Sidebar</span>
+    // </Button>
+
     <Button
-      data-sidebar="trigger"
-      data-slot="sidebar-trigger"
-      variant="ghost"
-      size="icon"
-      className={cn("size-3 p-6", className)}
-      onClick={(event) => {
-        onClick?.(event)
-        toggleSidebar()
-      }}
-      {...props}
-    >
-      <PanelLeftIcon className="!size-5" size={30}/>
-      {/* <Home size={50}/> */}
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+  data-sidebar="trigger"
+  data-slot="sidebar-trigger"
+  variant="ghost"
+  size="icon"
+  className={cn("p-2", className)} // reasonable padding
+  onClick={(event) => {
+    onClick?.(event);
+    toggleSidebar();
+  }}
+  {...props}
+>
+  <PanelLeftIcon className="!size-5 mt-6"/> {/* 20px icon, consistent */}
+  <span className="sr-only">Toggle Sidebar</span>
+</Button>
+
   )
 }
 

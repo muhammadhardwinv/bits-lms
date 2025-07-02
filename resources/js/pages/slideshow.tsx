@@ -91,7 +91,7 @@ export default function Slideshow() {
                                     <a href="/courses/mathematics/slideshow" className="hover:underline">
                                         [PPT] Introduction to Algebra
                                     </a>
-                                    <a href="/forum" className="hover:underline">
+                                    <a href="/forums" className="hover:underline">
                                         Go to Forum Page
                                     </a>
                                     <a href="/courses/mathematics/quiz" className="hover:underline">

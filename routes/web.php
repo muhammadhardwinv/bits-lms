@@ -27,28 +27,41 @@ Route::get('forums', function(){
     return Inertia::render('forums');
 })->name('forums');
 
+Route::get('/assignment/{courseId}', function($courseId){
+    return Inertia::render('per-assignment', [
+        'courseId' => $courseId,
+    ]);
+})->name('assignment.view');
+
 Route::get('assignment', function(){
     return Inertia::render('assignment');
 })->name('assignment');
 Route::prefix('assignment')->group(function () {
-    Route::get('/{course}/{courseId}', function ($course, $courseId) {
-        return Inertia::render('perAssignment', [
-    'assignment' => [
-        'title' => 'Final Project Report',
-        'description' => 'Write and submit your final project report in detail.',
-        'courseId' => 'CSCI-4321',
-        'classId' => 'XII-Science-1',
-        'type' => 'Essay',
-        'dueDate' => '2025-07-10',
-    ],
-    'user' => [
-        'name' => 'Michael',
-        'role' => 'student',
-    ],
-]);
-    })->name('assignment.show');
-});
 
+    // /assignment/{course}/{courseId}/quiz → assignmentPage/assignmentQuiz.jsx
+    Route::get('/{course}/{courseId}/quiz', function ($course, $courseId) {
+        return Inertia::render('assignmentPage/assignmentQuiz', [
+            'course' => $course,
+            'courseId' => $courseId,
+        ]);
+    })->name('assignment.quiz');
+    // /assignment/{course}/{courseId}/slideshow → assignmentPage/assignmentSlideshow.jsx
+    Route::get('/{course}/{courseId}/slideshow', function ($course, $courseId) {
+        return Inertia::render('assignmentPage/assignmentSlideshow', [
+            'course' => $course,
+            'courseId' => $courseId,
+        ]);
+    })->name('assignment.slideshow');
+
+    // /assignment/{course}/{courseId} → assignmentPage/perAssignment.jsx
+    Route::get('/{course}/{courseId}', function ($course, $courseId) {
+        return Inertia::render('per-assignment', [
+            'course' => $course,
+            'courseId' => $courseId,
+        ]);
+    })->name('assignment.show');
+
+});
 Route::prefix('/courses')->group(function () {
     Route::get('/mathematics/quiz', function(){
         return Inertia::render('mathquiz');

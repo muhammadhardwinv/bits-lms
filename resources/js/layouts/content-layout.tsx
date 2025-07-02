@@ -8,7 +8,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     return (
         <SidebarProvider>
             <ContentSidebar />
-            <main>
+            <main className="w-full">
                 <SidebarTrigger />
                 {children}
             </main>
