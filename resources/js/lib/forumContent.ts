@@ -1,0 +1,167 @@
+// ForumsContent.ts
+
+export type ForumContentType = {
+    forumTitle: string;
+    learningOutcome: string;
+    subTopics: string[];
+    lecturerName: string;
+    lecturerId: string;
+    courseName: string;
+    courseId: string;
+    link: string;
+};
+
+export const forumContents: ForumContentType[] = [
+    {
+        forumTitle: 'Environmental Impact of Chemical Waste',
+        learningOutcome:
+            'Analyze the ecological consequences of improper chemical waste disposal and propose sustainable practices to mitigate environmental damage.',
+        subTopics: ['Terrestrial pollution', 'Aquatic ecosystem effects', 'Chemical spill case studies', 'Global regulatory comparisons'],
+        lecturerName: 'Dr. Sinta Dewi',
+        lecturerId: 'LECT-SCI-01',
+        courseName: 'Science',
+        courseId: 'babi',
+        link: '/assignment/science/SCI-4321',
+    },
+    {
+        forumTitle: 'Photosynthesis Process Essay',
+        learningOutcome: 'Explain each stage of photosynthesis and its significance in the global carbon cycle with supporting scientific data.',
+        subTopics: ['Light-dependent reactions', 'Light-independent reactions', 'Chlorophyll function', 'Experimental data interpretation'],
+        lecturerName: 'Prof. Ahmad Rizal',
+        lecturerId: 'LECT-BIO-02',
+        courseName: 'Biology',
+        courseId: 'BIO-2201',
+        link: '/assignment/biology/BIO-2201',
+    },
+    {
+        forumTitle: 'The Greenhouse Effect',
+        learningOutcome:
+            'Describe the greenhouse effect’s role in climate change using scientific mechanisms, diagrams, and global mitigation strategies.',
+        subTopics: ['Greenhouse gas types', 'Natural vs anthropogenic sources', 'Global warming consequences', 'Government strategies'],
+        lecturerName: 'Ms. Liana Kartika',
+        lecturerId: 'LECT-GEO-01',
+        courseName: 'Geography',
+        courseId: 'GEO-3010',
+        link: '/assignment/geography/GEO-3010',
+    },
+    {
+        forumTitle: 'Periodic Table Properties',
+        learningOutcome: 'Interpret periodic trends and apply them to real-world chemical and industrial scenarios.',
+        subTopics: ['Atomic structure', 'Electronegativity trends', 'Ionization energy', 'Reactivity patterns'],
+        lecturerName: 'Mr. Budi Santoso',
+        lecturerId: 'LECT-CHEM-01',
+        courseName: 'Chemistry',
+        courseId: 'CHEM-1103',
+        link: '/assignment/chemistry/CHEM-1103',
+    },
+    {
+        forumTitle: 'Cell Division Mechanisms',
+        learningOutcome: 'Compare mitosis and meiosis to understand cell reproduction, growth, and genetic variation.',
+        subTopics: ['Phases of mitosis', 'Meiosis stages', 'Chromosome behavior', 'Genetic variation mechanisms'],
+        lecturerName: 'Dr. Maya Sari',
+        lecturerId: 'LECT-BIO-03',
+        courseName: 'Biology',
+        courseId: 'BIO-3302',
+        link: '/assignment/biology/BIO-3302',
+    },
+    {
+        forumTitle: 'Electric Circuits Explanation',
+        learningOutcome: 'Apply circuit laws to solve problems involving resistors, voltage, and current in practical situations.',
+        subTopics: ['Ohm’s Law', 'Series and parallel circuits', 'Voltage/current division', 'Circuit applications'],
+        lecturerName: 'Mr. Andi Hendra',
+        lecturerId: 'LECT-PHY-01',
+        courseName: 'Physics',
+        courseId: 'PHY-2502',
+        link: '/assignment/physics/PHY-2502',
+    },
+    {
+        forumTitle: 'Volcano Formation Report',
+        learningOutcome: 'Understand volcanic formation processes and analyze global tectonic activity with visual references.',
+        subTopics: ['Types of volcanoes', 'Tectonic plate movement', 'Volcanic zones map', 'Recent eruptions'],
+        lecturerName: 'Mrs. Desy Rachmawati',
+        lecturerId: 'LECT-GEO-02',
+        courseName: 'Geography',
+        courseId: 'GEO-2222',
+        link: '/assignment/geography/GEO-2222',
+    },
+    {
+        forumTitle: 'Motion and Acceleration',
+        learningOutcome: 'Evaluate basic motion principles and Newton’s laws through conceptual and mathematical analysis.',
+        subTopics: ['Uniform motion', 'Acceleration', 'Newton’s Laws', 'Real-world physics scenarios'],
+        lecturerName: 'Mr. Rino Saputra',
+        lecturerId: 'LECT-PHY-02',
+        courseName: 'Physics',
+        courseId: 'PHY-1205',
+        link: '/assignment/physics/PHY-1205',
+    },
+    {
+        forumTitle: 'Global Warming Effects',
+        learningOutcome: 'Critically assess the environmental and biological impacts of global warming using recent climate data.',
+        subTopics: ['Polar region effects', 'Sea-level rise', 'IPCC reports', 'Oceanic current disruption'],
+        lecturerName: 'Dr. Dewi Arista',
+        lecturerId: 'LECT-SCI-02',
+        courseName: 'Science',
+        courseId: 'SCI-5533',
+        link: '/assignment/science/SCI-5533',
+    },
+    {
+        forumTitle: 'Acid and Base Reaction Types',
+        learningOutcome: 'Identify and explain acid-base reactions using theory, chemical equations, and real-life applications.',
+        subTopics: ['Brønsted–Lowry theory', 'Neutralization reactions', 'Balanced equations', 'Lab applications'],
+        lecturerName: 'Ms. Sari Putri',
+        lecturerId: 'LECT-CHEM-02',
+        courseName: 'Chemistry',
+        courseId: 'CHEM-1211',
+        link: '/assignment/chemistry/CHEM-1211',
+    },
+    {
+        forumTitle: 'Plant Classification Chart',
+        learningOutcome: 'Classify plant species based on vascular structure, reproduction, and evolutionary traits.',
+        subTopics: ['Vascular vs non-vascular', 'Seed production', 'Angiosperms vs gymnosperms', 'Taxonomy trees'],
+        lecturerName: 'Mr. Irfan Gunawan',
+        lecturerId: 'LECT-BIO-04',
+        courseName: 'Biology',
+        courseId: 'BIO-4120',
+        link: '/assignment/biology/BIO-4120',
+    },
+    {
+        forumTitle: 'Renewable Energy Sources',
+        learningOutcome: 'Evaluate different renewable energy sources in terms of mechanics, efficiency, and global impact.',
+        subTopics: ['Solar energy', 'Wind turbines', 'Geothermal systems', 'Hydropower and statistics'],
+        lecturerName: 'Mrs. Aulia Kamila',
+        lecturerId: 'LECT-SCI-03',
+        courseName: 'Science',
+        courseId: 'SCI-2098',
+        link: '/assignment/science/SCI-2098',
+    },
+    {
+        forumTitle: 'Human Skeletal System Essay',
+        learningOutcome: 'Demonstrate understanding of the skeletal system and its integration with other body systems.',
+        subTopics: ['Bone types and structure', 'Joints and movement', 'Common diseases', 'Interactions with muscles'],
+        lecturerName: 'Dr. Zulfikar Amani',
+        lecturerId: 'LECT-BIO-01',
+        courseName: 'Biology',
+        courseId: 'BIO-1015',
+        link: '/assignment/biology/BIO-1015',
+    },
+    {
+        forumTitle: 'Tectonic Plate Boundaries',
+        learningOutcome: 'Identify and explain tectonic boundaries and associated geological events using global examples.',
+        subTopics: ['Convergent boundaries', 'Divergent movement', 'Transform faults', 'Ring of Fire'],
+        lecturerName: 'Mr. Dimas Wahyudi',
+        lecturerId: 'LECT-GEO-03',
+        courseName: 'Geography',
+        courseId: 'GEO-8787',
+        link: '/assignment/geography/GEO-8787',
+    },
+    {
+        forumTitle: 'Chemical Bonding',
+        learningOutcome: 'Classify and explain chemical bonding types with structural and electron-based justifications.',
+        subTopics: ['Ionic bonding', 'Covalent bonding', 'Metallic bonding', 'Electron-dot diagrams'],
+        lecturerName: 'Mrs. Nina Oktaviani',
+        lecturerId: 'LECT-CHEM-03',
+        courseName: 'Chemistry',
+        courseId: 'CHEM-2920',
+        link: '/assignment/chemistry/CHEM-2920',
+    },
+];

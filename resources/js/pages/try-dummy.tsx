@@ -1,5 +1,5 @@
 import ContentLayout from '@/layouts/content-layout';
-import { courses, semesters, subjects, teachers } from '@/schoolData';
+import { courses, semesters, subjects, teachers } from '@/lib/schoolData';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 

@@ -35,9 +35,6 @@ export default function PerAssignmentPage() {
             </Head>
 
             <ContentLayout>
-                {/* <div className="flex min-h-screen items-center justify-center bg-red-500">
-                    <h1>anjing</h1>
-                </div> */}
                 <PerAssignmentContent assignment={course} user={user} onSubmit={onSubmit} loading={false} errors={{}} />
             </ContentLayout>
         </>

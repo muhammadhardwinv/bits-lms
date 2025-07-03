@@ -86,7 +86,7 @@ export function LowerAreaInteractive() {
                     <div data-slot="card-header" className="flex flex-row items-center px-6">
                         <div className="flex items-center gap-4">
                             <span data-slot="avatar" className="relative flex size-8 shrink-0 overflow-hidden rounded-full border">
-                                <img src="assets/logo-user.png" alt="" />
+                                <img src="/assets/logo-user.png" alt="" />
                             </span>
                             <div className="flex flex-col gap-0.5">
                                 <p className="leading-none font-medium text-indigo-500 dark:text-indigo-400">Michael</p>

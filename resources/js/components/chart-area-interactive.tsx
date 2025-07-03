@@ -40,8 +40,6 @@ function CalendarDemo() {
                 <h4 className="text-md font-regular my-2 mb-2 flex items-center justify-center text-gray-800 dark:text-gray-100">
                     {date?.toDateString()}
                 </h4>
-                {/* untuk gunakan data, gunakan line dibawah! */}
-                {/* <h4 className="text-md font-regular flex justify-center text-gray-800 dark:text-gray-100">Today Activity: {data}</h4> */}
             </div>
         </div>
     );

@@ -14,7 +14,7 @@ export default function Assignment() {
 
     return (
         <>
-            <Head title="Assignment ">
+            <Head title="Assignment">
                 <Link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
