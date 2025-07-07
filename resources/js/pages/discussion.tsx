@@ -1,22 +1,24 @@
-import DiscussionContent from '@/components/discussion-content';
+import DiscussionContent from '@/components/app/discussion/discussion-content';
 import ContentLayout from '@/layouts/content-layout';
 import { UserModel } from '@/lib/types';
 import { Head } from '@inertiajs/react';
 
 interface Props {
-    user: UserModel;
+    user?: UserModel;
     courseId: string;
 }
 
 export default function Discussion({ user, courseId }: Props) {
     return (
         <>
-            <Head title={`${courseId}`}>
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-            </Head>
+            <Head title={`Discussion - ${courseId}`} />
             <ContentLayout>
+                {/* Option 1: If DiscussionContent expects user as a prop */}
                 <DiscussionContent user={user} courseId={courseId} />
+
+                {/* Option 2: If DiscussionContent uses useUserStore internally, use this instead:
+        <DiscussionContent courseId={courseId} />
+        */}
             </ContentLayout>
         </>
     );

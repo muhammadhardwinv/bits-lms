@@ -12,8 +12,17 @@ import {
 } from '@/components/ui/sidebar';
 // import TopSidebar from './top-sidebar';
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-// import { title } from 'process';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Link } from '@inertiajs/react';
+import { useState } from 'react';
+import { useUserStore } from '@/lib/store/userStore';
 
 const items = [
     {
@@ -33,7 +42,7 @@ const items = [
     },
     {
         title: 'Grade Books',
-        url: '/grade-books',
+        url: '/gradebook',
         icon: BarChart,
     },
     {
@@ -42,13 +51,14 @@ const items = [
         icon: Calendar,
     },
 ];
-
 export function ContentSidebar() {
+    const { role, setRole } = useUserStore();
+
     return (
         <Sidebar>
             <div className="font-weight-900 flex items-center text-3xl">
                 <img className="m-2 flex h-12 w-12 items-center justify-center" src="/assets/logo-bits.png" alt="" />
-                <h2 className="items-center text-3xl font-semibold text-gray-800 dark:text-gray-100">BITS</h2>
+                <h2 className="mt-1 items-center text-3xl font-semibold text-gray-800 dark:text-gray-100">BITS</h2>
             </div>
             <SidebarContent>
                 <SidebarGroup>
@@ -79,8 +89,26 @@ export function ContentSidebar() {
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent side="right" className="w-[--radix-popper-anchor-width]">
-                                <DropdownMenuItem>
-                                    <span>Sign out</span>
+                                <DropdownMenuLabel className="text-xs text-muted-foreground">Switch Role</DropdownMenuLabel>
+                                <DropdownMenuItem
+                                    onClick={() => setRole('student')}
+                                    className={role === 'student' ? 'font-semibold text-blue-600' : ''}
+                                >
+                                    Student
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => setRole('lecturer')}
+                                    className={role === 'lecturer' ? 'font-semibold text-blue-600' : ''}
+                                >
+                                    Lecturer
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem asChild>
+                                    {/* <span>Sign out</span> */}
+                                    <Link href="/login" className="text-red-500 hover:underline">
+                                        Sign out
+                                    </Link>
+                                    {/* <link href="login">Sign out</link> */}
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

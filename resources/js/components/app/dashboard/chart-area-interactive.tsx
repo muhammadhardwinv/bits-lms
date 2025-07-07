@@ -1,10 +1,5 @@
 'use client';
 
-import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent } from '@/components/ui/card';
-import { UserModel } from '@/lib/types';
-import { ActivitySquare, ClipboardList } from 'lucide-react';
-import * as React from 'react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,7 +10,12 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from './ui/alert-dialog';
+} from '@/components/ui/alert-dialog';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent } from '@/components/ui/card';
+import { UserModel } from '@/lib/types';
+import { ActivitySquare, ClipboardList } from 'lucide-react';
+import * as React from 'react';
 
 export const description = 'An interactive area chart';
 

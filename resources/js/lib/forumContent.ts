@@ -8,6 +8,7 @@ export type ForumContentType = {
     lecturerId: string;
     courseName: string;
     courseId: string;
+    classId: string;
     link: string;
 };
 
@@ -20,7 +21,8 @@ export const forumContents: ForumContentType[] = [
         lecturerName: 'Dr. Sinta Dewi',
         lecturerId: 'LECT-SCI-01',
         courseName: 'Science',
-        courseId: 'babi',
+        courseId: 'SCI-4321',
+        classId: 'CLS-SCI-01',
         link: '/assignment/science/SCI-4321',
     },
     {
@@ -31,6 +33,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-BIO-02',
         courseName: 'Biology',
         courseId: 'BIO-2201',
+        classId: 'CLS-BIO-02',
         link: '/assignment/biology/BIO-2201',
     },
     {
@@ -42,6 +45,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-GEO-01',
         courseName: 'Geography',
         courseId: 'GEO-3010',
+        classId: 'CLS-GEO-01',
         link: '/assignment/geography/GEO-3010',
     },
     {
@@ -52,6 +56,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-CHEM-01',
         courseName: 'Chemistry',
         courseId: 'CHEM-1103',
+        classId: 'CLS-CHEM-01',
         link: '/assignment/chemistry/CHEM-1103',
     },
     {
@@ -62,6 +67,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-BIO-03',
         courseName: 'Biology',
         courseId: 'BIO-3302',
+        classId: 'CLS-BIO-03',
         link: '/assignment/biology/BIO-3302',
     },
     {
@@ -72,6 +78,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-PHY-01',
         courseName: 'Physics',
         courseId: 'PHY-2502',
+        classId: 'CLS-PHY-01',
         link: '/assignment/physics/PHY-2502',
     },
     {
@@ -82,6 +89,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-GEO-02',
         courseName: 'Geography',
         courseId: 'GEO-2222',
+        classId: 'CLS-GEO-02',
         link: '/assignment/geography/GEO-2222',
     },
     {
@@ -92,6 +100,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-PHY-02',
         courseName: 'Physics',
         courseId: 'PHY-1205',
+        classId: 'CLS-PHY-02',
         link: '/assignment/physics/PHY-1205',
     },
     {
@@ -102,6 +111,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-SCI-02',
         courseName: 'Science',
         courseId: 'SCI-5533',
+        classId: 'CLS-SCI-02',
         link: '/assignment/science/SCI-5533',
     },
     {
@@ -112,6 +122,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-CHEM-02',
         courseName: 'Chemistry',
         courseId: 'CHEM-1211',
+        classId: 'CLS-CHEM-02',
         link: '/assignment/chemistry/CHEM-1211',
     },
     {
@@ -122,6 +133,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-BIO-04',
         courseName: 'Biology',
         courseId: 'BIO-4120',
+        classId: 'CLS-BIO-04',
         link: '/assignment/biology/BIO-4120',
     },
     {
@@ -132,6 +144,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-SCI-03',
         courseName: 'Science',
         courseId: 'SCI-2098',
+        classId: 'CLS-SCI-03',
         link: '/assignment/science/SCI-2098',
     },
     {
@@ -142,6 +155,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-BIO-01',
         courseName: 'Biology',
         courseId: 'BIO-1015',
+        classId: 'CLS-BIO-01',
         link: '/assignment/biology/BIO-1015',
     },
     {
@@ -152,6 +166,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-GEO-03',
         courseName: 'Geography',
         courseId: 'GEO-8787',
+        classId: 'CLS-GEO-03',
         link: '/assignment/geography/GEO-8787',
     },
     {
@@ -162,6 +177,7 @@ export const forumContents: ForumContentType[] = [
         lecturerId: 'LECT-CHEM-03',
         courseName: 'Chemistry',
         courseId: 'CHEM-2920',
+        classId: 'CLS-CHEM-03',
         link: '/assignment/chemistry/CHEM-2920',
     },
 ];

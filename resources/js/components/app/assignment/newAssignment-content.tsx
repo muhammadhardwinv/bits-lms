@@ -1,56 +1,46 @@
+import { courses } from '@/lib/newAssignment';
+import { usePage } from '@inertiajs/react';
 import React from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
 
-type Assignment = {
-    title: string;
-    description?: string;
-    courseId: string;
-    classId: string;
-    type: string;
-    dueDate: string;
-};
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+
+const assignment = courses[0];
 
 type UserModel = {
     name: string;
     role: string;
 };
 
-export default function PerAssignmentContent({
-    assignment,
-    user,
-    onSubmit,
-    loading = false,
-    errors = {},
-    sidebarOpen = true,
-    sidebarClose = false,
-}: {
-    assignment: Assignment;
-    user: UserModel;
-    onSubmit: (data: { response: string; attachment: File | null }) => void;
-    loading?: boolean;
-    errors?: {
-        response?: string;
-        attachment?: string;
-    };
-    sidebarOpen?: boolean;
-    sidebarClose?: boolean;
-}) {
+export default function NewAssignmentContent() {
+    const { props } = usePage<{ courseName: string }>();
+    const courseName = props.courseName;
+    const [loading, setLoading] = React.useState(false);
+    const [errors, setErrors] = React.useState<{ response?: string; attachment?: string }>({});
+
     const [response, setResponse] = React.useState('');
     const [attachment, setAttachment] = React.useState<File | null>(null);
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({ response, attachment });
+        setLoading(true);
+
+        if (!response) {
+            setErrors({ response: 'Response is required.' });
+            setLoading(false);
+            return;
+        }
+
+        console.log('Assignment submitted: ', { response, attachment });
+        setLoading(false);
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center">
-            <Card className="w-[75%] rounded-2xl border p-6 shadow-md">
+        <div className="flex min-h-screen items-center justify-center px-4 py-10">
+            <Card className="w-full max-w-4xl rounded-2xl border p-6 shadow-md">
                 <CardHeader className="space-y-2 text-center">
-                    <CardTitle>{assignment.title}</CardTitle>
+                    <CardTitle className="text-2xl font-bold">{assignment.title}</CardTitle>
                     <CardDescription>{assignment.description}</CardDescription>
 
                     <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-left text-sm text-muted-foreground">
@@ -74,20 +64,24 @@ export default function PerAssignmentContent({
                     <CardContent className="space-y-5 p-0">
                         {/* RESPONSE TEXTAREA */}
                         <div>
-                            <Label htmlFor="response">Your Response</Label>
+                            <Label htmlFor="response" className="text-sm font-medium">
+                                Your Solution (Explain your approach or paste your code)
+                            </Label>
                             <Textarea
                                 id="response"
                                 className="mt-1 h-60"
                                 value={response}
                                 onChange={(e) => setResponse(e.target.value)}
-                                placeholder="Write your response here..."
+                                placeholder="Describe your algorithm, provide analysis, or paste your code..."
                             />
                             {errors.response && <p className="mt-1 text-sm text-red-500">{errors.response}</p>}
                         </div>
 
                         {/* ATTACHMENT */}
                         <div>
-                            <Label htmlFor="attachment">Attachment (optional)</Label>
+                            <Label htmlFor="attachment" className="text-sm font-medium">
+                                Submit Code File (Python, Java, etc.)
+                            </Label>
                             <Input id="attachment" type="file" className="mt-1" onChange={(e) => setAttachment(e.target.files?.[0] || null)} />
                             {errors.attachment && <p className="mt-1 text-sm text-red-500">{errors.attachment}</p>}
                         </div>
@@ -100,7 +94,7 @@ export default function PerAssignmentContent({
                             disabled={loading}
                             className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium hover:bg-gray-100 disabled:opacity-50"
                         >
-                            {loading ? 'Sending...' : 'Send'}
+                            {loading ? 'Sending...' : 'Submit Assignment'}
                         </button>
                     </CardFooter>
                 </form>

@@ -1,10 +1,10 @@
-import AssignmentContent from '@/components/assignment-content';
+import AssignmentContent from '@/components/app/assignment/assignment-content';
 import ContentLayout from '@/layouts/content-layout';
+import { courses as assignments } from '@/lib/coursesDetails';
 import { UserModel } from '@/lib/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { ClipboardList } from 'lucide-react';
 import { useState } from 'react';
-import { courses as assignments } from '@/lib/coursesDetails';
 
 export default function Assignment() {
     const [user, setUser] = useState<UserModel>({
@@ -14,10 +14,7 @@ export default function Assignment() {
 
     return (
         <>
-            <Head title="Assignment">
-                <Link rel="preconnect" href="https://fonts.bunny.net" />
-                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-            </Head>
+            <Head title="Assignment" />
             <ContentLayout>
                 <AssignmentContent
                     title="Your Assignment"

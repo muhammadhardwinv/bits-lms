@@ -19,7 +19,21 @@ Route::get('/courses', function () {
     return Inertia::render('courses');
 })->name('courses');
 
-// ✅ Inserted here — for /courses/{course}/slideshow
+Route::get('/gradebook', function () {
+    return Inertia::render('gradebook');
+})->name('gradebook');
+
+Route::get('/gradebook/{courseId}', function ($courseId) {
+    return Inertia::render('course-grade', [
+        'courseId' => $courseId,
+    ]);
+})->name('gradebook');
+
+Route::get('/coursegrade', function () {
+    return Inertia::render('course-grade');
+})->name('coursegrade');
+
+
 Route::prefix('courses')->group(function () {
     Route::get('/{course}/slideshow', function ($course) {
         return Inertia::render('slideshow', [

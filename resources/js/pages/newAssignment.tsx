@@ -1,4 +1,4 @@
-import NewAssignmentContent from '@/components/newAssignment-content';
+import NewAssignmentContent from '@/components/app/assignment/newAssignment-content';
 import ContentLayout from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 

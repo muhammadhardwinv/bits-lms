@@ -1,5 +1,4 @@
 import { courses } from '@/lib/newAssignment';
-import { UserModel } from '@/lib/types';
 import { Link } from '@inertiajs/react';
 import { Download } from 'lucide-react';
 import {
@@ -12,19 +11,16 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from './ui/alert-dialog';
+} from '../../ui/alert-dialog';
 
 interface Props {
-    user: UserModel;
     courseId: string;
 }
 
 const course = courses[0]; // optional: filter based on courseId if needed
 const safeCourseName = course.courseName.replace(/\s+/g, '-').toLowerCase();
 
-export default function StudentCard({ user, courseId }: Props) {
-    if (user.role === 'lecturer') return null;
-
+export default function StudentCard({ courseId }: Props) {
     return (
         <nav className="flex flex-col gap-3 text-sm text-blue-600">
             {/* PPT */}

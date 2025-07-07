@@ -1,4 +1,4 @@
-import { CourseAreaInteractive } from '@/components/course-area-interactive';
+import { CourseAreaInteractive } from '@/components/app/course/course-area-interactive';
 import ContentLayout from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 

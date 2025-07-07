@@ -1,18 +1,14 @@
-import ForumContent from '@/components/forum-content';
+import SelectedCourseContent from '@/components/app/course/selectedcourse-content';
 import ContentLayout from '@/layouts/content-layout';
-import { UserModel } from '@/lib/types';
+import { useUserStore } from '@/lib/store/userStore';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
 
 interface Props {
     courseId: string;
 }
+
 export default function SelectedCourse({ courseId }: Props) {
-    const [user, setUser] = useState<UserModel>({
-        name: 'Beckham',
-        role: 'lecturer',
-        // role: 'student',
-    });
+    const { role } = useUserStore(); // ✅ Correct key from Zustand store
 
     return (
         <>
@@ -22,7 +18,7 @@ export default function SelectedCourse({ courseId }: Props) {
             </Head>
 
             <ContentLayout>
-                <ForumContent user={user} courseId={courseId} />
+                <SelectedCourseContent role={role} courseId={courseId} />
             </ContentLayout>
         </>
     );

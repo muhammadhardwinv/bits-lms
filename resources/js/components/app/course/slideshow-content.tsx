@@ -1,9 +1,9 @@
 import { ForumContentType, forumContents } from '@/lib/forumContent';
 import { usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent } from './ui/card';
-import { Input } from './ui/input';
+import { Button } from '../../ui/button';
+import { Card, CardContent } from '../../ui/card';
+import { Input } from '../../ui/input';
 
 const slidePages = Array.from({ length: 18 }, (_, i) => `/assets/slides/${i + 1}.png`);
 

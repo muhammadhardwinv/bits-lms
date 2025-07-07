@@ -1,4 +1,4 @@
-import PerAssignmentContent from '@/components/perassignment-content';
+import PerAssignmentContent from '@/components/app/assignment/perassignment-content';
 import ContentLayout from '@/layouts/content-layout';
 import { courses, CourseType } from '@/lib/coursesDetails';
 import { Head, usePage } from '@inertiajs/react';

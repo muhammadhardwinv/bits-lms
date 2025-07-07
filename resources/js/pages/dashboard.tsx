@@ -1,5 +1,5 @@
-import { ChartAreaInteractive } from '@/components/chart-area-interactive';
-import { LowerAreaInteractive } from '@/components/lower-area-interactive';
+import { ChartAreaInteractive } from '@/components/app/dashboard/chart-area-interactive';
+import { LowerAreaInteractive } from '@/components/app/dashboard/lower-area-interactive';
 import ContentLayout from '@/layouts/content-layout';
 import { UserModel } from '@/lib/types';
 import { Head } from '@inertiajs/react';
@@ -13,12 +13,11 @@ export default function Dashboard() {
     });
     return (
         <>
-            <Head title="Dashboard">
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-            </Head>
+            <Head title="Dashboard" />
             <ContentLayout>
-                <ChartAreaInteractive user={user} />
+                <div className="mt-6">
+                    <ChartAreaInteractive user={user} />
+                </div>
                 <LowerAreaInteractive />
             </ContentLayout>
         </>

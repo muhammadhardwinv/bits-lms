@@ -1,4 +1,4 @@
-import SlideshowContent from '@/components/slideshow-content';
+import SlideshowContent from '@/components/app/course/slideshow-content';
 import ContentLayout from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 

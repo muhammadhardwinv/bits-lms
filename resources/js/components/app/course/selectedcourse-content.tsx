@@ -1,17 +1,14 @@
-'use client';
-
+import { Card, CardContent } from '@/components/ui/card';
 import { ForumContentType, forumContents } from '@/lib/forumContent';
-import { UserModel } from '@/lib/types';
-import LecturerCard from './lecturerCard';
-import StudentCard from './studentCard';
-import { Card, CardContent } from './ui/card';
+import LecturerCard from './lecturercourse-Card';
+import StudentCard from './studentcourse-Card';
 
 interface Props {
-    user: UserModel;
+    role: 'student' | 'lecturer';
     courseId: string;
 }
 
-export default function ForumContent({ user, courseId }: Props) {
+export default function SelectedCourseContent({ role, courseId }: Props) {
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
 
     if (!forum) {
@@ -32,13 +29,20 @@ export default function ForumContent({ user, courseId }: Props) {
             </div>
 
             <div className="grid grid-cols-6 gap-4 border-y py-6">
-                {[1, 2, 3, 4, 5, 6].map((session) => (
+                {[
+                    { label: 'Session', href: `/courses/${forum.courseId}/slideshow` },
+                    { label: 'Discussion', href: `/discussion/${forum.courseId}` },
+                    { label: 'Assessment', href: `/assignment/${forum.courseId}` },
+                    { label: 'Gradebook', href: `/gradebook/${forum.courseId}` },
+                    { label: 'People', href: '#' }, // Not defined in routes yet
+                    { label: 'Attendance', href: '#' }, // Not defined in routes yet
+                ].map((item, index) => (
                     <button
-                        key={session}
+                        key={index}
                         type="button"
                         className="rounded-lg border border-gray-300 bg-white px-4 py-6 text-sm font-medium text-gray-800 shadow-sm transition duration-200 hover:bg-gray-50 hover:underline hover:shadow-md"
                     >
-                        <a href="#">Session {session}</a>
+                        <a href={item.href}>{item.label}</a>
                     </button>
                 ))}
             </div>
@@ -67,8 +71,7 @@ export default function ForumContent({ user, courseId }: Props) {
                         <h3 className="mb-6 text-lg font-semibold">Things to do in this session</h3>
 
                         <nav className="flex flex-col gap-2 text-blue-600">
-                            {user.role === 'lecturer' && <LecturerCard user={user} courseId={courseId} />}
-                            {user.role === 'student' && <StudentCard user={user} courseId={courseId} />}
+                            {role === 'lecturer' && <LecturerCard courseId={courseId} />} {role === 'student' && <StudentCard courseId={courseId} />}
                         </nav>
                     </CardContent>
                 </Card>

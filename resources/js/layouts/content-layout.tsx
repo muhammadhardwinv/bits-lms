@@ -4,7 +4,11 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Head, Link } from '@inertiajs/react';
 import { Home, PanelLeftIcon } from 'lucide-react';
 
-export default function ContentLayout({ children }: { children: React.ReactNode }) {
+interface ContentLayoutProps {
+    children: React.ReactNode;
+}
+
+export default function ContentLayout({ children }: ContentLayoutProps) {
     return (
         <SidebarProvider>
             <ContentSidebar />

@@ -1,9 +1,5 @@
 'use client';
 
-import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent } from '@/components/ui/card';
-import * as React from 'react';
-import { useRef, useState } from 'react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -13,7 +9,11 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from './ui/alert-dialog';
+} from '@/components/ui/alert-dialog';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent } from '@/components/ui/card';
+import * as React from 'react';
+import { useRef, useState } from 'react';
 
 export const description = 'An interactive area chart';
 
@@ -81,7 +81,7 @@ export function LowerAreaInteractive() {
     return (
         <div className="mx-auto mb-6 flex max-w-[95vw] flex-wrap justify-between gap-4 px-4 lg:px-6">
             {/* Left Chat Box */}
-            <div className="h-[50vh] basis-[32%] overflow-y-auto rounded-lg border bg-muted/20 p-1">
+            <div className="h-[50vh] basis-[35%] overflow-y-auto rounded-lg border bg-muted/20 p-4">
                 <div data-slot="card" className="flex h-full flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm">
                     <div data-slot="card-header" className="flex flex-row items-center px-6">
                         <div className="flex items-center gap-4">
@@ -159,7 +159,7 @@ export function LowerAreaInteractive() {
             </div>
 
             {/* Right Slider Box */}
-            <div className="h-[50vh] basis-[65%] overflow-hidden rounded-lg border bg-muted/20 p-2">
+            <div className="h-[50vh] basis-[63.5%] overflow-hidden rounded-lg border bg-muted/20 p-3">
                 <a
                     href="#"
                     className="text-md mt-4 mb-4 block text-center font-semibold text-indigo-500 tabular-nums @[250px]/card:text-3xl dark:text-indigo-400"
