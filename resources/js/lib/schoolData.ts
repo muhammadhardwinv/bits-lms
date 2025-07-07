@@ -43,7 +43,7 @@ export type Teacher = {
     office: string;
 };
 
-export type Student = {
+export type People = {
     id: string;
     name: string;
     classId: string;
@@ -214,7 +214,7 @@ export const parents: Parent[] = Array.from({ length: 30 }, (_, i) => ({
     studentIds: [`S-${(i + 1).toString().padStart(2, '0')}`],
 }));
 
-export const students: Student[] = Array.from({ length: 30 }, (_, i) => ({
+export const people: People[] = Array.from({ length: 30 }, (_, i) => ({
     id: `S-${(i + 1).toString().padStart(2, '0')}`,
     name: `Student ${i + 1}`,
     classId: `X-${((i % 3) + 1).toString().padStart(2, '0')}`,

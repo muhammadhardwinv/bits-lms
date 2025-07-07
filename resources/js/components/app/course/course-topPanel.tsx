@@ -1,13 +1,4 @@
-'use client';
-
 import { ForumContentType, forumContents } from '@/lib/forumContent';
-import GradeBookCard from './gradebook-card';
-
-const gradeBoxes = [
-    { gradeNumber: 1, gradeName: 'Assignment', value: 95 },
-    { gradeNumber: 2, gradeName: 'Mid Exam', value: 85 },
-    { gradeNumber: 3, gradeName: 'Final ', value: 83 },
-];
 
 const cPanelItems = [
     {
@@ -38,7 +29,6 @@ const cPanelItems = [
 interface Props {
     courseId: string;
 }
-const grade = ['Assignment', 'Mid Exam', 'Final Exam'];
 
 export function CourseGradeTop({ courseId }: Props) {
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
@@ -60,7 +50,7 @@ export function CourseGradeTop({ courseId }: Props) {
                 <p className="text-md ml-16 text-gray-500">{forum.lecturerId}</p>
             </div>
 
-            <div className="mx-10 flex flex-row items-center justify-between gap-6 border-y py-4 text-center">
+            <div className="mx-10 flex flex-row items-center justify-between gap-4 border-y py-4 text-center">
                 {[
                     { label: 'Session', href: `/courses/${forum.courseId}/slideshow` },
                     { label: 'Discussion', href: `/discussion/${forum.courseId}` },
@@ -75,31 +65,6 @@ export function CourseGradeTop({ courseId }: Props) {
                         </div>
                     </a>
                 ))}
-            </div>
-        </div>
-    );
-}
-
-export function CourseGradeContent({ courseId }: Props) {
-    const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
-
-    if (!forum) {
-        return (
-            <div className="p-6 text-red-600">
-                <h1 className="text-xl font-semibold">Forum not found for course ID: {courseId}</h1>
-            </div>
-        );
-    }
-
-    return (
-        <div className="space-y-8 p-6">
-            <div className="flex flex-col gap-6 px-9">
-                {gradeBoxes.map((gradeBox, index) =>
-                    GradeBookCard({
-                        title: gradeBox.gradeName,
-                        value: gradeBox.value,
-                    }),
-                )}
             </div>
         </div>
     );

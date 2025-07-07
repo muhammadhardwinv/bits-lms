@@ -1,5 +1,24 @@
 // types/courseDetails.ts
 
+const course_mappings = [
+    ['SCI-4321', 'Science'],
+    ['BIO-2201', 'Biology'],
+    ['GEO-3010', 'Geography'],
+    ['CHEM-1103', 'Chemistry'],
+    ['BIO-3302', 'Biology'],
+    ['PHY-2502', 'Physics'],
+    ['PHY-1205', 'Physics'],
+    ['GEO-2222', 'Geography'],
+    ['SCI-5533', 'Science'],
+    ['CHEM-1211', 'Chemistry'],
+    ['BIO-4120', 'Biology'],
+    ['SCI-2098', 'Science'],
+    ['BIO-1015', 'Biology'],
+    ['GEO-8787', 'Geography'],
+    ['CHEM-2920', 'Chemistry'],
+    ['PHY-1205', 'Physics'],
+];
+
 export type CourseType = {
     title: string;
     courseName: string;

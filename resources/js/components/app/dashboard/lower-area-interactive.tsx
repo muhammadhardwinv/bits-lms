@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import * as React from 'react';
 import { useRef, useState } from 'react';
 
@@ -45,11 +46,6 @@ export function SliderBox() {
     };
 
     return null;
-}
-
-export function CalendarDemo() {
-    const [date, setDate] = React.useState<Date | undefined>(new Date());
-    return <Calendar mode="single" selected={date} onSelect={setDate} className="flex-1 rounded-md border shadow-sm" captionLayout="dropdown" />;
 }
 
 export function LowerAreaInteractive() {
@@ -93,28 +89,6 @@ export function LowerAreaInteractive() {
                                 <p className="text-xs text-muted-foreground">michael.main@ac.id</p>
                             </div>
                         </div>
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <button
-                                    className="ml-auto size-8 rounded-full bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80"
-                                    type="button"
-                                >
-                                    <a href="#" className="text-2xl text-indigo-500 dark:text-indigo-400">
-                                        +
-                                    </a>
-                                    <span className="sr-only">New message</span>
-                                </button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Navigate to the chosen page?</AlertDialogTitle>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction>Continue</AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
                     </div>
                     <div data-slot="card-content" className="flex-1 overflow-y-auto px-6">
                         <div className="flex flex-col gap-4">
@@ -142,15 +116,13 @@ export function LowerAreaInteractive() {
                                 id="message"
                                 placeholder="Type your message..."
                                 autoComplete="off"
-                                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 pr-10 text-base shadow-xs transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:bg-input/30"
+                                className="flex h-9 w-full rounded-md border border-input bg-white px-3 pr-10 text-base text-gray-900 shadow-xs transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                             />
                             <button
                                 type="submit"
-                                className="absolute top-1/2 right-2 size-6 -translate-y-1/2 rounded-full bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+                                className="absolute top-1/2 right-2 size-6 -translate-y-1/2 rounded-full bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 dark:bg-blue-600 dark:hover:bg-blue-500"
                             >
-                                <a href="#" className="text-md text-white">
-                                    +
-                                </a>
+                                <span className="text-md text-white">+</span>
                                 <span className="sr-only">Send</span>
                             </button>
                         </form>
@@ -175,7 +147,7 @@ export function LowerAreaInteractive() {
                         }}
                         className="absolute top-1/2 left-0 z-10 -translate-y-1/2 rounded-full bg-muted p-2 shadow hover:bg-muted/70"
                     >
-                        ◀
+                        <ArrowLeft />
                     </button>
                     <button
                         onClick={() => {
@@ -185,7 +157,7 @@ export function LowerAreaInteractive() {
                         }}
                         className="absolute top-1/2 right-0 z-10 -translate-y-1/2 rounded-full bg-muted p-2 shadow hover:bg-muted/70"
                     >
-                        ▶
+                        <ArrowRight />
                     </button>
                     <div ref={sliderRef} className="flex h-full w-full overflow-x-hidden scroll-smooth">
                         {Array.from({ length: totalSlides }).map((_, index) => (

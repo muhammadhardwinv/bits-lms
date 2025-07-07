@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AttendanceController;
+
 
 Route::get('/', function () {
     return Inertia::render('login');
@@ -32,6 +34,12 @@ Route::get('/gradebook/{courseId}', function ($courseId) {
 Route::get('/coursegrade', function () {
     return Inertia::render('course-grade');
 })->name('coursegrade');
+
+Route::get('/events', function () {
+    return Inertia::render('events');
+})->name('events');
+
+Route::get('/attendance/{courseId}', [AttendanceController::class, 'index'])->name('attendance.index');
 
 
 Route::prefix('courses')->group(function () {
@@ -114,6 +122,12 @@ Route::prefix('assignment')->group(function () {
         ]);
     })->name('assignment.show');
 });
+
+Route::get('/people/{courseId}', function ($courseId) {
+    return Inertia::render('people', [
+        'courseId' => $courseId,
+    ]);
+})->name('people');
 
 Route::get('/dummytest', function (){
     return Inertia::render('try-dummy');

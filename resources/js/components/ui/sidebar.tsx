@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, VariantProps } from "class-variance-authority"
-import { Home, PanelLeftIcon } from "lucide-react"
+import { Home, Moon, PanelLeftIcon, Sun } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -250,32 +250,64 @@ function Sidebar({
     </div>
   )
 }
-
 function SidebarTrigger({
   className,
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar } = useSidebar();
+
+  const [isDark, setIsDark] = React.useState(false);
+
+  React.useEffect(() => {
+    const theme = localStorage.getItem('theme');
+    const prefersDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    setIsDark(prefersDark);
+    document.documentElement.classList.toggle('dark', prefersDark);
+  }, []);
+
+  const toggleDarkMode = () => {
+    const nowDark = !isDark;
+    setIsDark(nowDark);
+    localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', nowDark);
+  };
 
   return (
-    <Button
-  data-sidebar="trigger"
-  data-slot="sidebar-trigger"
-  variant="ghost"
-  size="icon"
-  className={cn("p-2 mt-4", className)} // reasonable padding
-  onClick={(event) => {
-    onClick?.(event);
-    toggleSidebar();
-  }}
-  {...props}
->
-  <PanelLeftIcon className="!size-5"/> {/* 20px icon, consistent */}
-  <span className="sr-only">Toggle Sidebar</span>
-</Button>
+    <div className="mt-4 flex items-center gap-2 px-2">
+      {/* Sidebar toggle */}
+      <Button
+        data-sidebar="trigger"
+        data-slot="sidebar-trigger"
+        variant="ghost"
+        size="icon"
+        className={cn('p-2', className)}
+        onClick={(event) => {
+          onClick?.(event);
+          toggleSidebar();
+        }}
+        {...props}
+      >
+        <PanelLeftIcon className="!size-5" />
+        <span className="sr-only">Toggle Sidebar</span>
+      </Button>
 
-  )
+      {/* Dark mode toggle */}
+      <Button
+        onClick={toggleDarkMode}
+        size="icon"
+        variant="ghost"
+        className="p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
+        aria-label="Toggle Dark Mode"
+      >
+        {isDark ? (
+          <Sun className="!size-6" />
+        ) : (
+          <Moon className="!size-6" />
+        )}
+      </Button>
+    </div>
+  );
 }
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {

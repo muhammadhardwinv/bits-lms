@@ -21,21 +21,23 @@ export default function SelectedCourseContent({ role, courseId }: Props) {
 
     return (
         <div className="space-y-8 p-6">
+            {/* heading */}
             <div className="space-y-1">
                 <h1 className="text-4xl font-bold">{forum.forumTitle}</h1>
                 <p className="text-xl text-gray-600">{forum.courseId}</p>
                 <p className="mt-8 ml-16 text-lg font-semibold">{forum.lecturerName}</p>
                 <p className="text-md ml-16 text-gray-500">{forum.lecturerId}</p>
             </div>
-
+            {/*  */}
+            {/* Course Panel */}
             <div className="grid grid-cols-6 gap-4 border-y py-6">
                 {[
                     { label: 'Session', href: `/courses/${forum.courseId}/slideshow` },
                     { label: 'Discussion', href: `/discussion/${forum.courseId}` },
                     { label: 'Assessment', href: `/assignment/${forum.courseId}` },
                     { label: 'Gradebook', href: `/gradebook/${forum.courseId}` },
-                    { label: 'People', href: '#' }, // Not defined in routes yet
-                    { label: 'Attendance', href: '#' }, // Not defined in routes yet
+                    { label: 'People', href: `/people/${forum.courseId}` },
+                    { label: 'Attendance', href: `/attendance/${forum.courseId}` },
                 ].map((item, index) => (
                     <button
                         key={index}

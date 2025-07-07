@@ -24,9 +24,58 @@ function calculateProgress(lessons: TickLesson[]): number {
     return parseFloat((completed * unitProgress).toFixed(1));
 }
 export function GradebookContentHeader() {
-    return <div className="h-[40vh]">Section to show overall grade per semester</div>;
-}
+    const mergedCourses: MergedCourseType[] = courseScores
+        .map((score) => {
+            const info = courses.find((c) => c.courseId === score.courseId && c.classId === score.classId);
+            if (!info) return null;
+            return {
+                ...score,
+                ...info,
+                slug: info.title.toLowerCase().replace(/\s+/g, '-'),
+            };
+        })
+        .filter(Boolean) as MergedCourseType[];
 
+    const totalCourses = mergedCourses.length;
+    const totalProgress = mergedCourses.reduce((acc, course) => acc + course.progress, 0);
+    const avgProgress = totalCourses > 0 ? Math.round(totalProgress / totalCourses) : 0;
+
+    const topCourse = mergedCourses.reduce(
+        (best, curr) => (curr.progress > best.progress ? curr : best),
+        mergedCourses[0] || { title: 'N/A', progress: 0 },
+    );
+
+    return (
+        <div className="h-[40vh] w-full px-6 py-4">
+            <div className="grid h-full grid-cols-3 gap-4">
+                {/* Total Courses */}
+                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+                    <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
+                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600">Courses</p>
+                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105">{totalCourses}</h2>
+                    </CardContent>
+                </Card>
+
+                {/* Average Progress */}
+                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+                    <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
+                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600">Avg Progress</p>
+                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105">{avgProgress}%</h2>
+                    </CardContent>
+                </Card>
+
+                {/* Top Course */}
+                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+                    <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
+                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600">Top Course</p>
+                        <h2 className="text-base font-medium text-gray-700 group-hover:underline">{topCourse.title}</h2>
+                        <span className="text-sm font-semibold text-green-600">{topCourse.progress}%</span>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    );
+}
 export function GradebookContentCourse() {
     const mergedCourses = courseScores
         .map((score) => {

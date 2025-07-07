@@ -18,12 +18,11 @@ import { ActivitySquare, ClipboardList } from 'lucide-react';
 import * as React from 'react';
 
 export const description = 'An interactive area chart';
-
 function CalendarDemo() {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
 
     return (
-        <div className="flex h-[60vh] w-[24vw] max-w-[32vw] flex-col rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-4 shadow-md dark:from-[#1a1a2e] dark:to-[#2c2c3a]">
+        <div className="flex h-[60vh] w-[24vw] max-w-[32vw] flex-col rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-4 shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#0f172a] dark:to-[#1e293b]">
             <div className="flex justify-center pb-2">
                 <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">📅 Schedule Overview</h2>
             </div>
@@ -32,14 +31,12 @@ function CalendarDemo() {
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    className="h-full w-full rounded-md border text-sm shadow-sm"
+                    className="h-full w-full rounded-md border border-gray-300 text-sm shadow-sm dark:border-gray-700 dark:bg-[#1e293b] dark:text-gray-100"
                     captionLayout="dropdown"
                 />
             </div>
-            <div className="my-4 flex flex-col rounded-lg border bg-white from-white shadow-md dark:from-[#1a1a2e] dark:to-[#2c2c3a]">
-                <h4 className="text-md font-regular my-2 mb-2 flex items-center justify-center text-gray-800 dark:text-gray-100">
-                    {date?.toDateString()}
-                </h4>
+            <div className="my-4 flex flex-col rounded-lg border bg-white shadow-md dark:border-gray-700 dark:bg-[#1e293b]">
+                <h4 className="text-md my-2 mb-2 flex items-center justify-center text-gray-800 dark:text-gray-100">{date?.toDateString()}</h4>
             </div>
         </div>
     );
