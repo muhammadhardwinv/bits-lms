@@ -96,7 +96,7 @@ export function GradebookContentCourse() {
             {mergedCourses.map((course) => (
                 <Link
                     key={course.courseId}
-                    href={route('gradebook', course.courseId)}
+                    href={route('gradebook.show', course.courseId)}
                     onClick={log}
                     className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg"
                 >

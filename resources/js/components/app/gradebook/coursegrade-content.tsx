@@ -1,6 +1,5 @@
-'use client';
-
 import { ForumContentType, forumContents } from '@/lib/forumContent';
+import { usePage } from '@inertiajs/react';
 import GradeBookCard from './gradebook-card';
 
 const gradeBoxes = [
@@ -9,38 +8,11 @@ const gradeBoxes = [
     { gradeNumber: 3, gradeName: 'Final ', value: 83 },
 ];
 
-const cPanelItems = [
-    {
-        title: 'Session',
-        url: 'session',
-    },
-    {
-        title: 'Discussion',
-        url: 'discussion',
-    },
-    {
-        title: 'Assessment',
-        url: 'assessment',
-    },
-    {
-        title: 'Gradebook',
-        url: 'gradebook',
-    },
-    {
-        title: 'People',
-        url: 'people',
-    },
-    {
-        title: 'Attendance',
-        url: 'attendance',
-    },
-];
 interface Props {
     courseId: string;
 }
-const grade = ['Assignment', 'Mid Exam', 'Final Exam'];
-
 export function CourseGradeTop({ courseId }: Props) {
+    const { url } = usePage();
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
 
     if (!forum) {
@@ -50,6 +22,9 @@ export function CourseGradeTop({ courseId }: Props) {
             </div>
         );
     }
+
+    const normalize = (path: string) => (path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path);
+    const currentUrl = normalize(url);
 
     return (
         <div className="space-y-8 p-6">
@@ -68,18 +43,28 @@ export function CourseGradeTop({ courseId }: Props) {
                     { label: 'Gradebook', href: `/gradebook/${forum.courseId}` },
                     { label: 'People', href: `/people/${forum.courseId}` },
                     { label: 'Attendance', href: `/attendance/${forum.courseId}` },
-                ].map((item, index) => (
-                    <a key={index} href={item.href} className="w-full">
-                        <div className="w-full rounded-lg border border-gray-300 bg-white px-4 py-6 text-sm font-medium text-gray-800 shadow-sm transition duration-200 hover:bg-gray-50 hover:underline hover:shadow-md">
-                            {item.label}
-                        </div>
-                    </a>
-                ))}
+                ].map((item, index) => {
+                    const itemHref = normalize(item.href);
+                    const isActive = currentUrl === itemHref || currentUrl.startsWith(itemHref + '/');
+
+                    return (
+                        <a key={index} href={item.href} className="w-full">
+                            <div
+                                className={`w-full rounded-lg border px-4 py-6 text-sm font-medium shadow-sm transition duration-200 ${
+                                    isActive
+                                        ? 'border-indigo-300 bg-indigo-100 text-indigo-900 dark:border-indigo-700 dark:bg-indigo-900 dark:text-indigo-100'
+                                        : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50 hover:underline hover:shadow-md dark:border-[#3a3a3a] dark:bg-[#1b1b1b] dark:text-gray-200 dark:hover:bg-gray-800'
+                                }`}
+                            >
+                                {item.label}
+                            </div>
+                        </a>
+                    );
+                })}
             </div>
         </div>
     );
 }
-
 export function CourseGradeContent({ courseId }: Props) {
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
 
@@ -94,7 +79,7 @@ export function CourseGradeContent({ courseId }: Props) {
     return (
         <div className="space-y-8 p-6">
             <div className="flex flex-col gap-6 px-9">
-                {gradeBoxes.map((gradeBox, index) =>
+                {gradeBoxes.map((gradeBox) =>
                     GradeBookCard({
                         title: gradeBox.gradeName,
                         value: gradeBox.value,

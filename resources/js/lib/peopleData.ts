@@ -27,7 +27,7 @@ courses.forEach((course) => {
     for (let i = 1; i <= 20; i++) {
         const id = `${course.courseId}-STU-${i.toString().padStart(2, '0')}`;
         const name = generatePeopleName(i);
-        const email = `${name.toLowerCase().replace(' ', '.')}@student.edu`;
+        const email = `${name.toLowerCase().replace(' ', '.')}@bits.ac.id`;
 
         peopleList.push({
             id,
@@ -39,4 +39,4 @@ courses.forEach((course) => {
     }
 });
 
-export default peopleList;
+export const peopleData = peopleList;

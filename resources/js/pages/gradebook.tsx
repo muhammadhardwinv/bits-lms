@@ -2,15 +2,17 @@ import { GradebookContentCourse, GradebookContentHeader } from '@/components/app
 import ContentLayout from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 
-export default function Gradebook() {
+interface GradebookProps {
+    courseId: string;
+}
+
+export default function Gradebook({ courseId }: GradebookProps) {
     return (
         <>
             <Head title="Gradebook" />
             <ContentLayout>
-                <div className="">
-                    <div className="flex items-center justify-center">
-                        <GradebookContentHeader />
-                    </div>
+                <div>
+                    <GradebookContentHeader />
                     <div className="flex items-center justify-center">
                         <GradebookContentCourse />
                     </div>

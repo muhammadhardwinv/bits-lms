@@ -1,3 +1,4 @@
+import { CourseGradeTop } from '@/components/app/course/course-topPanel';
 import SelectedCourseContent from '@/components/app/course/selectedcourse-content';
 import ContentLayout from '@/layouts/content-layout';
 import { useUserStore } from '@/lib/store/userStore';
@@ -18,6 +19,7 @@ export default function SelectedCourse({ courseId }: Props) {
             </Head>
 
             <ContentLayout>
+                <CourseGradeTop courseId={courseId}/>
                 <SelectedCourseContent role={role} courseId={courseId} />
             </ContentLayout>
         </>

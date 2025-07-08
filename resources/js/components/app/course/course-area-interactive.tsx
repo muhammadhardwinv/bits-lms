@@ -51,18 +51,18 @@ export function CourseAreaInteractive() {
                 <Link
                     key={course.courseId}
                     href={`/selected-course/${course.courseId}`} // ✅ use lowercase to match route
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg"
+                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]"
                 >
-                    <h2 className="text-lg font-semibold text-indigo-700 group-hover:underline">{course.title}</h2>
-                    <p className="text-xs text-gray-500">Course ID: {course.courseId}</p>
+                    <h2 className="text-lg font-semibold text-indigo-700 group-hover:underline dark:text-indigo-400">{course.title}</h2>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Course ID: {course.courseId}</p>
 
-                    <Card className="my-4 border-0 bg-muted/20 shadow-none">
-                        <CardContent className="p-4 text-sm text-gray-700">{course.description}</CardContent>
+                    <Card className="my-4 border-0 bg-muted/20 shadow-none dark:bg-white/5">
+                        <CardContent className="p-4 text-sm text-gray-700 dark:text-gray-300">{course.description}</CardContent>
                     </Card>
 
                     <div className="mt-auto">
-                        <p className="mb-1 block text-center text-xs text-gray-600">Progress: {course.progress}%</p>
-                        <Progress value={course.progress} className="h-2 rounded-full bg-gray-200" />
+                        <p className="mb-1 block text-center text-xs text-gray-600 dark:text-gray-400">Progress: {course.progress}%</p>
+                        <Progress value={course.progress} className="h-2 rounded-full bg-gray-200 dark:bg-gray-700" />
                     </div>
                 </Link>
             ))}

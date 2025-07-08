@@ -1,4 +1,5 @@
 import { ForumContentType, forumContents } from '@/lib/forumContent';
+import { usePage } from '@inertiajs/react';
 
 const cPanelItems = [
     {
@@ -31,6 +32,8 @@ interface Props {
 }
 
 export function CourseGradeTop({ courseId }: Props) {
+    const { url } = usePage();
+    const cleanUrl = url.split(/[?#]/)[0];
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
 
     if (!forum) {
@@ -52,19 +55,37 @@ export function CourseGradeTop({ courseId }: Props) {
 
             <div className="mx-10 flex flex-row items-center justify-between gap-4 border-y py-4 text-center">
                 {[
-                    { label: 'Session', href: `/courses/${forum.courseId}/slideshow` },
+                    { label: 'Session', href: `/current-session/${forum.courseId}` },
                     { label: 'Discussion', href: `/discussion/${forum.courseId}` },
                     { label: 'Assessment', href: `/assignment/${forum.courseId}` },
-                    { label: 'Gradebook', href: `/gradebook/${forum.courseId}` },
+                    { label: 'Gradebook', href: `/gradebook.view/${forum.courseId}` },
                     { label: 'People', href: `/people/${forum.courseId}` },
                     { label: 'Attendance', href: `/attendance/${forum.courseId}` },
-                ].map((item, index) => (
-                    <a key={index} href={item.href} className="w-full">
-                        <div className="w-full rounded-lg border border-gray-300 bg-white px-4 py-6 text-sm font-medium text-gray-800 shadow-sm transition duration-200 hover:bg-gray-50 hover:underline hover:shadow-md">
-                            {item.label}
-                        </div>
-                    </a>
-                ))}
+                ].map((item, index) => {
+                    const normalize = (path: string) => (path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path);
+                    const normalizedUrl = normalize(cleanUrl);
+                    const normalizedHref = normalize(item.href);
+
+                    const isActive = normalizedUrl === normalizedHref || normalizedUrl.startsWith(normalizedHref + '/');
+
+                    return (
+                        <a key={index} href={item.href} className="w-full">
+                            <div
+                                className={`w-full rounded-lg border px-4 py-6 text-sm font-medium shadow-sm transition duration-200 ${
+                                    isActive
+                                        ? 'border-indigo-300 bg-indigo-100 text-indigo-900 hover:bg-indigo-200 dark:border-indigo-700 dark:bg-indigo-900 dark:text-indigo-100 dark:hover:bg-indigo-800'
+                                        : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50 hover:underline hover:shadow-md dark:border-[#3a3a3a] dark:bg-[#1b1b1b] dark:text-gray-200 dark:hover:bg-gray-800'
+                                } flex items-center justify-center gap-2`}
+                            >
+                                {/* + if active (green), - if inactive (red) */}
+                                <span
+                                    className={`font-bold ${isActive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+                                ></span>
+                                <span>{item.label}</span>
+                            </div>
+                        </a>
+                    );
+                })}
             </div>
         </div>
     );

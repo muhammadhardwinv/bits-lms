@@ -4,146 +4,96 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AttendanceController;
 
+// Static Pages
+Route::get('/', fn () => Inertia::render('login'))->name('login');
+Route::get('/login', fn () => Inertia::render('login'))->name('login');
+Route::get('/dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
+Route::get('/courses', fn () => Inertia::render('courses'))->name('courses');
+Route::get('/events', fn () => Inertia::render('events'))->name('events');
+Route::get('/lecturer-dashboard', fn () => Inertia::render('lecturerdashboard'))->name('lecturerdashboard');
+Route::get('/dummytest', fn () => Inertia::render('try-dummy'))->name('dummytest');
 
-Route::get('/', function () {
-    return Inertia::render('login');
-})->name('login');
-
-Route::get('/login', function () {
-    return Inertia::render('login');
-})->name('login');
-
-Route::get('/dashboard', function () {
-    return Inertia::render('dashboard');
-})->name('dashboard');
-
-Route::get('/courses', function () {
-    return Inertia::render('courses');
-})->name('courses');
-
+// Gradebook
 Route::get('/gradebook', function () {
-    return Inertia::render('gradebook');
-})->name('gradebook');
+    return Inertia::render('gradebook'); // All courses page
+})->name('gradebook.index');  // rename to gradebook.index
 
 Route::get('/gradebook/{courseId}', function ($courseId) {
     return Inertia::render('course-grade', [
         'courseId' => $courseId,
     ]);
-})->name('gradebook');
+})->name('gradebook.show');
 
-Route::get('/coursegrade', function () {
-    return Inertia::render('course-grade');
-})->name('coursegrade');
+// Selected Course View (used for "Session")
+Route::get('/selected-course/{courseId}', fn ($courseId) => Inertia::render('selected-Course', [
+    'auth' => ['user' => Auth::user()],
+    'courseId' => $courseId,
+]))->name('course.selected');
+Route::get('/current-session/{courseId}', function ($courseId) {
+    return Inertia::render('selected-Course', [
+        'auth' => ['user' => Auth::user()],
+        'courseId' => $courseId,
+    ]);
+})->name('course.session');
 
-Route::get('/events', function () {
-    return Inertia::render('events');
-})->name('events');
+// Discussion & Forum
+Route::get('/forum/{courseId}', fn ($courseId) => Inertia::render('Forum', [
+    'auth' => ['user' => Auth::user()],
+    'courseId' => $courseId,
+]))->name('forum.show');
 
+Route::get('/discussion/{courseId}', fn ($courseId) => Inertia::render('discussion', [
+    'courseId' => $courseId,
+    'user' => [
+        'name' => 'Guest Viewer',
+        'role' => 'student'
+    ],
+]))->name('discussion');
+
+// People
+Route::get('/people/{courseId}', fn($courseId) => Inertia::render('people', [
+    'courseId' => $courseId,
+]))->name('people');
+
+// Attendance
 Route::get('/attendance/{courseId}', [AttendanceController::class, 'index'])->name('attendance.index');
 
-
-Route::prefix('courses')->group(function () {
-    Route::get('/{course}/slideshow', function ($course) {
-        return Inertia::render('slideshow', [
-            'course' => $course,
-        ]);
-    })->name('courses.slideshow');
-});
-
-Route::prefix('/{courseName}')->group(function () {
-    Route::get('/new-assignment', function ($courseName) {
-        return Inertia::render('NewAssignmentContent', [
-            'courseName' => $courseName,
-        ]);
-    })->name('assignment.new');
-});
-
-Route::get('/forum/{courseId}', function ($courseId) {
-    return Inertia::render('Forum', [
-        'auth' => ['user' => Auth::user()],
-        'courseId' => $courseId,
-    ]);
-})->name('forum.show');
-
-Route::get('/selected-course/{courseId}', function ($courseId) {
-    return Inertia::render('selected-Course', [
-        'auth' => ['user' => Auth::user()],
-        'courseId' => $courseId,
-    ]);
-})->name('course.selected');
-
-Route::get('/discussion/{courseId}', function ($courseId) {
-    return Inertia::render('discussion', [
-        'courseId' => $courseId,
-        'user' => [
-            'name' => 'Guest Viewer',
-            'role' => 'student'
-        ],
-    ]);
-})->name('discussion');
-
-// 🔁 Duplicate route (already above), you can remove this:
-Route::get('/selected-course/{courseId}', function ($courseId) {
-    return Inertia::render('selected-Course', [
-        'auth' => ['user' => Auth::user()],
-        'courseId' => $courseId,
-    ]);
-})->name('course.selected');
-
-Route::get('/assignment/{courseId}', function($courseId){
-    return Inertia::render('per-assignment', [
-        'courseId' => $courseId,
-    ]);
-})->name('assignment.view');
-
-Route::get('assignment', function(){
-    return Inertia::render('assignment');
-})->name('assignment');
+// Assignments
+Route::get('/assignment', fn () => Inertia::render('assignment'))->name('assignment');
+Route::get('/assignment/{courseId}', fn($courseId) => Inertia::render('per-assignment', [
+    'courseId' => $courseId,
+]))->name('assignment.view');
 
 Route::prefix('assignment')->group(function () {
-    Route::get('/{course}/{courseId}/quiz', function ($course, $courseId) {
-        return Inertia::render('assignmentPage/assignmentQuiz', [
-            'course' => $course,
-            'courseId' => $courseId,
-        ]);
-    })->name('assignment.quiz');
+    Route::get('/{course}/{courseId}/quiz', fn ($course, $courseId) => Inertia::render('assignmentPage/assignmentQuiz', [
+        'course' => $course,
+        'courseId' => $courseId,
+    ]))->name('assignment.quiz');
 
-    Route::get('/{course}/{courseId}/slideshow', function ($course, $courseId) {
-        return Inertia::render('assignmentPage/assignmentSlideshow', [
-            'course' => $course,
-            'courseId' => $courseId,
-        ]);
-    })->name('assignment.slideshow');
+    Route::get('/{course}/{courseId}/slideshow', fn ($course, $courseId) => Inertia::render('assignmentPage/assignmentSlideshow', [
+        'course' => $course,
+        'courseId' => $courseId,
+    ]))->name('assignment.slideshow');
 
-    Route::get('/{course}/{courseId}', function ($course, $courseId) {
-        return Inertia::render('per-assignment', [
-            'course' => $course,
-            'courseId' => $courseId,
-        ]);
-    })->name('assignment.show');
+    Route::get('/{course}/{courseId}', fn ($course, $courseId) => Inertia::render('per-assignment', [
+        'course' => $course,
+        'courseId' => $courseId,
+    ]))->name('assignment.show');
 });
 
-Route::get('/people/{courseId}', function ($courseId) {
-    return Inertia::render('people', [
-        'courseId' => $courseId,
-    ]);
-})->name('people');
+// Slideshow (old course prefix route)
+Route::prefix('courses')->group(function () {
+    Route::get('/{course}/slideshow', fn ($course) => Inertia::render('slideshow', [
+        'course' => $course,
+    ]))->name('courses.slideshow');
+});
 
-Route::get('/dummytest', function (){
-    return Inertia::render('try-dummy');
-})->name('dummytest');
+// New Assignment Page
+Route::get('/{courseName}/new-assignment', fn ($courseName) => Inertia::render('NewAssignmentContent', [
+    'courseName' => $courseName,
+]))->name('assignment.new');
 
-// 🔁 Duplicate of route inside prefix above (optional to remove):
-Route::get('/{courseName}/new-assignment', function ($courseName) {
-    return Inertia::render('NewAssignmentContent', [
-        'courseName' => $courseName,
-    ]);
-})->name('assignment.new');
-
-Route::get('/lecturer-dashboard', function () {
-    return Inertia::render('lecturerdashboard');
-})->name('lecturerdashboard');
-
+// Auth
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/')->route('login');
