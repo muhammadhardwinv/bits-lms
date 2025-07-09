@@ -6,7 +6,7 @@ export default function Events() {
     return (
         <>
             <Head title="Events" />
-            <div>
+            <div id="main-scroll" className="max-h-screen overflow-y-auto">
                 <EventBackground />
                 <EventNavbar />
             </div>

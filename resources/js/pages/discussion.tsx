@@ -1,5 +1,6 @@
 import DiscussionContent from '@/components/app/discussion/discussion-content';
 import ContentLayout from '@/layouts/content-layout';
+import { useUserStore } from '@/lib/store/userStore';
 import { UserModel } from '@/lib/types';
 import { Head } from '@inertiajs/react';
 
@@ -9,16 +10,30 @@ interface Props {
 }
 
 export default function Discussion({ user, courseId }: Props) {
+    const role = useUserStore((state) => state.role);
+    const isHydrated = useUserStore.persist.hasHydrated();
+
+    if (!isHydrated) {
+        return (
+            <ContentLayout>
+                <p className="text-center text-sm text-gray-500">Loading user data...</p>
+            </ContentLayout>
+        );
+    }
+
+    if (!role) {
+        return (
+            <ContentLayout>
+                <p className="text-center text-red-500">❌ User role not found. Please log in again.</p>
+            </ContentLayout>
+        );
+    }
+
     return (
         <>
             <Head title={`Discussion - ${courseId}`} />
             <ContentLayout>
-                {/* Option 1: If DiscussionContent expects user as a prop */}
-                <DiscussionContent user={user} courseId={courseId} />
-
-                {/* Option 2: If DiscussionContent uses useUserStore internally, use this instead:
-        <DiscussionContent courseId={courseId} />
-        */}
+                <DiscussionContent courseId={courseId} />
             </ContentLayout>
         </>
     );

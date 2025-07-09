@@ -1,19 +1,51 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export type RoleType = 'student' | 'lecturer';
 
-interface UserStore {
-    name: string;
-    role: RoleType;
-    setName: (name: string) => void;
-    setRole: (role: RoleType) => void;
-    setUser: (user: { name: string; role: RoleType }) => void;
+export interface UserClass {
+    courseName: string;
+    courseId: string;
+    classId: string;
 }
 
-export const useUserStore = create<UserStore>((set) => ({
-    name: '',
-    role: 'student', // default role
-    setName: (name) => set({ name }),
-    setRole: (role) => set({ role }),
-    setUser: (user) => set({ name: user.name, role: user.role }),
-}));
+interface UserStore {
+    name: string;
+    role?: RoleType;
+    courseId?: string;
+    classes?: UserClass[];
+    setName: (name: string) => void;
+    setRole: (role: RoleType) => void;
+    setUser: (user: { name: string; role: RoleType; courseId?: string; classes?: UserClass[] }) => void;
+    clearUser: () => void;
+}
+
+export const useUserStore = create<UserStore>()(
+    persist(
+        (set) => ({
+            name: '',
+            role: undefined,
+            courseId: undefined,
+            classes: [],
+            setName: (name) => set({ name }),
+            setRole: (role) => set({ role }),
+            setUser: (user) =>
+                set({
+                    name: user.name,
+                    role: user.role,
+                    courseId: user.courseId,
+                    classes: user.classes ?? [],
+                }),
+            clearUser: () =>
+                set({
+                    name: '',
+                    role: undefined,
+                    courseId: undefined,
+                    classes: [],
+                }),
+        }),
+        {
+            name: 'user-storage', // localStorage key
+        },
+    ),
+);

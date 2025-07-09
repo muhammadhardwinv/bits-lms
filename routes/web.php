@@ -36,6 +36,17 @@ Route::get('/current-session/{courseId}', function ($courseId) {
     ]);
 })->name('course.session');
 
+// Lecturer Mode
+
+Route::get('/select-class', function () {
+    return Inertia::render('lecturerSelectPage');
+})->name('select-class');
+Route::get('/assignment/new/{courseName}', function ($courseName) {
+    return Inertia::render('newAssignment');
+})->name('assignment.new');
+
+
+
 // Discussion & Forum
 Route::get('/forum/{courseId}', fn ($courseId) => Inertia::render('Forum', [
     'auth' => ['user' => Auth::user()],

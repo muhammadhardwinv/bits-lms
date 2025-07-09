@@ -1,11 +1,13 @@
-import NewAssignmentContent from '@/components/app/assignment/newAssignment-content';
+// resources/js/Pages/newAssignment.tsx
+
+import NewAssignmentContent from '@/components/app/assignment/input-newAssignment';
 import ContentLayout from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 
-export default function NewAssignmentForm() {
+export default function NewAssignmentPage() {
     return (
         <>
-            <Head title="Assignment Form"></Head>
+            <Head title="Submit Assignment" />
             <ContentLayout>
                 <NewAssignmentContent />
             </ContentLayout>

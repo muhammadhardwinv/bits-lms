@@ -15,9 +15,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import * as React from 'react';
 import { useRef, useState } from 'react';
+import { events } from '@/lib/events-lib/eventData';
 
 export const description = 'An interactive area chart';
-
 export function SliderBox() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [activeSlide, setActiveSlide] = useState(0);
@@ -160,11 +160,34 @@ export function LowerAreaInteractive() {
                         <ArrowRight />
                     </button>
                     <div ref={sliderRef} className="flex h-full w-full overflow-x-hidden scroll-smooth">
-                        {Array.from({ length: totalSlides }).map((_, index) => (
+                        {events.map((event, index) => (
                             <div key={index} className="h-full w-full shrink-0">
                                 <Card className="h-full w-full">
                                     <CardContent className="flex h-full items-center justify-center p-6">
-                                        <span className="text-md font-semibold">Slide {index + 1}</span>
+                                        <div className="group relative h-64 w-full overflow-hidden rounded-xl shadow-md">
+                                            <img
+                                                src={event.imageUrls[0]}
+                                                alt={`Event ${index + 1}`}
+                                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                            />
+                                            <div className="bg-opacity-90 absolute inset-0 flex flex-col justify-end bg-black p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-60">
+                                                <p className="mb-1 text-sm font-bold text-white">{event.description}</p>
+                                                <br />
+                                                <p className="text-sm text-white">
+                                                    <strong>Date:</strong> {event.date}
+                                                </p>
+                                                <p className="text-sm text-white">
+                                                    <strong>Location:</strong> {event.location}
+                                                </p>
+                                                <br />
+                                                <p className="text-sm text-white">
+                                                    <strong>Speaker:</strong> {event.featuredSpeaker}
+                                                </p>
+                                                <p className="text-sm text-white">
+                                                    <strong>Topics:</strong> {event.topics.join(', ')}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </CardContent>
                                 </Card>
                             </div>

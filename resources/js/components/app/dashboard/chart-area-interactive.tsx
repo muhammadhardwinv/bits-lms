@@ -14,19 +14,21 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
 import { UserModel } from '@/lib/types';
+import { Link } from '@inertiajs/react';
 import { ActivitySquare, ClipboardList } from 'lucide-react';
 import * as React from 'react';
+import { useUserStore } from '@/lib/store/userStore';
 
 export const description = 'An interactive area chart';
 function CalendarDemo() {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
 
     return (
-        <div className="flex h-[60vh] w-[24vw] max-w-[32vw] flex-col rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-4 shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#0f172a] dark:to-[#1e293b]">
+        <div className="flex w-full max-w-[400px] flex-col overflow-hidden rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-4 shadow-md sm:max-w-[22vw] lg:max-h-[60vh] lg:max-w-[28vw] dark:border-gray-700 dark:from-[#0f172a] dark:to-[#1e293b]">
             <div className="flex justify-center pb-2">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">📅 Schedule Overview</h2>
+                <h2 className="text-md font-semibold text-gray-800 dark:text-gray-100">📅 Schedule Overview</h2>
             </div>
-            <div className="h-[45vh] w-full">
+            <div className="flex-1 overflow-y-auto px-1">
                 <Calendar
                     mode="single"
                     selected={date}
@@ -35,29 +37,48 @@ function CalendarDemo() {
                     captionLayout="dropdown"
                 />
             </div>
-            <div className="my-4 flex flex-col rounded-lg border bg-white shadow-md dark:border-gray-700 dark:bg-[#1e293b]">
-                <h4 className="text-md my-2 mb-2 flex items-center justify-center text-gray-800 dark:text-gray-100">{date?.toDateString()}</h4>
+            <div className="mt-2 flex justify-center rounded-lg border bg-white shadow-md dark:border-gray-700 dark:bg-[#1e293b]">
+                <h4 className="text-center text-sm text-gray-800 dark:text-gray-100">{date?.toDateString()}</h4>
             </div>
         </div>
     );
 }
-
 function SectionCard({ title, icon: Icon, items, user }: { title: string; icon: React.ElementType; items: string[]; user: UserModel }) {
+    const { role, courseId } = useUserStore();
+    const firstClass = user.classes?.[0];
+
     return (
-        <div className="col-span-1 h-[60vh] max-w-[32vw] flex-1 overflow-y-auto rounded-lg border bg-gradient-to-br from-white to-blue-50 p-4 shadow-md dark:from-[#121212] dark:to-[#1f1f1f]">
-            <div className="flex items-center justify-between gap-2 pb-4">
-                <div className="flex items-center gap-2">
-                    <Icon className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
-                </div>
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <button
-                            className={`text-bold-400 flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 bg-gray-100 p-4 text-2xl ${user.role == 'student' ? 'hidden' : ''} `}
+        <div className="h-[60vh] w-full max-w-[32vw] flex-1 overflow-y-auto rounded-lg border bg-gradient-to-br from-white to-blue-50 p-4 shadow-md dark:from-[#121212] dark:to-[#1f1f1f]">
+            <div className="flex items-center gap-2 pb-4">
+                <div className="flex w-full flex-row items-center justify-between">
+                    <div className="space-between mx-1 flex flex-row items-center">
+                        <Icon className="mx-2 h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Discussions</h2>
+                    </div>
+
+                    {role === 'lecturer' && (
+                        <Link
+                            href={route('select-class')}
+                            className="rounded-full bg-indigo-100 px-2 text-lg font-bold text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-300 mr-4 items-center"
                         >
                             +
-                        </button>
+                        </Link>
+                    )}
+                </div>
+
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        {user.role === 'lecturer' && firstClass && (
+                            <Link
+                                href={`/assignment/${firstClass.courseName}/${firstClass.courseId}`}
+                                className="rounded-full border border-gray-300 bg-gray-100 p-2 text-2xl text-indigo-600 hover:bg-gray-200"
+                                title="Add Assignment"
+                            >
+                                +
+                            </Link>
+                        )}
                     </AlertDialogTrigger>
+
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
@@ -73,6 +94,7 @@ function SectionCard({ title, icon: Icon, items, user }: { title: string; icon: 
                     </AlertDialogContent>
                 </AlertDialog>
             </div>
+
             <div className="space-y-2">
                 {items.map((label, index) => (
                     <Card
@@ -91,20 +113,8 @@ function SectionCard({ title, icon: Icon, items, user }: { title: string; icon: 
         </div>
     );
 }
-
 export function ChartAreaInteractive({ user }: { user: UserModel }) {
-    const recentActivity = [
-        'Nadia submitted Lab 3',
-        'Ali started Discussion on Module 2',
-        'Maya completed Quiz 2',
-        'John shared announcement',
-        'Farah asked question to instructor',
-        'Rudi updated profile photo',
-        'Ayu uploaded Assignment 4',
-        'Budi marked attendance',
-        'Tina commented on peer post',
-        'Yusuf joined new group project',
-    ];
+    const recentActivity = ['Nadia submitted Lab 3', 'Ali started Discussion on Module 2'];
 
     const assignments = [
         'Assignment #1: Algorithm Design',

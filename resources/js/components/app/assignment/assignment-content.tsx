@@ -4,6 +4,8 @@ import { Assignment, UserModel } from '@/lib/types';
 import { courses, CourseType } from '@/lib/coursesDetails';
 import { ClipboardList } from 'lucide-react';
 import { Link } from '@inertiajs/react';
+import { useState } from 'react';
+import { useUserStore } from '@/lib/store/userStore';
 
 export default function AssignmentContent({
     title,
@@ -16,19 +18,34 @@ export default function AssignmentContent({
     icon: React.ElementType;
     link: (assignment: Assignment) => string;
 }) {
+    const [newAssignment, setNewAssignment] = useState<Partial<Assignment>>({
+        title: '',
+        type: 'Essay',
+        dueDate: '',
+        courseId: '',
+        classId: '',
+    });
+    const { role, courseId } = useUserStore();
+
     return (
         <div className="flex min-h-screen items-center justify-center px-4">
             <div className="flex min-h-screen items-center justify-center">
                 <div className="h-[90vh] overflow-y-auto rounded-xl border border-gray-200 bg-gradient-to-br from-white to-blue-50 p-6 shadow-lg dark:from-[#121212] dark:to-[#1f1f1f]">
                     <div className="mb-6 ml-4 flex items-center justify-between border-b pb-4 dark:border-gray-600">
-                        <div className="flex w-full items-center gap-3">
-                            <ClipboardList className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                            <div>
-                                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Explore open discussions, shared materials, and student interactions.
-                                </p>
+                        <div className="flex w-full items-center justify-between gap-3">
+                            <div className="space-between flex flex-row items-center">
+                                <ClipboardList className="mx-2 h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Assignment</h2>
                             </div>
+
+                            {role === 'lecturer' && (
+                                <Link
+                                    href={route('select-class')}
+                                    className="mr-4 items-center rounded-full bg-indigo-100 px-2 text-lg font-bold text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-300"
+                                >
+                                    +
+                                </Link>
+                            )}
                         </div>
                     </div>
 

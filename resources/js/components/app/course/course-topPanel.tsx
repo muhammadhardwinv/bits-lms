@@ -58,7 +58,7 @@ export function CourseGradeTop({ courseId }: Props) {
                     { label: 'Session', href: `/current-session/${forum.courseId}` },
                     { label: 'Discussion', href: `/discussion/${forum.courseId}` },
                     { label: 'Assessment', href: `/assignment/${forum.courseId}` },
-                    { label: 'Gradebook', href: `/gradebook.view/${forum.courseId}` },
+                    { label: 'Gradebook', href: `/gradebook.vie/${forum.courseId}` },
                     { label: 'People', href: `/people/${forum.courseId}` },
                     { label: 'Attendance', href: `/attendance/${forum.courseId}` },
                 ].map((item, index) => {
