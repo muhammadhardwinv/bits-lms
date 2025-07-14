@@ -29,6 +29,23 @@ export type CourseType = {
     description: string;
     link: string;
 };
+export const cls = [
+    'XII-Science-1',
+    'XI-Biology-2',
+    'X-Geography-1',
+    'X-Chem-1',
+    'XI-Biology-3',
+    'XI-Physics-2',
+    'X-Geography-2',
+    'X-Physics-1',
+    'XI-Science-2',
+    'XI-Chem-1',
+    'X-Biology-3',
+    'XII-Science-2',
+    'X-Biology-1',
+    'XI-Geography-1',
+    'XII-Chem-2',
+] as const;
 
 export const courses: CourseType[] = [
     {

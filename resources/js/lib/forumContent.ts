@@ -1,5 +1,3 @@
-// ForumsContent.ts
-
 export type ForumContentType = {
     forumTitle: string;
     learningOutcome: string;
@@ -10,6 +8,8 @@ export type ForumContentType = {
     courseId: string;
     classId: string;
     link: string;
+    start: string;
+    end: string;
 };
 
 export const forumContents: ForumContentType[] = [
@@ -24,6 +24,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'SCI-4321',
         classId: 'CLS-SCI-01',
         link: '/assignment/science/SCI-4321',
+        start: '14/07/2025, 15:00 GMT+7',
+        end: '21/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Photosynthesis Process Essay',
@@ -35,6 +37,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'BIO-2201',
         classId: 'CLS-BIO-02',
         link: '/assignment/biology/BIO-2201',
+        start: '15/07/2025, 09:00 GMT+7',
+        end: '22/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'The Greenhouse Effect',
@@ -47,6 +51,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'GEO-3010',
         classId: 'CLS-GEO-01',
         link: '/assignment/geography/GEO-3010',
+        start: '16/07/2025, 10:00 GMT+7',
+        end: '23/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Periodic Table Properties',
@@ -58,6 +64,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'CHEM-1103',
         classId: 'CLS-CHEM-01',
         link: '/assignment/chemistry/CHEM-1103',
+        start: '14/07/2025, 14:00 GMT+7',
+        end: '21/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Cell Division Mechanisms',
@@ -69,6 +77,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'BIO-3302',
         classId: 'CLS-BIO-03',
         link: '/assignment/biology/BIO-3302',
+        start: '17/07/2025, 08:00 GMT+7',
+        end: '24/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Electric Circuits Explanation',
@@ -80,6 +90,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'PHY-2502',
         classId: 'CLS-PHY-01',
         link: '/assignment/physics/PHY-2502',
+        start: '15/07/2025, 13:00 GMT+7',
+        end: '22/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Volcano Formation Report',
@@ -91,6 +103,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'GEO-2222',
         classId: 'CLS-GEO-02',
         link: '/assignment/geography/GEO-2222',
+        start: '18/07/2025, 10:30 GMT+7',
+        end: '25/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Motion and Acceleration',
@@ -102,6 +116,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'PHY-1205',
         classId: 'CLS-PHY-02',
         link: '/assignment/physics/PHY-1205',
+        start: '14/07/2025, 16:00 GMT+7',
+        end: '21/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Global Warming Effects',
@@ -113,6 +129,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'SCI-5533',
         classId: 'CLS-SCI-02',
         link: '/assignment/science/SCI-5533',
+        start: '15/07/2025, 08:30 GMT+7',
+        end: '22/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Acid and Base Reaction Types',
@@ -124,6 +142,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'CHEM-1211',
         classId: 'CLS-CHEM-02',
         link: '/assignment/chemistry/CHEM-1211',
+        start: '16/07/2025, 14:00 GMT+7',
+        end: '23/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Plant Classification Chart',
@@ -135,6 +155,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'BIO-4120',
         classId: 'CLS-BIO-04',
         link: '/assignment/biology/BIO-4120',
+        start: '17/07/2025, 13:00 GMT+7',
+        end: '24/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Renewable Energy Sources',
@@ -146,6 +168,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'SCI-2098',
         classId: 'CLS-SCI-03',
         link: '/assignment/science/SCI-2098',
+        start: '18/07/2025, 11:30 GMT+7',
+        end: '25/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Human Skeletal System Essay',
@@ -157,6 +181,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'BIO-1015',
         classId: 'CLS-BIO-01',
         link: '/assignment/biology/BIO-1015',
+        start: '14/07/2025, 13:30 GMT+7',
+        end: '21/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Tectonic Plate Boundaries',
@@ -168,6 +194,8 @@ export const forumContents: ForumContentType[] = [
         courseId: 'GEO-8787',
         classId: 'CLS-GEO-03',
         link: '/assignment/geography/GEO-8787',
+        start: '16/07/2025, 11:00 GMT+7',
+        end: '23/07/2025, 23:59 GMT+7',
     },
     {
         forumTitle: 'Chemical Bonding',
@@ -179,5 +207,7 @@ export const forumContents: ForumContentType[] = [
         courseId: 'CHEM-2920',
         classId: 'CLS-CHEM-03',
         link: '/assignment/chemistry/CHEM-2920',
+        start: '15/07/2025, 14:30 GMT+7',
+        end: '22/07/2025, 23:59 GMT+7',
     },
 ];

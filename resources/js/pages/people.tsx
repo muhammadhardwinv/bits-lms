@@ -1,4 +1,4 @@
-import { CourseGradeTop } from '@/components/app/course/course-topPanel';
+import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import PeopleContent from '@/components/app/people/people-content';
 import ContentLayout from '@/layouts/content-layout';
 import { usePage } from '@inertiajs/react';

@@ -1,4 +1,4 @@
-import { CourseGradeTop } from '@/components/app/course/course-topPanel';
+import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import SelectedCourseContent from '@/components/app/course/selectedcourse-content';
 import ContentLayout from '@/layouts/content-layout';
 import { useUserStore } from '@/lib/store/userStore';
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function SelectedCourse({ courseId }: Props) {
-    const { role } = useUserStore(); // ✅ Correct key from Zustand store
+    const role = useUserStore((state) => state.role) as 'student' | 'lecturer';
 
     return (
         <>
@@ -19,7 +19,7 @@ export default function SelectedCourse({ courseId }: Props) {
             </Head>
 
             <ContentLayout>
-                <CourseGradeTop courseId={courseId}/>
+                <CourseGradeTop courseId={courseId} />
                 <SelectedCourseContent role={role} courseId={courseId} />
             </ContentLayout>
         </>

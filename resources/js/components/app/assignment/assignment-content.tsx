@@ -1,31 +1,35 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Assignment, UserModel } from '@/lib/types';
 import { courses, CourseType } from '@/lib/coursesDetails';
-import { ClipboardList } from 'lucide-react';
-import { Link } from '@inertiajs/react';
-import { useState } from 'react';
 import { useUserStore } from '@/lib/store/userStore';
+import { Assignment } from '@/lib/types';
+import { Link } from '@inertiajs/react';
+import { ClipboardList } from 'lucide-react';
+import { useState } from 'react';
 
 export default function AssignmentContent({
     title,
     items,
+    icon,
     link,
+    courseId,
 }: {
     title: string;
     items: Assignment[];
-    user: UserModel;
     icon: React.ElementType;
     link: (assignment: Assignment) => string;
+    courseId: string;
 }) {
     const [newAssignment, setNewAssignment] = useState<Partial<Assignment>>({
         title: '',
         type: 'Essay',
         dueDate: '',
-        courseId: '',
         classId: '',
     });
-    const { role, courseId } = useUserStore();
+
+    const { role } = useUserStore();
+
+    const courseIdFromItems = items.length > 0 ? items[0].courseId : courseId;
 
     return (
         <div className="flex min-h-screen items-center justify-center px-4">
@@ -33,17 +37,18 @@ export default function AssignmentContent({
                 <div className="h-[90vh] overflow-y-auto rounded-xl border border-gray-200 bg-gradient-to-br from-white to-blue-50 p-6 shadow-lg dark:from-[#121212] dark:to-[#1f1f1f]">
                     <div className="mb-6 ml-4 flex items-center justify-between border-b pb-4 dark:border-gray-600">
                         <div className="flex w-full items-center justify-between gap-3">
-                            <div className="space-between flex flex-row items-center">
+                            <div className="flex flex-row items-center">
                                 <ClipboardList className="mx-2 h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Assignment</h2>
+                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
                             </div>
 
-                            {role === 'lecturer' && (
+                            {role === 'lecturer' && courseIdFromItems && (
                                 <Link
-                                    href={route('select-class')}
-                                    className="mr-4 items-center rounded-full bg-indigo-100 px-2 text-lg font-bold text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-300"
+                                    href={route('assignment.new', courseIdFromItems)}
+                                    className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                                 >
-                                    +
+                                    <ClipboardList className="h-4 w-4" />
+                                    New Assignment
                                 </Link>
                             )}
                         </div>
@@ -59,7 +64,13 @@ export default function AssignmentContent({
                                 const course = courses.find((c: CourseType) => c.courseId === assignment.courseId);
 
                                 return (
-                                    <a href={link(assignment)} key={index} target="_blank" rel="noopener noreferrer" className="block">
+                                    <a
+                                        href={`/assignment/${assignment.courseId}`}
+                                        key={index}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block"
+                                    >
                                         <Card
                                             role="button"
                                             tabIndex={0}

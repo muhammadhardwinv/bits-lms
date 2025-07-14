@@ -22,23 +22,22 @@ import { useUserStore } from '@/lib/store/userStore';
 export const description = 'An interactive area chart';
 function CalendarDemo() {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
-
     return (
-        <div className="flex w-full max-w-[400px] flex-col overflow-hidden rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-4 shadow-md sm:max-w-[22vw] lg:max-h-[60vh] lg:max-w-[28vw] dark:border-gray-700 dark:from-[#0f172a] dark:to-[#1e293b]">
-            <div className="flex justify-center pb-2">
-                <h2 className="text-md font-semibold text-gray-800 dark:text-gray-100">📅 Schedule Overview</h2>
-            </div>
-            <div className="flex-1 overflow-y-auto px-1">
-                <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    className="h-full w-full rounded-md border border-gray-300 text-sm shadow-sm dark:border-gray-700 dark:bg-[#1e293b] dark:text-gray-100"
-                    captionLayout="dropdown"
-                />
-            </div>
-            <div className="mt-2 flex justify-center rounded-lg border bg-white shadow-md dark:border-gray-700 dark:bg-[#1e293b]">
-                <h4 className="text-center text-sm text-gray-800 dark:text-gray-100">{date?.toDateString()}</h4>
+        <div className="flex h-full w-full max-w-[23vw] flex-col overflow-hidden rounded-lg border bg-gradient-to-br from-indigo-100 to-purple-100 p-1 shadow-md dark:border-gray-700 dark:from-[#121212] dark:to-[#1f1f1f]">
+            <div className="flex-1 rounded-md bg-white p-2 dark:bg-[#181818]">
+                <div className="items-center">
+                    <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        className="h-[54vh] w-full origin-top scale-[1] transform text-[13px] leading-tight text-gray-900 dark:bg-[#181818] dark:text-gray-100"
+                        captionLayout="dropdown"
+                    />
+                </div>
+
+                <div className="rounded-md border bg-white text-center shadow-sm dark:border-gray-700 dark:bg-[#181818]">
+                    <h4 className="text-sm text-gray-800 dark:text-gray-100">Current Date: {date?.toDateString()}</h4>
+                </div>
             </div>
         </div>
     );
@@ -53,13 +52,13 @@ function SectionCard({ title, icon: Icon, items, user }: { title: string; icon: 
                 <div className="flex w-full flex-row items-center justify-between">
                     <div className="space-between mx-1 flex flex-row items-center">
                         <Icon className="mx-2 h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Discussions</h2>
+                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
                     </div>
 
                     {role === 'lecturer' && (
                         <Link
                             href={route('select-class')}
-                            className="rounded-full bg-indigo-100 px-2 text-lg font-bold text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-300 mr-4 items-center"
+                            className="mr-4 items-center rounded-full bg-indigo-100 px-2 text-lg font-bold text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-300"
                         >
                             +
                         </Link>

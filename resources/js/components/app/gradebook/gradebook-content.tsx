@@ -49,27 +49,35 @@ export function GradebookContentHeader() {
         <div className="h-[40vh] w-full px-6 py-4">
             <div className="grid h-full grid-cols-3 gap-4">
                 {/* Total Courses */}
-                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]">
                     <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
-                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600">Courses</p>
-                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105">{totalCourses}</h2>
+                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400">
+                            Courses
+                        </p>
+                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105 dark:text-white">
+                            {totalCourses}
+                        </h2>
                     </CardContent>
                 </Card>
 
-                {/* Average Progress */}
-                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]">
                     <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
-                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600">Avg Progress</p>
-                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105">{avgProgress}%</h2>
+                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400">
+                            Avg Progress
+                        </p>
+                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105 dark:text-white">
+                            {avgProgress}%
+                        </h2>
                     </CardContent>
                 </Card>
 
-                {/* Top Course */}
-                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]">
                     <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
-                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600">Top Course</p>
-                        <h2 className="text-base font-medium text-gray-700 group-hover:underline">{topCourse.title}</h2>
-                        <span className="text-sm font-semibold text-green-600">{topCourse.progress}%</span>
+                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400">
+                            Top Course
+                        </p>
+                        <h2 className="text-base font-medium text-gray-700 group-hover:underline dark:text-white">{topCourse.title}</h2>
+                        <span className="text-sm font-semibold text-green-600 dark:text-green-400">{topCourse.progress}%</span>
                     </CardContent>
                 </Card>
             </div>
@@ -98,13 +106,13 @@ export function GradebookContentCourse() {
                     key={course.courseId}
                     href={route('gradebook.show', course.courseId)}
                     onClick={log}
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg"
+                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]"
                 >
                     <h2 className="text-lg font-semibold text-indigo-700 group-hover:underline">{course.title}</h2>
-                    <p className="text-xs text-gray-500">Course ID: {course.courseId}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-100">Course ID: {course.courseId}</p>
 
                     <Card className="my-4 border-0 bg-muted/20 shadow-none">
-                        <CardContent className="p-4 text-sm text-gray-700">{course.description}</CardContent>
+                        <CardContent className="p-4 text-sm text-gray-500 dark:text-gray-100">{course.description}</CardContent>
                     </Card>
 
                     <div className="mt-auto">

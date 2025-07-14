@@ -2,12 +2,14 @@ import AssignmentContent from '@/components/app/assignment/assignment-content';
 import ContentLayout from '@/layouts/content-layout';
 import { courses as assignments } from '@/lib/coursesDetails';
 import { UserModel } from '@/lib/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { ClipboardList } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Assignment() {
-    const [user, setUser] = useState<UserModel>({
+    const props = usePage().props as Partial<{ courseId: string }>;
+    const courseId = props.courseId ?? ''; // ✅ Rename and default
+    const [user] = useState<UserModel>({
         name: 'Chris',
         role: 'student',
     });
@@ -16,13 +18,7 @@ export default function Assignment() {
         <>
             <Head title="Assignment" />
             <ContentLayout>
-                <AssignmentContent
-                    title="Your Assignment"
-                    items={assignments}
-                    icon={ClipboardList}
-                    user={user}
-                    link={(assignment) => assignment.link}
-                />
+                <AssignmentContent title="Your Assignment" items={assignments} icon={ClipboardList} link={(assignment) => '#'} courseId={courseId} />
             </ContentLayout>
         </>
     );

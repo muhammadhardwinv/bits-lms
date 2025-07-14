@@ -1,6 +1,3 @@
-import { courses } from '@/lib/newAssignment';
-import { Link } from '@inertiajs/react';
-import { Download } from 'lucide-react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,7 +8,10 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '../../ui/alert-dialog';
+} from '@/components/ui/alert-dialog';
+import { courses } from '@/lib/newAssignment';
+import { Link } from '@inertiajs/react';
+import { Download } from 'lucide-react';
 
 interface Props {
     courseId: string;
@@ -27,9 +27,9 @@ export default function StudentCard({ courseId }: Props) {
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <a className="flex flex-row items-center gap-3 hover:underline">
-                        <h2>[PPT] Introduction to {course.courseName}</h2>
+                        <h2>(PPT) Introduction to {course.courseName}</h2>
                         <span className="flex flex-row items-center">
-                            (<Download className="h-4 w-4" />)
+                            <Download className="mb-1 h-4 w-4" />
                         </span>
                     </a>
                 </AlertDialogTrigger>
@@ -97,7 +97,7 @@ export default function StudentCard({ courseId }: Props) {
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/assignment/${safeCourseName}/${courseId}/quiz`}>Yes</Link>
+                            <Link href={`/${courseId}/quiz`}>Yes</Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

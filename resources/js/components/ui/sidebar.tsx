@@ -242,7 +242,7 @@ function Sidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex  h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
         </div>
@@ -274,36 +274,37 @@ function SidebarTrigger({
   };
 
   return (
-    <div className="mt-4 flex items-center gap-2 px-2">
+    <div className="flex items-center gap-2 px-2 h-16 bg-white dark:bg-black">
       {/* Sidebar toggle */}
       <Button
-        data-sidebar="trigger"
-        data-slot="sidebar-trigger"
-        variant="ghost"
-        size="icon"
-        className={cn('p-2', className)}
-        onClick={(event) => {
-          onClick?.(event);
-          toggleSidebar();
-        }}
-        {...props}
-      >
-        <PanelLeftIcon className="!size-5" />
-        <span className="sr-only">Toggle Sidebar</span>
-      </Button>
+  data-sidebar="trigger"
+  data-slot="sidebar-trigger"
+  // variant="ghost"
+  size="icon"
+  className="button p-2 text-gray-700 bg-white hover:bg-[#EFA928] dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#EFA928] cursor-pointer"
+  onClick={(event) => {
+    onClick?.(event);
+    toggleSidebar();
+  }}
+  {...props}
+>
+  <PanelLeftIcon className="!size-5" />
+  <span className="sr-only">Toggle Sidebar</span>
+</Button>
 
       {/* Dark mode toggle */}
       <Button
         onClick={toggleDarkMode}
         size="icon"
-        variant="ghost"
-        className="p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
+        // variant="joker"
+        className="button p-2 text-gray-700 hover:bg-[#EFA928]  bg-white  dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#EFA928] cursor-pointer"
+
         aria-label="Toggle Dark Mode"
       >
         {isDark ? (
-          <Sun className="!size-6" />
-        ) : (
           <Moon className="!size-6" />
+        ) : (
+          <Sun className="!size-6" />
         )}
       </Button>
     </div>
@@ -418,7 +419,7 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
-      className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+      className={cn("relative flex w-full min-w-0 flex-col p-2 ", className)}
       {...props}
     />
   )
@@ -476,7 +477,7 @@ function SidebarGroupContent({
     <div
       data-slot="sidebar-group-content"
       data-sidebar="group-content"
-      className={cn("w-full text-sm", className)}
+      className={cn("w-full text-sm ", className)}
       {...props}
     />
   )
@@ -487,7 +488,7 @@ function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
     <ul
       data-slot="sidebar-menu"
       data-sidebar="menu"
-      className={cn("flex w-full min-w-0 flex-col gap-1", className)}
+      className={cn("flex w-full min-w-0 flex-col gap-1 ", className)}
       {...props}
     />
   )

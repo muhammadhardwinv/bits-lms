@@ -1,3 +1,4 @@
+import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import DiscussionContent from '@/components/app/discussion/discussion-content';
 import ContentLayout from '@/layouts/content-layout';
 import { useUserStore } from '@/lib/store/userStore';
@@ -33,6 +34,7 @@ export default function Discussion({ user, courseId }: Props) {
         <>
             <Head title={`Discussion - ${courseId}`} />
             <ContentLayout>
+                <CourseGradeTop courseId={courseId} />
                 <DiscussionContent courseId={courseId} />
             </ContentLayout>
         </>

@@ -1,13 +1,3 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { discussionThreads } from '@/lib/discussionContent';
 import { getThreadsForSession, storeNewDiscussion } from '@/lib/discussionStorage';
@@ -15,6 +5,7 @@ import { ForumContentType, forumContents } from '@/lib/forumContent';
 import { useUserStore } from '@/lib/store/userStore';
 import { UserModel } from '@/lib/types';
 import { useEffect, useState } from 'react';
+import { SessionPanel } from '../course/panel/session-Panel';
 
 interface Props {
     courseId: string;
@@ -24,7 +15,6 @@ interface Props {
 export default function DiscussionContent({ courseId, user }: Props) {
     const { role, name, setUser } = useUserStore();
 
-    // ✅ Correct useEffect including setUser in the dependency array
     useEffect(() => {
         if (user) {
             setUser({
@@ -84,62 +74,15 @@ export default function DiscussionContent({ courseId, user }: Props) {
     }
 
     return (
-        <div className="space-y-8 p-6">
-            <div className="space-y-1">
-                <h1 className="text-4xl font-bold">{forum.forumTitle}</h1>
-                <p className="text-xl text-gray-600">{forum.courseId}</p>
-                <p className="mt-8 ml-16 text-lg font-semibold">{forum.lecturerName}</p>
-                <p className="text-md ml-16 text-gray-500">{forum.lecturerId}</p>
-            </div>
-
-            <div className="flex items-center justify-between">
-                <div className="grid grid-cols-6 gap-4 border-y py-6">
-                    {sessions.map((sessionName, i) => {
-                        const sessionNumber = i + 1;
-                        return (
-                            <button
-                                key={sessionNumber}
-                                type="button"
-                                onClick={() => setSelectedSession(sessionNumber)}
-                                className={`rounded-lg border px-4 py-3 text-sm font-medium transition duration-200 ${
-                                    selectedSession === sessionNumber
-                                        ? 'border-blue-600 bg-blue-100 text-blue-900 shadow-md'
-                                        : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-                                }`}
-                            >
-                                {sessionName}
-                            </button>
-                        );
-                    })}
-                </div>
-
-                {role === 'lecturer' && (
-                    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="ml-4">
-                                + New Session
-                            </Button>
-                        </AlertDialogTrigger>
-
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Create New Session</AlertDialogTitle>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleCreateSession}>Create</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                )}
-            </div>
-
-            <div className="mt-6 w-full">
+        <div className="space-y-8 px-6">
+            <div className="w-full">
+                <SessionPanel courseId={courseId} currentUrl="{url}" />
+                {/* Comment Area */}
                 <textarea
                     value={newStudentArgument}
                     onChange={(e) => setNewStudentArgument(e.target.value)}
                     placeholder="Write a question or topic to discuss..."
-                    className="w-full rounded-md border border-gray-300 p-3 text-sm"
+                    className="mt-6 w-full rounded-md border border-gray-300 bg-white p-3 text-sm text-gray-800 transition-colors duration-200 dark:border-gray-600 dark:bg-[#1f1f1f] dark:text-gray-200"
                     rows={4}
                 />
                 <div className="mt-2 flex justify-end">
@@ -147,21 +90,26 @@ export default function DiscussionContent({ courseId, user }: Props) {
                         Post Discussion
                     </Button>
                 </div>
+                {/* Comment Area */}
             </div>
 
             <div className="space-y-6">
+                {/* Section Discussion dan Comment */}
                 {sessionThreads.length > 0 ? (
                     sessionThreads.map((thread, index) => (
-                        <div key={index} className="rounded-lg border p-6 shadow-sm">
-                            <p className="mb-1 text-sm text-gray-500">{thread.timestampStudent}</p>
-                            <p className="font-semibold text-gray-800">{thread.studentName}:</p>
-                            <p className="mb-4 text-gray-700">{thread.studentArgument}</p>
+                        <div
+                            key={index}
+                            className="rounded-lg border border-gray-300 bg-white p-6 text-gray-800 shadow-sm transition-colors duration-200 dark:border-gray-700 dark:bg-[#1f1f1f] dark:text-gray-200"
+                        >
+                            <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">{thread.timestampStudent}</p>
+                            <p className="font-semibold text-gray-800 dark:text-white">{thread.studentName}:</p>
+                            <p className="mb-4 text-gray-700 dark:text-gray-300">{thread.studentArgument}</p>
 
                             {thread.lecturerResponse && (
                                 <>
-                                    <p className="mb-1 text-sm text-gray-500">{thread.timestampLecturer}</p>
-                                    <p className="font-semibold text-blue-900">{thread.lecturerName} (Lecturer):</p>
-                                    <p className="text-gray-800">{thread.lecturerResponse}</p>
+                                    <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">{thread.timestampLecturer}</p>
+                                    <p className="font-semibold text-blue-900 dark:text-blue-300">{thread.lecturerName} (Lecturer):</p>
+                                    <p className="text-gray-800 dark:text-gray-200">{thread.lecturerResponse}</p>
                                 </>
                             )}
                         </div>
@@ -169,6 +117,7 @@ export default function DiscussionContent({ courseId, user }: Props) {
                 ) : (
                     <p className="text-center text-gray-500">No discussions for this session.</p>
                 )}
+                {/* Section Discussion dan Comment */}
             </div>
         </div>
     );

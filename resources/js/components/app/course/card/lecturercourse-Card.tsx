@@ -1,6 +1,3 @@
-import { courses } from '@/lib/newAssignment';
-import { Link } from '@inertiajs/react';
-import { ClipboardList, Download, HelpCircle } from 'lucide-react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,27 +8,29 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '../../ui/alert-dialog';
-import { Button } from '../../ui/button';
-import { Card, CardContent } from '../../ui/card';
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { courses } from '@/lib/newAssignment';
+import { Link } from '@inertiajs/react';
+import { ClipboardList, Download, HelpCircle } from 'lucide-react';
 
 interface Props {
     courseId: string;
 }
 
-const course = courses[0]; // optional: filter based on courseId if needed
+const course = courses[0];
 const safeCourseName = course.courseName.replace(/\s+/g, '-').toLowerCase();
 
 export default function LecturerCard({ courseId }: Props) {
     return (
         <nav className="flex flex-col gap-3 text-sm text-blue-600">
-            {/* PPT Slideshow */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="flex flex-row items-center gap-3 hover:underline">
-                        <h2>[PPT] Introduction to {course.courseName}</h2>
+                    <a className="hover flex flex-row items-center gap-3">
+                        <h2> (PPT) Introduction to {course.courseName}</h2>
                         <span className="flex flex-row items-center">
-                            (<Download className="h-4 w-4" />)
+                            <Download className="mb-1 h-4 w-4" />
                         </span>
                     </a>
                 </AlertDialogTrigger>
@@ -49,10 +48,9 @@ export default function LecturerCard({ courseId }: Props) {
                 </AlertDialogContent>
             </AlertDialog>
 
-            {/* Forums */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="hover:underline">Go to Forums Page</a>
+                    <a className="">Go to Forums Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -80,13 +78,12 @@ export default function LecturerCard({ courseId }: Props) {
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/assignment/${safeCourseName}/${courseId}`}>Yes</Link>
+                            <Link href={`/${courseId}/quiz`}>Yes</Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
-            {/* Quiz */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <a className="hover:underline">Go to Quiz Page</a>

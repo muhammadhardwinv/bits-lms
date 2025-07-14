@@ -1,5 +1,9 @@
+import { Separator } from '@/components/ui/separator';
 import { ForumContentType, forumContents } from '@/lib/forumContent';
+import { smt } from '@/lib/semesterDetails';
+import { Semester } from '@/lib/types';
 import { usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 const cPanelItems = [
     {
@@ -31,6 +35,8 @@ interface Props {
     courseId: string;
 }
 
+export type semesterOptions = (typeof smt)[number];
+
 export function CourseGradeTop({ courseId }: Props) {
     const { url } = usePage();
     const cleanUrl = url.split(/[?#]/)[0];
@@ -44,21 +50,53 @@ export function CourseGradeTop({ courseId }: Props) {
         );
     }
 
+    const [newSemester, setNewSemester] = useState<Partial<Semester>>({
+        name: '',
+        academicYear: '',
+        startDate: '',
+        endDate: '',
+        isActive: false,
+    });
+
+    const handleChange = (field: keyof Semester, value: string | boolean) => {
+        setNewSemester((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleSubmit = () => {
+        console.log('Submitting semester: ', newSemester);
+    };
+
     return (
-        <div className="space-y-8 p-6">
-            <div className="space-y-1">
+        <div className="space-y-2 p-4">
+            <div>
+                <label className="text-gray text-md block text-sm font-medium dark:text-gray-300">Select Semester:</label>
+                <select
+                    value={newSemester.name}
+                    onChange={(e) => handleChange('name', e.target.value)}
+                    className="w-[15vw] rounded border border-gray-300 text-sm dark:bg-gray-800 dark:text-white"
+                >
+                    <option value="">YYYY, Odd Semester</option>
+                    {smt.map((item) => (
+                        <option key={item} value={item}>
+                            {item}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="mb-4 space-y-1">
                 <h1 className="text-4xl font-bold">{forum.forumTitle}</h1>
                 <p className="text-xl text-gray-600">{forum.courseId}</p>
                 <p className="mt-8 ml-16 text-lg font-semibold">{forum.lecturerName}</p>
                 <p className="text-md ml-16 text-gray-500">{forum.lecturerId}</p>
             </div>
+            <Separator />
 
-            <div className="mx-10 flex flex-row items-center justify-between gap-4 border-y py-4 text-center">
+            <div className="mx-10 flex flex-row items-center justify-between gap-4 py-4 text-center">
                 {[
                     { label: 'Session', href: `/current-session/${forum.courseId}` },
                     { label: 'Discussion', href: `/discussion/${forum.courseId}` },
                     { label: 'Assessment', href: `/assignment/${forum.courseId}` },
-                    { label: 'Gradebook', href: `/gradebook.vie/${forum.courseId}` },
+                    { label: 'Gradebook', href: `/gradebook/${forum.courseId}` },
                     { label: 'People', href: `/people/${forum.courseId}` },
                     { label: 'Attendance', href: `/attendance/${forum.courseId}` },
                 ].map((item, index) => {
@@ -66,15 +104,19 @@ export function CourseGradeTop({ courseId }: Props) {
                     const normalizedUrl = normalize(cleanUrl);
                     const normalizedHref = normalize(item.href);
 
-                    const isActive = normalizedUrl === normalizedHref || normalizedUrl.startsWith(normalizedHref + '/');
+                    // const isActive = normalizedUrl === normalizedHref || normalizedUrl.startsWith(normalizedHref + '/');
+                    const isActive =
+                        normalizedUrl === normalizedHref ||
+                        normalizedUrl.startsWith(normalizedHref + '/') ||
+                        (normalizedUrl.startsWith(`/selected-course/${forum.courseId}`) && item.label === 'Session');
 
                     return (
                         <a key={index} href={item.href} className="w-full">
                             <div
-                                className={`w-full rounded-lg border px-4 py-6 text-sm font-medium shadow-sm transition duration-200 ${
+                                className={`w-full rounded-lg px-4 py-6 text-sm font-medium shadow-sm transition duration-200 ${
                                     isActive
-                                        ? 'border-indigo-300 bg-indigo-100 text-indigo-900 hover:bg-indigo-200 dark:border-indigo-700 dark:bg-indigo-900 dark:text-indigo-100 dark:hover:bg-indigo-800'
-                                        : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50 hover:underline hover:shadow-md dark:border-[#3a3a3a] dark:bg-[#1b1b1b] dark:text-gray-200 dark:hover:bg-gray-800'
+                                        ? 'text-black-900 border-indigo-300 bg-[#F2951B] hover:bg-[#f2b463] dark:bg-[#F2951B] dark:text-indigo-100 dark:hover:bg-[#F2951B]'
+                                        : 'border-gray-300 bg-white text-gray-800 hover:bg-[#f2b463] hover:underline hover:shadow-md dark:bg-[#1b1b1b] dark:text-gray-200 dark:hover:bg-[#f2b463]'
                                 } flex items-center justify-center gap-2`}
                             >
                                 {/* + if active (green), - if inactive (red) */}
@@ -87,6 +129,7 @@ export function CourseGradeTop({ courseId }: Props) {
                     );
                 })}
             </div>
+            <Separator />
         </div>
     );
 }

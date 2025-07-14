@@ -72,7 +72,6 @@ export default function PerAssignmentContent({
                 {/* FORM */}
                 <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-5 p-0">
-                        {/* RESPONSE TEXTAREA */}
                         <div>
                             <Label htmlFor="response">Your Response</Label>
                             <Textarea
