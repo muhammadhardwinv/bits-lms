@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +45,42 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if the user is a student.
+     */
+    public function isStudent(): bool
+    {
+        return $this->role === 'student';
+    }
+
+    /**
+     * Check if the user is a teacher.
+     */
+    public function isTeacher(): bool
+    {
+        return $this->role === 'teacher';
+    }
+
+    /**
+     * Check if the user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Get the dashboard route based on user role.
+     */
+    public function getDashboardRoute(): string
+    {
+        return match ($this->role) {
+            'student' => 'student.dashboard',
+            'teacher' => 'teacher.dashboard',
+            'admin' => 'admin.dashboard',
+            default => 'dashboard',
+        };
     }
 }

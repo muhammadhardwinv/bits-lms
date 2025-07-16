@@ -1,22 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+// Authentication Routes (Enhanced with proper controller)
 Route::get('/', fn () => Inertia::render('login'))->name('login');
-Route::get('/login', fn () => Inertia::render('login'))->name('login');
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+// Basic Dashboard Routes
 Route::get('/dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
 Route::get('/courses', fn () => Inertia::render('courses'))->name('courses');
 Route::get('/events', fn () => Inertia::render('events'))->name('events');
 Route::get('/lecturer-dashboard', fn () => Inertia::render('lecturerdashboard'))->name('lecturerdashboard');
-Route::get('/dummytest', fn () => Inertia::render('try-dummy'))->name('dummytest');
 
+// Gradebook Routes
 Route::get('/gradebook', fn () => Inertia::render('gradebook'))->name('gradebook.index');
 Route::get('/gradebook/{courseId}', fn ($courseId) => Inertia::render('course-grade', [
     'courseId' => $courseId,
 ]))->name('gradebook.show');
 
+// Course Session Routes
 Route::get('/selected-course/{courseId}', fn ($courseId) => Inertia::render('selected-Course', [
     'auth' => ['user' => Auth::user()],
     'courseId' => $courseId,
@@ -27,6 +35,7 @@ Route::get('/current-session/{courseId}', fn ($courseId) => Inertia::render('sel
     'courseId' => $courseId,
 ]))->name('course.session');
 
+// Lecturer Routes
 Route::get('/select-class', fn () => Inertia::render('lecturerSelectPage'))->name('select-class');
 
 Route::get('/forum/{courseId}', fn ($courseId) => Inertia::render('Forum', [
@@ -85,7 +94,33 @@ Route::prefix('courses')->group(function () {
     ]))->name('courses.slideshow');
 });
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/')->route('login');
-})->name('logout');
+// Additional Assignment Route (from your changes)
+Route::get('/{courseName}/new-assignment', fn ($courseName) => Inertia::render('NewAssignmentContent', [
+    'courseName' => $courseName,
+]))->name('assignment.new.content');
+
+// Protected Dashboard Routes (Role-based system)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('dashboard');
+    })->name('dashboard');
+
+    // Role-specific dashboard routes with role protection
+    Route::middleware(['role:student'])->group(function () {
+        Route::get('/student/dashboard', function () {
+            return Inertia::render('student/dashboard');
+        })->name('student.dashboard');
+    });
+
+    Route::middleware(['role:teacher'])->group(function () {
+        Route::get('/teacher/dashboard', function () {
+            return Inertia::render('teacher/dashboard');
+        })->name('teacher.dashboard');
+    });
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/admin/dashboard', function () {
+            return Inertia::render('admin/dashboard');
+        })->name('admin.dashboard');
+    });
+});
