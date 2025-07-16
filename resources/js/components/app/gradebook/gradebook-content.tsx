@@ -23,68 +23,18 @@ function calculateProgress(lessons: TickLesson[]): number {
 
     return parseFloat((completed * unitProgress).toFixed(1));
 }
-export function GradebookContentHeader() {
-    const mergedCourses: MergedCourseType[] = courseScores
-        .map((score) => {
-            const info = courses.find((c) => c.courseId === score.courseId && c.classId === score.classId);
-            if (!info) return null;
-            return {
-                ...score,
-                ...info,
-                slug: info.title.toLowerCase().replace(/\s+/g, '-'),
-            };
-        })
-        .filter(Boolean) as MergedCourseType[];
 
-    const totalCourses = mergedCourses.length;
-    const totalProgress = mergedCourses.reduce((acc, course) => acc + course.progress, 0);
-    const avgProgress = totalCourses > 0 ? Math.round(totalProgress / totalCourses) : 0;
+type MergedCourseType = CourseScoreType & {
+    title: string;
+    courseName: string;
+    description: string;
+    type: string;
+    dueDate: string;
+    link: string;
+    slug: string;
+};
 
-    const topCourse = mergedCourses.reduce(
-        (best, curr) => (curr.progress > best.progress ? curr : best),
-        mergedCourses[0] || { title: 'N/A', progress: 0 },
-    );
-
-    return (
-        <div className="h-[40vh] w-full px-6 py-4">
-            <div className="grid h-full grid-cols-3 gap-4">
-                {/* Total Courses */}
-                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]">
-                    <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
-                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400">
-                            Courses
-                        </p>
-                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105 dark:text-white">
-                            {totalCourses}
-                        </h2>
-                    </CardContent>
-                </Card>
-
-                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]">
-                    <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
-                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400">
-                            Avg Progress
-                        </p>
-                        <h2 className="text-3xl font-semibold text-gray-800 transition-transform group-hover:scale-105 dark:text-white">
-                            {avgProgress}%
-                        </h2>
-                    </CardContent>
-                </Card>
-
-                <Card className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gradient-to-br dark:from-[#121212] dark:to-[#1f1f1f]">
-                    <CardContent className="flex flex-col items-start justify-center gap-2 p-4">
-                        <p className="text-sm text-gray-500 transition-colors group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400">
-                            Top Course
-                        </p>
-                        <h2 className="text-base font-medium text-gray-700 group-hover:underline dark:text-white">{topCourse.title}</h2>
-                        <span className="text-sm font-semibold text-green-600 dark:text-green-400">{topCourse.progress}%</span>
-                    </CardContent>
-                </Card>
-            </div>
-        </div>
-    );
-}
-export function GradebookContentCourse() {
+export default function GradebookPage() {
     const mergedCourses = courseScores
         .map((score) => {
             const info = courses.find((c) => c.courseId === score.courseId && c.classId === score.classId);
@@ -124,13 +74,3 @@ export function GradebookContentCourse() {
         </div>
     );
 }
-
-type MergedCourseType = CourseScoreType & {
-    title: string;
-    courseName: string;
-    description: string;
-    type: string;
-    dueDate: string;
-    link: string;
-    slug: string;
-};
