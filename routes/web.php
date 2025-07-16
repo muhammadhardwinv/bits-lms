@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AttendanceController;
 
+
+
 Route::get('/', fn () => Inertia::render('login'))->name('login');
 Route::get('/login', fn () => Inertia::render('login'))->name('login');
 Route::get('/dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
@@ -89,3 +91,5 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/')->route('login');
 })->name('logout');
+
+// require __DIR__.'/database.php';

@@ -1,72 +1,71 @@
-import { usePage } from '@inertiajs/react';
+import { peopleData } from '@/lib/peopleData';
+import { useUserStore } from '@/lib/store/userStore';
+import { Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+useUserStore;
 
-type Student = {
-    id: number;
-    name: string;
-};
-
-type PageProps = {
-    courseId: string;
-    students: Student[];
-};
-
-export function AttendanceContent() {
-    const { courseId, students } = usePage<PageProps>().props;
-
-    const [attendance, setAttendance] = useState<Record<number, 'present' | 'absent' | null>>(Object.fromEntries(students.map((s) => [s.id, null])));
-
-    const toggleAttendance = (id: number, status: 'present' | 'absent') => {
-        setAttendance((prev) => ({ ...prev, [id]: status }));
+export interface SharedData {
+    auth: {
+        user: {
+            id: number;
+            name: string;
+            email: string;
+        };
     };
-    return (
-        <div className="mx-auto max-w-3xl p-6">
-            <table className="w-full border text-left text-sm">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="p-2">Name</th>
-                        <th className="p-2 text-center">Present</th>
-                        <th className="p-2 text-center">Absent</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {students.map((student) => (
-                        <tr key={student.id} className="border-t">
-                            <td className="p-2">{student.name}</td>
-                            <td className="p-2 text-center">
-                                <input
-                                    type="radio"
-                                    name={`attendance-${student.id}`}
-                                    checked={attendance[student.id] === 'present'}
-                                    onChange={() => toggleAttendance(student.id, 'present')}
-                                />
-                            </td>
-                            <td className="p-2 text-center">
-                                <input
-                                    type="radio"
-                                    name={`attendance-${student.id}`}
-                                    checked={attendance[student.id] === 'absent'}
-                                    onChange={() => toggleAttendance(student.id, 'absent')}
-                                />
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+    course?: string;
+    [key: string]: any;
+}
 
-            <div className="mt-6">
-                <h2 className="text-xl font-semibold">Attendance Summary:</h2>
-                <ul className="mt-2 list-disc pl-6 text-gray-700">
-                    {students.map((s) => (
-                        <li key={s.id}>
-                            {s.name} —{' '}
-                            <span className={attendance[s.id] === 'present' ? 'text-green-600' : 'text-red-600'}>
-                                {attendance[s.id] ?? 'not marked'}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
+function generateAvatar(id: string) {
+    return `https://api.dicebear.com/7.x/personas/svg?seed=${id}`;
+}
+
+export default function AttendanceContent() {
+    const { courseId } = usePage<SharedData>().props;
+    const role = useUserStore((state) => state.role); // ✅ Get role from Zustand
+
+    const filteredPeople = peopleData.filter((person) => person.courseId === courseId);
+
+    const [attendance, setAttendance] = useState<{ [id: string]: 'Present' | 'Absent' | null }>({});
+
+    const toggleAttendance = (id: string) => {
+        setAttendance((prev) => ({
+            ...prev,
+            [id]: prev[id] === 'Present' ? 'Absent' : 'Present',
+        }));
+    };
+
+    return (
+        <>
+            <Head title="Attendance" />
+            <div className="grid grid-cols-1 gap-4 px-16 sm:grid-cols-2 lg:grid-cols-3">
+                {filteredPeople.map((person) => (
+                    <div key={person.id} className="flex flex-col gap-4 rounded-xl border bg-white p-4 shadow-md dark:bg-slate-800">
+                        <div className="flex items-center gap-4">
+                            <img src={generateAvatar(person.id)} alt={person.name} className="h-12 w-12 rounded-full object-cover" />
+                            <div>
+                                <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{person.name}</h4>
+                                <p className="text-xs text-gray-500 dark:text-gray-300">{person.email}</p>
+                            </div>
+                        </div>
+
+                        {role === 'lecturer' && (
+                            <button
+                                onClick={() => toggleAttendance(person.id)}
+                                className={`rounded-md px-3 py-1.5 text-xs font-medium ${
+                                    attendance[person.id] === 'Present'
+                                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                        : attendance[person.id] === 'Absent'
+                                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                                          : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                                }`}
+                            >
+                                {attendance[person.id] ?? 'Mark Attendance'}
+                            </button>
+                        )}
+                    </div>
+                ))}
             </div>
-        </div>
+        </>
     );
 }
