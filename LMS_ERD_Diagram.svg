@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .table-box { fill: #f8f9fa; stroke: #343a40; stroke-width: 2; }
+      .table-header { fill: #007bff; }
+      .table-text { font-family: Arial, sans-serif; font-size: 12px; fill: #343a40; }
+      .table-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: white; }
+      .relationship-line { stroke: #6c757d; stroke-width: 2; fill: none; }
+      .pk-field { fill: #ffc107; }
+      .fk-field { fill: #28a745; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#343a40">
+    LMS Database ERD - Entity Relationship Diagram
+  </text>
+  
+  <!-- SCHOOL_YEARS Table -->
+  <g transform="translate(50, 60)">
+    <rect class="table-box" width="180" height="120"/>
+    <rect class="table-header" width="180" height="25"/>
+    <text class="table-title" x="90" y="18" text-anchor="middle">SCHOOL_YEARS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - varchar</text>
+    <text class="table-text" x="10" y="60">year - varchar</text>
+    <text class="table-text" x="10" y="75">is_current - boolean</text>
+    <text class="table-text" x="10" y="90">created_at - timestamp</text>
+    <text class="table-text" x="10" y="105">updated_at - timestamp</text>
+  </g>
+  
+  <!-- SEMESTERS Table -->
+  <g transform="translate(280, 60)">
+    <rect class="table-box" width="180" height="135"/>
+    <rect class="table-header" width="180" height="25"/>
+    <text class="table-title" x="90" y="18" text-anchor="middle">SEMESTERS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - varchar</text>
+    <text class="table-text" x="10" y="60">name - varchar</text>
+    <text class="table-text" x="10" y="75">start_date - date</text>
+    <text class="table-text" x="10" y="90">end_date - date</text>
+    <text class="table-text" x="10" y="105">🔗 school_year_id (FK)</text>
+    <text class="table-text" x="10" y="120">created_at - timestamp</text>
+  </g>
+  
+  <!-- SUBJECTS Table -->
+  <g transform="translate(510, 60)">
+    <rect class="table-box" width="180" height="120"/>
+    <rect class="table-header" width="180" height="25"/>
+    <text class="table-title" x="90" y="18" text-anchor="middle">SUBJECTS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - varchar</text>
+    <text class="table-text" x="10" y="60">name - varchar</text>
+    <text class="table-text" x="10" y="75">code - varchar</text>
+    <text class="table-text" x="10" y="90">description - text</text>
+    <text class="table-text" x="10" y="105">created_at - timestamp</text>
+  </g>
+  
+  <!-- CLASSES Table -->
+  <g transform="translate(740, 60)">
+    <rect class="table-box" width="180" height="120"/>
+    <rect class="table-header" width="180" height="25"/>
+    <text class="table-title" x="90" y="18" text-anchor="middle">CLASSES</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - varchar</text>
+    <text class="table-text" x="10" y="60">name - varchar</text>
+    <text class="table-text" x="10" y="75">grade_level - varchar</text>
+    <text class="table-text" x="10" y="90">capacity - int</text>
+    <text class="table-text" x="10" y="105">created_at - timestamp</text>
+  </g>
+  
+  <!-- USERS Table (Central) -->
+  <g transform="translate(400, 220)">
+    <rect class="table-box" width="200" height="180"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">USERS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">user_code - varchar</text>
+    <text class="table-text" x="10" y="75">name - varchar</text>
+    <text class="table-text" x="10" y="90">email - varchar</text>
+    <text class="table-text" x="10" y="105">role - enum</text>
+    <text class="table-text" x="10" y="120">phone - varchar</text>
+    <text class="table-text" x="10" y="135">🔗 class_id (FK)</text>
+    <text class="table-text" x="10" y="150">🔗 parent_id (FK)</text>
+    <text class="table-text" x="10" y="165">department - varchar</text>
+  </g>
+  
+  <!-- COURSES Table -->
+  <g transform="translate(50, 440)">
+    <rect class="table-box" width="200" height="165"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">COURSES</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">course_code - varchar</text>
+    <text class="table-text" x="10" y="75">name - varchar</text>
+    <text class="table-text" x="10" y="90">🔗 class_id (FK)</text>
+    <text class="table-text" x="10" y="105">🔗 teacher_id (FK)</text>
+    <text class="table-text" x="10" y="120">🔗 subject_id (FK)</text>
+    <text class="table-text" x="10" y="135">🔗 semester_id (FK)</text>
+    <text class="table-text" x="10" y="150">credits - int</text>
+  </g>
+  
+  <!-- COURSE_ENROLLMENTS Table -->
+  <g transform="translate(300, 440)">
+    <rect class="table-box" width="200" height="135"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">COURSE_ENROLLMENTS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">🔗 student_id (FK)</text>
+    <text class="table-text" x="10" y="75">🔗 course_id (FK)</text>
+    <text class="table-text" x="10" y="90">enrolled_at - timestamp</text>
+    <text class="table-text" x="10" y="105">status - enum</text>
+    <text class="table-text" x="10" y="120">final_grade - varchar</text>
+  </g>
+  
+  <!-- ASSIGNMENTS Table -->
+  <g transform="translate(550, 440)">
+    <rect class="table-box" width="200" height="150"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">ASSIGNMENTS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">🔗 course_id (FK)</text>
+    <text class="table-text" x="10" y="75">title - varchar</text>
+    <text class="table-text" x="10" y="90">description - text</text>
+    <text class="table-text" x="10" y="105">type - enum</text>
+    <text class="table-text" x="10" y="120">due_date - datetime</text>
+    <text class="table-text" x="10" y="135">max_points - int</text>
+  </g>
+  
+  <!-- ASSIGNMENT_SUBMISSIONS Table -->
+  <g transform="translate(800, 440)">
+    <rect class="table-box" width="200" height="165"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">ASSIGNMENT_SUBMISSIONS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">🔗 assignment_id (FK)</text>
+    <text class="table-text" x="10" y="75">🔗 student_id (FK)</text>
+    <text class="table-text" x="10" y="90">submission_text - text</text>
+    <text class="table-text" x="10" y="105">submitted_at - timestamp</text>
+    <text class="table-text" x="10" y="120">grade - decimal</text>
+    <text class="table-text" x="10" y="135">🔗 graded_by (FK)</text>
+    <text class="table-text" x="10" y="150">status - enum</text>
+  </g>
+  
+  <!-- FORUM_TOPICS Table -->
+  <g transform="translate(50, 640)">
+    <rect class="table-box" width="200" height="135"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">FORUM_TOPICS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">🔗 course_id (FK)</text>
+    <text class="table-text" x="10" y="75">title - varchar</text>
+    <text class="table-text" x="10" y="90">learning_outcome - text</text>
+    <text class="table-text" x="10" y="105">🔗 lecturer_id (FK)</text>
+    <text class="table-text" x="10" y="120">is_active - boolean</text>
+  </g>
+  
+  <!-- DISCUSSION_POSTS Table -->
+  <g transform="translate(300, 640)">
+    <rect class="table-box" width="200" height="150"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">DISCUSSION_POSTS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">🔗 forum_topic_id (FK)</text>
+    <text class="table-text" x="10" y="75">🔗 student_id (FK)</text>
+    <text class="table-text" x="10" y="90">🔗 lecturer_id (FK)</text>
+    <text class="table-text" x="10" y="105">student_argument - text</text>
+    <text class="table-text" x="10" y="120">lecturer_response - text</text>
+    <text class="table-text" x="10" y="135">is_resolved - boolean</text>
+  </g>
+  
+  <!-- EVENTS Table -->
+  <g transform="translate(550, 640)">
+    <rect class="table-box" width="200" height="135"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">EVENTS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">title - varchar</text>
+    <text class="table-text" x="10" y="75">description - text</text>
+    <text class="table-text" x="10" y="90">event_date - date</text>
+    <text class="table-text" x="10" y="105">location - varchar</text>
+    <text class="table-text" x="10" y="120">featured_speaker - varchar</text>
+  </g>
+  
+  <!-- NEWS Table -->
+  <g transform="translate(800, 640)">
+    <rect class="table-box" width="200" height="135"/>
+    <rect class="table-header" width="200" height="25"/>
+    <text class="table-title" x="100" y="18" text-anchor="middle">NEWS</text>
+    <text class="table-text" x="10" y="45">🔑 id (PK) - bigint</text>
+    <text class="table-text" x="10" y="60">title - varchar</text>
+    <text class="table-text" x="10" y="75">description - text</text>
+    <text class="table-text" x="10" y="90">publish_date - date</text>
+    <text class="table-text" x="10" y="105">location - varchar</text>
+    <text class="table-text" x="10" y="120">is_published - boolean</text>
+  </g>
+  
+  <!-- Relationship Lines -->
+  <!-- SCHOOL_YEARS to SEMESTERS -->
+  <line class="relationship-line" x1="230" y1="120" x2="280" y2="120"/>
+  <text x="255" y="115" font-family="Arial, sans-serif" font-size="10" fill="#6c757d">1:N</text>
+  
+  <!-- SEMESTERS to COURSES -->
+  <line class="relationship-line" x1="360" y1="195" x2="360" y2="220" stroke-dasharray="5,5"/>
+  <line class="relationship-line" x1="360" y1="220" x2="150" y2="220"/>
+  <line class="relationship-line" x1="150" y1="220" x2="150" y2="440"/>
+  
+  <!-- SUBJECTS to COURSES -->
+  <line class="relationship-line" x1="600" y1="180" x2="600" y2="220"/>
+  <line class="relationship-line" x1="600" y1="220" x2="150" y2="220"/>
+  
+  <!-- CLASSES to USERS -->
+  <line class="relationship-line" x1="740" y1="120" x2="600" y2="120"/>
+  <line class="relationship-line" x1="600" y1="120" x2="600" y2="220"/>
+  
+  <!-- USERS to COURSES (Teacher) -->
+  <line class="relationship-line" x1="400" y1="350" x2="150" y2="350"/>
+  <line class="relationship-line" x1="150" y1="350" x2="150" y2="440"/>
+  
+  <!-- USERS to COURSE_ENROLLMENTS -->
+  <line class="relationship-line" x1="500" y1="400" x2="500" y2="440"/>
+  <line class="relationship-line" x1="500" y1="440" x2="400" y2="440"/>
+  <line class="relationship-line" x1="400" y1="440" x2="400" y2="440"/>
+  
+  <!-- COURSES to ASSIGNMENTS -->
+  <line class="relationship-line" x1="250" y1="520" x2="550" y2="520"/>
+  
+  <!-- ASSIGNMENTS to ASSIGNMENT_SUBMISSIONS -->
+  <line class="relationship-line" x1="750" y1="520" x2="800" y2="520"/>
+  
+  <!-- COURSES to FORUM_TOPICS -->
+  <line class="relationship-line" x1="150" y1="605" x2="150" y2="640"/>
+  
+  <!-- FORUM_TOPICS to DISCUSSION_POSTS -->
+  <line class="relationship-line" x1="250" y1="710" x2="300" y2="710"/>
+  
+  <!-- Legend -->
+  <g transform="translate(50, 20)">
+    <text font-family="Arial, sans-serif" font-size="12" fill="#343a40">🔑 Primary Key</text>
+    <text x="120" font-family="Arial, sans-serif" font-size="12" fill="#343a40">🔗 Foreign Key</text>
+    <text x="240" font-family="Arial, sans-serif" font-size="12" fill="#343a40">— One-to-Many</text>
+  </g>
+</svg>
