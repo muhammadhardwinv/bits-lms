@@ -68,17 +68,17 @@ export default function LecturerCard({ courseId }: Props) {
 
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="hover:underline">Go to Assignment Page</a>
+                    <a className="hover:underline">Go to Lecturer Session</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                        <AlertDialogDescription>This opens the assignment page for this course.</AlertDialogDescription>
+                        <AlertDialogDescription>This opens the session view for this course (lecturer).</AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/${courseId}/quiz`}>Yes</Link>
+                            <Link href={`/current-session/${courseId}`}>Yes</Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
@@ -96,7 +96,7 @@ export default function LecturerCard({ courseId }: Props) {
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/assignment/${safeCourseName}/${courseId}/quiz`}>Yes</Link>
+                            <Link href={`/${courseId}/quiz`}>Yes</Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

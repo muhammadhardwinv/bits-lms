@@ -1,4 +1,4 @@
-import { GradebookContentCourse, GradebookContentHeader } from '@/components/app/gradebook/gradebook-content';
+import GradebookPage from '@/components/app/gradebook/gradebook-content';
 import ContentLayout from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 
@@ -12,9 +12,9 @@ export default function Gradebook({ courseId }: GradebookProps) {
             <Head title="Gradebook" />
             <ContentLayout>
                 <div>
-                    <GradebookContentHeader />
+                    {/* <GradebookContentHeader /> */}
                     <div className="flex items-center justify-center">
-                        <GradebookContentCourse />
+                        <GradebookPage />
                     </div>
                 </div>
             </ContentLayout>

@@ -104,7 +104,6 @@ export function CourseGradeTop({ courseId }: Props) {
                     const normalizedUrl = normalize(cleanUrl);
                     const normalizedHref = normalize(item.href);
 
-                    // const isActive = normalizedUrl === normalizedHref || normalizedUrl.startsWith(normalizedHref + '/');
                     const isActive =
                         normalizedUrl === normalizedHref ||
                         normalizedUrl.startsWith(normalizedHref + '/') ||
@@ -113,7 +112,7 @@ export function CourseGradeTop({ courseId }: Props) {
                     return (
                         <a key={index} href={item.href} className="w-full">
                             <div
-                                className={`w-full rounded-lg px-4 py-6 text-sm font-medium shadow-sm transition duration-200 ${
+                                className={`w-full items-center rounded-lg px-4 py-6 text-center text-sm font-medium shadow-sm transition duration-200 ${
                                     isActive
                                         ? 'text-black-900 border-indigo-300 bg-[#F2951B] hover:bg-[#f2b463] dark:bg-[#F2951B] dark:text-indigo-100 dark:hover:bg-[#F2951B]'
                                         : 'border-gray-300 bg-white text-gray-800 hover:bg-[#f2b463] hover:underline hover:shadow-md dark:bg-[#1b1b1b] dark:text-gray-200 dark:hover:bg-[#f2b463]'
