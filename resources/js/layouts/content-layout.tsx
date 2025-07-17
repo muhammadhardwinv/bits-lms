@@ -6,16 +6,29 @@ import { Home, PanelLeftIcon } from 'lucide-react';
 
 interface ContentLayoutProps {
     children: React.ReactNode;
+    role: string;
 }
 
-export default function ContentLayout({ children }: ContentLayoutProps) {
+export function ContentLayout({ children, role }: ContentLayoutProps) {
     return (
         <SidebarProvider>
-            <ContentSidebar />
+            <ContentSidebar role={role} />
             <main className="w-full">
                 <SidebarTrigger />
                 {children}
             </main>
         </SidebarProvider>
     );
+}
+
+export function StudentLayout({ children }: { children: React.ReactNode }) {
+    return <ContentLayout role={'student'}>{children}</ContentLayout>;
+}
+
+export function AdminLayout({ children }: { children: React.ReactNode }) {
+    return <ContentLayout role={'admin'}>{children}</ContentLayout>;
+}
+
+export function TeacherLayout({ children }: { children: React.ReactNode }) {
+    return <ContentLayout role={'teacher'}>{children}</ContentLayout>;
 }

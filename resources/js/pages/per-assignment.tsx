@@ -1,5 +1,5 @@
 import PerAssignmentContent from '@/components/app/assignment/perassignment-content';
-import ContentLayout from '@/layouts/content-layout';
+import { StudentLayout } from '@/layouts/content-layout';
 import { courses, CourseType } from '@/lib/coursesDetails';
 import { Head, usePage } from '@inertiajs/react';
 
@@ -34,9 +34,9 @@ export default function PerAssignmentPage() {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            <ContentLayout>
+            <StudentLayout>
                 <PerAssignmentContent assignment={course} user={user} onSubmit={onSubmit} loading={false} errors={{}} />
-            </ContentLayout>
+            </StudentLayout>
         </>
     );
 }

@@ -1,5 +1,5 @@
 import AssignmentContent from '@/components/app/assignment/assignment-content';
-import ContentLayout from '@/layouts/content-layout';
+import { StudentLayout, TeacherLayout } from '@/layouts/content-layout';
 import { courses as assignments } from '@/lib/coursesDetails';
 import { UserModel } from '@/lib/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -17,9 +17,9 @@ export default function Assignment() {
     return (
         <>
             <Head title="Assignment" />
-            <ContentLayout>
+            <StudentLayout>
                 <AssignmentContent title="Your Assignment" items={assignments} icon={ClipboardList} link={(assignment) => '#'} courseId={courseId} />
-            </ContentLayout>
+            </StudentLayout>
         </>
     );
 }

@@ -5,12 +5,25 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\MaterialsController;
 
 // Authentication Routes (Enhanced with proper controller)
 Route::get('/', fn () => Inertia::render('login'))->name('login');
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    // User Routes
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+
+});
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/materials/create', [MaterialsController::class, 'create'])->name('add.materials');
+    Route::post('/materials', [MaterialsController::class, 'store'])->name('store.materials');
+});
 
 // Basic Dashboard Routes
 Route::get('/dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
@@ -93,6 +106,8 @@ Route::prefix('courses')->group(function () {
         'course' => $course,
     ]))->name('courses.slideshow');
 });
+
+
 
 // Additional Assignment Route (from your changes)
 Route::get('/{courseName}/new-assignment', fn ($courseName) => Inertia::render('NewAssignmentContent', [

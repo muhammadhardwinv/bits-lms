@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type RoleType = 'student' | 'lecturer';
+export type RoleType = 'student' | 'lecturer' | 'admin';
 
 export interface UserClass {
     courseName: string;

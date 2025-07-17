@@ -18,6 +18,7 @@ import { useRef, useState } from 'react';
 import { events } from '@/lib/events-lib/eventData';
 
 export const description = 'An interactive area chart';
+
 export function SliderBox() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [activeSlide, setActiveSlide] = useState(0);
@@ -48,7 +49,7 @@ export function SliderBox() {
     return null;
 }
 
-export function LowerAreaInteractive() {
+export function EventSlideshow() {
     const sliderRef = useRef<HTMLDivElement>(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [itemWidth, setItemWidth] = useState(0);
@@ -73,64 +74,8 @@ export function LowerAreaInteractive() {
             });
         }
     };
-
     return (
-        <div className="mx-auto mb-6 flex max-w-[95vw] flex-wrap justify-between gap-4 px-4 lg:px-6">
-            {/* Left Chat Box */}
-            <div className="h-[50vh] basis-[35%] overflow-y-auto rounded-lg border bg-muted/20 p-4">
-                <div data-slot="card" className="flex h-full flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm">
-                    <div data-slot="card-header" className="flex flex-row items-center px-6">
-                        <div className="flex items-center gap-4">
-                            <span data-slot="avatar" className="relative flex size-8 shrink-0 overflow-hidden rounded-full border">
-                                <img src="/assets/logo-user.png" alt="" />
-                            </span>
-                            <div className="flex flex-col gap-0.5">
-                                <p className="leading-none font-medium text-indigo-500 dark:text-indigo-400">Michael</p>
-                                <p className="text-xs text-muted-foreground">michael.main@ac.id</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-slot="card-content" className="flex-1 overflow-y-auto px-6">
-                        <div className="flex flex-col gap-4">
-                            <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
-                                Hi, how can I help you today?
-                            </div>
-                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-indigo-500 px-3 py-2 text-sm text-primary-foreground">
-                                Hey, I'm having trouble with my account.
-                            </div>
-                            <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
-                                What seems to be the problem?
-                            </div>
-                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-indigo-500 px-3 py-2 text-sm text-primary-foreground">
-                                I can't log in.
-                            </div>
-                            <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
-                                Make sure you encounter correct email and password.
-                            </div>
-                        </div>
-                    </div>
-                    <div data-slot="card-footer" className="flex items-center px-6">
-                        <form className="relative w-full">
-                            <input
-                                type="text"
-                                id="message"
-                                placeholder="Type your message..."
-                                autoComplete="off"
-                                className="flex h-9 w-full rounded-md border border-input bg-white px-3 pr-10 text-base text-gray-900 shadow-xs transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                            />
-                            <button
-                                type="submit"
-                                className="absolute top-1/2 right-2 size-6 -translate-y-1/2 rounded-full bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 dark:bg-blue-600 dark:hover:bg-blue-500"
-                            >
-                                <span className="text-md text-white">+</span>
-                                <span className="sr-only">Send</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            {/* Right Slider Box */}
+        <>
             <div className="h-[50vh] basis-[63.5%] overflow-hidden rounded-lg border bg-muted/20 p-3">
                 <a
                     href="#"
@@ -194,6 +139,71 @@ export function LowerAreaInteractive() {
                         ))}
                     </div>
                 </div>
+            </div>
+            ;
+        </>
+    );
+}
+export function LowerAreaInteractive() {
+    return (
+        <div className="mx-auto mb-6 flex max-w-[95vw] flex-wrap justify-between gap-4 px-4 lg:px-6">
+            {/* Left Chat Box */}
+            <div className="h-[50vh] basis-[35%] overflow-y-auto rounded-lg border bg-muted/20 p-4">
+                <div data-slot="card" className="flex h-full flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm">
+                    <div data-slot="card-header" className="flex flex-row items-center px-6">
+                        <div className="flex items-center gap-4">
+                            <span data-slot="avatar" className="relative flex size-8 shrink-0 overflow-hidden rounded-full border">
+                                <img src="/assets/logo-user.png" alt="" />
+                            </span>
+                            <div className="flex flex-col gap-0.5">
+                                <p className="leading-none font-medium text-indigo-500 dark:text-indigo-400">Michael</p>
+                                <p className="text-xs text-muted-foreground">michael.main@ac.id</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-slot="card-content" className="flex-1 overflow-y-auto px-6">
+                        <div className="flex flex-col gap-4">
+                            <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
+                                Hi, how can I help you today?
+                            </div>
+                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-indigo-500 px-3 py-2 text-sm text-primary-foreground">
+                                Hey, I'm having trouble with my account.
+                            </div>
+                            <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
+                                What seems to be the problem?
+                            </div>
+                            <div className="ml-auto flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-indigo-500 px-3 py-2 text-sm text-primary-foreground">
+                                I can't log in.
+                            </div>
+                            <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
+                                Make sure you encounter correct email and password.
+                            </div>
+                        </div>
+                    </div>
+                    <div data-slot="card-footer" className="flex items-center px-6">
+                        <form className="relative w-full">
+                            <input
+                                type="text"
+                                id="message"
+                                placeholder="Type your message..."
+                                autoComplete="off"
+                                className="flex h-9 w-full rounded-md border border-input bg-white px-3 pr-10 text-base text-gray-900 shadow-xs transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                            />
+                            <button
+                                type="submit"
+                                className="absolute top-1/2 right-2 size-6 -translate-y-1/2 rounded-full bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 dark:bg-blue-600 dark:hover:bg-blue-500"
+                            >
+                                <span className="text-md text-white">+</span>
+                                <span className="sr-only">Send</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Slider Box */}
+            <div className="h-[50vh] basis-[63.5%] overflow-hidden rounded-lg border bg-muted/20 p-3">
+                <EventSlideshow />
             </div>
         </div>
     );

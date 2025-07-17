@@ -1,10 +1,10 @@
 import AssignmentFormContent from '@/components/app/lecturerPage/assignmentFormContent';
-import ContentLayout from '@/layouts/content-layout';
+import { TeacherLayout } from '@/layouts/content-layout';
 
 export default function AssignmentForm() {
     return (
-        <ContentLayout>
+        <TeacherLayout>
             <AssignmentFormContent />
-        </ContentLayout>
+        </TeacherLayout>
     );
 }

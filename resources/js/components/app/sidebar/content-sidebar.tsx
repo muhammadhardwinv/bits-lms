@@ -16,26 +16,26 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { AdminNavItems, StudentNavItems, TeacherNavItems } from '@/lib/navigationItem';
 import { useUserStore } from '@/lib/store/userStore';
 import { Link } from '@inertiajs/react';
 import { BarChart, Calendar, ChevronUp, ClipboardList, Ellipsis, LayoutDashboardIcon, Library, User2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const items = [
-    { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboardIcon },
-    { title: 'Courses', url: '/courses', icon: Library },
-    { title: 'Assignment', url: '/assignment', icon: ClipboardList },
-    { title: 'Grade Books', url: '/gradebook', icon: BarChart },
-    { title: 'Events', url: '/events', icon: Calendar },
-];
+// const items = [
+//     { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboardIcon },
+//     { title: 'Courses', url: '/courses', icon: Library },
+//     { title: 'Assignment', url: '/assignment', icon: ClipboardList },
+//     { title: 'Grade Books', url: '/gradebook', icon: BarChart },
+//     { title: 'Events', url: '/events', icon: Calendar },
+// ];
 
 function toCamelCase(str: string | undefined): string {
     if (!str) return 'Unknown';
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-export function ContentSidebar() {
-    const { role, setRole } = useUserStore();
+export function ContentSidebar({ role }: { role: string }) {
     const [isDark, setIsDark] = useState(false);
 
     useEffect(() => {
@@ -85,12 +85,12 @@ export function ContentSidebar() {
                 {/* Dropdown Content */}
                 <DropdownMenuContent side="right" align="center" className="w-44">
                     <DropdownMenuLabel className="text-xs text-muted-foreground">Switch Role</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => setRole('student')} className={role === 'student' ? 'font-semibold text-blue-600' : ''}>
+                    {/* <DropdownMenuItem onClick={() => setRole('student')} className={role === 'student' ? 'font-semibold text-blue-600' : ''}>
                         Student
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setRole('lecturer')} className={role === 'lecturer' ? 'font-semibold text-blue-600' : ''}>
                         Lecturer
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                         <Link href="/login" className="text-red-500 hover:underline">
@@ -104,16 +104,38 @@ export function ContentSidebar() {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            {role == 'admin'
+                                ? AdminNavItems.map((item) => (
+                                      <SidebarMenuItem key={item.title}>
+                                          <SidebarMenuButton asChild>
+                                              <a href={item.url}>
+                                                  <item.icon />
+                                                  <span>{item.title}</span>
+                                              </a>
+                                          </SidebarMenuButton>
+                                      </SidebarMenuItem>
+                                  ))
+                                : role == 'teacher'
+                                  ? TeacherNavItems.map((item) => (
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild>
+                                                <a href={item.url}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </a>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))
+                                  : StudentNavItems.map((item) => (
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild>
+                                                <a href={item.url}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </a>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>

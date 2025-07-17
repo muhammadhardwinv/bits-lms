@@ -1,6 +1,6 @@
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import { CourseGradeContent } from '@/components/app/gradebook/coursegrade-content';
-import ContentLayout from '@/layouts/content-layout';
+import { StudentLayout } from '@/layouts/content-layout';
 import { Head, usePage } from '@inertiajs/react';
 
 export default function CourseGrade() {
@@ -10,11 +10,11 @@ export default function CourseGrade() {
     return (
         <>
             <Head title="Course Grade" />
-            <ContentLayout>
+            <StudentLayout>
                 {/* <CourseGradeHeader courseId={courseId} /> */}
-                <CourseGradeTop courseId={courseId}/>
+                <CourseGradeTop courseId={courseId} />
                 <CourseGradeContent courseId={courseId} />
-            </ContentLayout>
+            </StudentLayout>
         </>
     );
 }

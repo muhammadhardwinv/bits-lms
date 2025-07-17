@@ -1,6 +1,6 @@
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import SelectedCourseContent from '@/components/app/course/selectedcourse-content';
-import ContentLayout from '@/layouts/content-layout';
+import { StudentLayout } from '@/layouts/content-layout';
 import { useUserStore } from '@/lib/store/userStore';
 import { Head } from '@inertiajs/react';
 
@@ -18,10 +18,10 @@ export default function SelectedCourse({ courseId }: Props) {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            <ContentLayout>
+            <StudentLayout>
                 <CourseGradeTop courseId={courseId} />
                 <SelectedCourseContent role={role} courseId={courseId} />
-            </ContentLayout>
+            </StudentLayout>
         </>
     );
 }

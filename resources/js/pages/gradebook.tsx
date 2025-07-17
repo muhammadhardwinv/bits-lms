@@ -1,5 +1,5 @@
 import GradebookPage from '@/components/app/gradebook/gradebook-content';
-import ContentLayout from '@/layouts/content-layout';
+import { StudentLayout } from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 
 interface GradebookProps {
@@ -10,14 +10,14 @@ export default function Gradebook({ courseId }: GradebookProps) {
     return (
         <>
             <Head title="Gradebook" />
-            <ContentLayout>
+            <StudentLayout>
                 <div>
                     {/* <GradebookContentHeader /> */}
                     <div className="flex items-center justify-center">
                         <GradebookPage />
                     </div>
                 </div>
-            </ContentLayout>
+            </StudentLayout>
         </>
     );
 }

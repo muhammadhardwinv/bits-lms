@@ -83,4 +83,5 @@ class User extends Authenticatable
             default => 'dashboard',
         };
     }
+
 }

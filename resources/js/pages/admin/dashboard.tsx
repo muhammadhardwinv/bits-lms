@@ -1,14 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import ContentLayout from '@/layouts/content-layout';
+import { AdminLayout } from '@/layouts/content-layout';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import { User } from '@/types';
-import { 
-    BookOpen, 
-    Users, 
-    FileText, 
-    GraduationCap, 
+import {
+    BookOpen,
+    Users,
+    FileText,
+    GraduationCap,
     MessageSquare,
     TrendingUp,
     Bell,
@@ -19,7 +19,7 @@ import {
     LogOut,
     Settings,
     Shield,
-    Database
+    Database,
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -28,18 +28,48 @@ interface AdminDashboardProps {
     };
 }
 
+export function AdminControlButton() {
+    const deleteOption = [{ key: 'X', label: 'Delete post' }];
+
+    return (
+        <div className="text-bold text-md flex flex-row gap-8">
+            {deleteOption.map((opt) => (
+                <div key={opt.key} className="group relative inline-block">
+                    <div className="flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-red-500 text-center hover:bg-red-500 hover:text-white">
+                        {opt.key}
+                    </div>
+                    <div className="absolute bottom-full left-1/2 z-10 mb-2 hidden -translate-x-1/2 rounded bg-gray-700 px-2 py-1 text-xs whitespace-nowrap text-white group-hover:block">
+                        {opt.label}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
 export default function AdminDashboard() {
-    const { auth } = usePage<AdminDashboardProps>().props;
+    const auth = {
+        user: {
+            id: 1,
+            name: 'Budi',
+            email: 'admin@lms.test',
+            role: 'admin',
+        },
+    };
 
     const handleLogout = () => {
-        router.post(route('logout'), {}, {
-            onSuccess: () => {
-                // Redirect will be handled by the controller
+        router.post(
+            route('logout'),
+            {},
+            {
+                onSuccess: () => {
+                    // Redirect will be handled by the controller
+                },
+                onError: (errors) => {
+                    console.error('Logout failed:', errors);
+                },
             },
-            onError: (errors) => {
-                console.error('Logout failed:', errors);
-            }
-        });
+        );
     };
 
     // Mock data for admin dashboard
@@ -51,10 +81,13 @@ export default function AdminDashboard() {
     ];
 
     const recentActivity = [
-        { id: 1, type: 'user_registration', user: 'John Smith', action: 'New user registered', time: '2 hours ago' },
-        { id: 2, type: 'course_creation', user: 'Dr. Johnson', action: 'Created new course: Advanced Physics', time: '4 hours ago' },
-        { id: 3, type: 'system_update', user: 'System', action: 'Database backup completed', time: '6 hours ago' },
-        { id: 4, type: 'user_issue', user: 'Jane Doe', action: 'Reported login issue', time: '8 hours ago' },
+        { id: 1, user: 'Dosen: Prof. Rudi Santoso', action: 'Online' },
+        { id: 2, user: 'Student: Ahmad Fadhlurrahman', action: 'Away' },
+        { id: 3, user: 'Admin C', action: 'Tambah user baru - Siti Nurhaliza' },
+        { id: 4, user: 'Dosen: Dr. Lina Agustina', action: 'Online' },
+        { id: 5, user: 'Student: Budi Prasetyo', action: 'Online' },
+        { id: 6, user: 'Student: Citra Melati', action: 'Away' },
+        { id: 7, user: 'Ir. Bambang Sutrisno', action: 'Online' },
     ];
 
     const pendingApprovals = [
@@ -63,114 +96,67 @@ export default function AdminDashboard() {
         { id: 3, type: 'resource', title: 'Library Access Request', requester: 'Student Union', date: '2025-07-06' },
     ];
 
+    const handleAddUser = () => {
+        router.get(route('admin.users.create'));
+    };
+
+    const handleAddMaterials = () => {
+        router.visit(route('admin.add.materials'));
+    };
+
     return (
         <>
             <Head title="Admin Dashboard">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <ContentLayout>
+            <AdminLayout>
                 <div className="space-y-6">
                     {/* Welcome Section */}
-                    <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white p-6 rounded-lg">
-                        <div className="flex justify-between items-start">
+                    <div className="rounded-lg bg-gradient-to-r from-blue-500 to-orange-400 p-6 text-white">
+                        <div className="flex items-start justify-between">
                             <div>
-                                <h1 className="text-2xl font-bold mb-2">Welcome back, Admin {auth.user.name}!</h1>
+                                <h1 className="mb-2 text-2xl font-bold">Welcome back, Admin {auth.user.name}!</h1>
                                 <p className="text-red-100">Manage and oversee the entire learning management system</p>
                             </div>
-                            <Button 
-                                variant="outline" 
-                                size="sm" 
+                            <Button
+                                variant="outline"
+                                size="sm"
                                 onClick={handleLogout}
-                                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                                className="border-white/20 bg-white/10 text-white hover:bg-white/20"
                             >
-                                <LogOut className="h-4 w-4 mr-2" />
+                                <LogOut className="mr-2 h-4 w-4" />
                                 Logout
                             </Button>
                         </div>
                     </div>
 
-                    {/* System Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        {systemStats.map((stat) => (
-                            <Card key={stat.id}>
-                                <CardContent className="p-4">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-sm text-gray-600">{stat.label}</p>
-                                            <p className="text-2xl font-bold">{stat.value}</p>
-                                        </div>
-                                        <div className={`text-sm ${stat.color}`}>
-                                            {stat.change}
-                                        </div>
-                                    </div>
-                                </CardContent>
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                        <div className="flex flex-row items-center justify-center">
+                            <Card className="group relative h-[36vh] w-[36vw] cursor-pointer overflow-hidden p-0">
+                                <Button
+                                    onClick={handleAddUser}
+                                    className="transition-all-text-xs h-full w-full rounded-none bg-gray-200 text-lg text-black hover:bg-[#F1911A] hover:text-white"
+                                >
+                                    + Add New User
+                                </Button>
                             </Card>
-                        ))}
+                        </div>
+
+                        <div className="flex flex-row items-center justify-center text-center">
+                            <Card className="group relative h-[36vh] w-[36vw] cursor-pointer overflow-hidden p-0">
+                                <Button
+                                    onClick={handleAddMaterials}
+                                    className="transition-all-text-xs h-full w-full items-center justify-center rounded-none bg-gray-200 text-center text-lg text-black hover:bg-[#F1911A] hover:text-white"
+                                >
+                                    + Add New Materials
+                                </Button>
+                            </Card>
+                        </div>
                     </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 gap-6">
+                        {/* <EventSlideshow /> */}
                         {/* Recent Activity */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center space-x-2">
-                                    <TrendingUp className="h-5 w-5" />
-                                    <span>Recent Activity</span>
-                                </CardTitle>
-                                <CardDescription>Latest system activities and user actions</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    {recentActivity.map((activity) => (
-                                        <div key={activity.id} className="flex justify-between items-start border-b pb-3">
-                                            <div>
-                                                <h3 className="font-semibold">{activity.user}</h3>
-                                                <p className="text-sm text-gray-600">{activity.action}</p>
-                                                <p className="text-xs text-gray-500">{activity.time}</p>
-                                            </div>
-                                            <Badge variant="outline" className="text-xs">
-                                                {activity.type.replace('_', ' ')}
-                                            </Badge>
-                                        </div>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {/* Pending Approvals */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center space-x-2">
-                                    <CheckCircle className="h-5 w-5" />
-                                    <span>Pending Approvals</span>
-                                </CardTitle>
-                                <CardDescription>Items requiring administrative approval</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    {pendingApprovals.map((item) => (
-                                        <div key={item.id} className="border rounded-lg p-4">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <div>
-                                                    <h3 className="font-semibold">{item.title}</h3>
-                                                    <p className="text-sm text-gray-600">Requested by: {item.requester}</p>
-                                                    <p className="text-xs text-gray-500">{item.date}</p>
-                                                </div>
-                                                <Badge variant="outline">{item.type}</Badge>
-                                            </div>
-                                            <div className="flex space-x-2 mt-3">
-                                                <Button variant="outline" size="sm" className="text-green-600">
-                                                    Approve
-                                                </Button>
-                                                <Button variant="outline" size="sm" className="text-red-600">
-                                                    Reject
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
                     </div>
 
                     {/* Quick Actions */}
@@ -180,44 +166,44 @@ export default function AdminDashboard() {
                             <CardDescription>Quick access to system management functions</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                                 <Button variant="outline" className="w-full">
-                                    <Users className="h-4 w-4 mr-2" />
+                                    <Users className="mr-2 h-4 w-4" />
                                     Manage Users
                                 </Button>
                                 <Button variant="outline" className="w-full">
-                                    <BookOpen className="h-4 w-4 mr-2" />
+                                    <BookOpen className="mr-2 h-4 w-4" />
                                     Manage Courses
                                 </Button>
                                 <Button variant="outline" className="w-full">
-                                    <Settings className="h-4 w-4 mr-2" />
+                                    <Settings className="mr-2 h-4 w-4" />
                                     System Settings
                                 </Button>
                                 <Button variant="outline" className="w-full">
-                                    <BarChart3 className="h-4 w-4 mr-2" />
+                                    <BarChart3 className="mr-2 h-4 w-4" />
                                     Reports
                                 </Button>
                                 <Button variant="outline" className="w-full">
-                                    <Shield className="h-4 w-4 mr-2" />
+                                    <Shield className="mr-2 h-4 w-4" />
                                     Security
                                 </Button>
                                 <Button variant="outline" className="w-full">
-                                    <Database className="h-4 w-4 mr-2" />
+                                    <Database className="mr-2 h-4 w-4" />
                                     Database
                                 </Button>
                                 <Button variant="outline" className="w-full">
-                                    <Bell className="h-4 w-4 mr-2" />
+                                    <Bell className="mr-2 h-4 w-4" />
                                     Announcements
                                 </Button>
                                 <Button variant="outline" className="w-full">
-                                    <Plus className="h-4 w-4 mr-2" />
+                                    <Plus className="mr-2 h-4 w-4" />
                                     Backup System
                                 </Button>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-            </ContentLayout>
+            </AdminLayout>
         </>
     );
 }
