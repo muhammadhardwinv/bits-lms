@@ -1,15 +1,20 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { ForumContentType, forumContents } from '@/lib/forumContent';
 import { CourseDescription } from './section/courseDescription';
-import LecturerCard from './card/lecturercourse-Card';
+import TeacherCard from './card/teachercourse-Card';
 import StudentCard from './card/studentcourse-Card';
+import { CourseGradeTop } from './panel/course-topPanel';
+import { UserModel } from '@/lib/types';
 
-interface Props {
-    role: 'student' | 'lecturer';
+interface PageProps {
+    auth: {
+        user: UserModel;
+    };
     courseId: string;
+    [key: string]: any;
 }
 
-export default function SelectedCourseContent({ role, courseId }: Props) {
+export default function SelectedCourseContent({ auth, courseId }: PageProps) {
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
 
     if (!forum) {
@@ -31,8 +36,8 @@ export default function SelectedCourseContent({ role, courseId }: Props) {
                         <h3 className="mb-6 text-lg font-semibold text-gray-900 dark:text-white">Things to do in this session</h3>
 
                         <nav className="flex flex-col gap-2 text-blue-600 dark:text-blue-400">
-                            {role === 'lecturer' && <LecturerCard courseId={courseId} />}
-                            {role === 'student' && <StudentCard courseId={courseId} />}
+                            {auth.user.role === 'teacher' && <TeacherCard courseId={courseId} />}
+                            {auth.user.role === 'student' && <StudentCard courseId={courseId} />}
                         </nav>
                     </CardContent>
                 </Card>

@@ -1,29 +1,20 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { StudentLayout } from '@/layouts/content-layout';
 import { Head, Link, usePage, router } from '@inertiajs/react';
-import { User } from '@/types';
-import {
-    BookOpen,
-    Calendar,
-    Clock,
-    FileText,
-    GraduationCap,
-    MessageSquare,
-    TrendingUp,
-    Bell,
-    LogOut
-} from 'lucide-react';
+import { BookOpen, Calendar, Clock, FileText, GraduationCap, MessageSquare, TrendingUp, Bell, LogOut } from 'lucide-react';
+import { ContentLayout } from '@/layouts/content-layout';
+import { UserModel } from '@/lib/types';
 
 interface StudentDashboardProps {
     auth: {
-        user: User;
+        user: UserModel;
     };
+    [key: string]: any;
 }
 
 export default function StudentDashboard() {
-    // const { auth } = usePage<StudentDashboardProps>().props;
+    const { auth } = usePage<StudentDashboardProps>().props;
 
     const handleLogout = () => {
         router.post(
@@ -66,7 +57,7 @@ export default function StudentDashboard() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <StudentLayout>
+            <ContentLayout user={auth.user}>
                 <div className="space-y-6">
                     {/* Welcome Section */}
                     <div className="rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
@@ -269,7 +260,7 @@ export default function StudentDashboard() {
                         </CardContent>
                     </Card>
                 </div>
-            </StudentLayout>
+            </ContentLayout>
         </>
     );
 }

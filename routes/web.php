@@ -27,7 +27,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 // Basic Dashboard Routes
 Route::get('/dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
-Route::get('/courses', fn () => Inertia::render('courses'))->name('courses');
+Route::get('/courses', fn () => Inertia::render('courses', [
+    'auth' => ['user' => Auth::user()],
+]))->name('courses');
 Route::get('/events', fn () => Inertia::render('events'))->name('events');
 Route::get('/lecturer-dashboard', fn () => Inertia::render('lecturerdashboard'))->name('lecturerdashboard');
 
@@ -57,20 +59,19 @@ Route::get('/forum/{courseId}', fn ($courseId) => Inertia::render('Forum', [
 ]))->name('forum.show');
 
 Route::get('/discussion/{courseId}', fn ($courseId) => Inertia::render('discussion', [
+    'user' => ['user' => Auth::user()],
     'courseId' => $courseId,
-    'user' => [
-        'name' => 'Guest Viewer',
-        'role' => 'student'
-    ],
 ]))->name('discussion');
 
 Route::get('/people/{courseId}', fn($courseId) => Inertia::render('people', [
+    'auth' => ['user' => Auth::user()],
     'courseId' => $courseId,
 ]))->name('people');
 
 Route::get('/attendance/{courseId}', [AttendanceController::class, 'index'])->name('attendance.index');
 
 Route::get('/assignment/new/{courseId}', fn ($courseId) => Inertia::render('assignment-form', [
+        'auth' => ['user' => Auth::user()],
         'courseId' => $courseId,
     ])
 )->name('assignment.new');
@@ -78,6 +79,7 @@ Route::get('/assignment/new/{courseId}', fn ($courseId) => Inertia::render('assi
 Route::get('/assignment', fn () => Inertia::render('assignment'))->name('assignment');
 
 Route::get('/assignment/{courseId}', fn($courseId) => Inertia::render('per-assignment', [
+    'auth' => ['user' => Auth::user()],
     'courseId' => $courseId,
 ]))->name('assignment.view');
 
@@ -101,6 +103,7 @@ Route::prefix('assignment')->group(function () {
 
 Route::prefix('courses')->group(function () {
     Route::get('/{course}/slideshow', fn ($course) => Inertia::render('slideshow', [
+         'auth' => ['user' => Auth::user()],
         'course' => $course,
     ]))->name('courses.slideshow');
 });
@@ -108,7 +111,7 @@ Route::prefix('courses')->group(function () {
 
 
 // Additional Assignment Route (from your changes)
-Route::get('/{courseName}/new-assignment', fn ($courseName) => Inertia::render('NewAssignmentContent', [
+Route::get('/{courseName}/new-assignment', fn ($courseName) => Inertia::render('assignment-form', [
     'courseName' => $courseName,
 ]))->name('assignment.new.content');
 

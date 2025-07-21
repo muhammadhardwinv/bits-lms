@@ -17,8 +17,8 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { AdminNavItems, StudentNavItems, TeacherNavItems } from '@/lib/navigationItem';
-import { useUserStore } from '@/lib/store/userStore';
-import { Link } from '@inertiajs/react';
+// import { useUserStore } from '@/lib/store/userStore';
+import { Link, usePage } from '@inertiajs/react';
 import { BarChart, Calendar, ChevronUp, ClipboardList, Ellipsis, LayoutDashboardIcon, Library, User2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -53,9 +53,11 @@ export function ContentSidebar({ role }: { role: string }) {
         setIsDark(nowDark);
     };
 
+
+    const navItems = role === 'admin' ? AdminNavItems : role === 'teacher' ? TeacherNavItems : StudentNavItems;
+
     return (
         <Sidebar className="">
-            {/* <div className="font-weight-900 flex items-center justify-between bg-white px-2 py-2 text-3xl dark:bg-[#0397DA]"> */}
             <div className="font-weight-900 flex items-center justify-between bg-[#0397DA] px-3 py-2 text-3xl dark:bg-[#0397DA]">
                 <div className="flex items-center gap-2">
                     <img className="h-12 w-12" src="/assets/logo-bits.png" alt="BITS Logo" />
@@ -69,7 +71,7 @@ export function ContentSidebar({ role }: { role: string }) {
                     <div className="relative mx-2 my-2 h-[20vh] rounded bg-[#066a9a] p-3 text-sm text-white">
                         {/* Ellipsis Icon - Top Right */}
                         <DropdownMenuTrigger asChild>
-                            <button className="absolute top-2 right-2 rounded-full p-1 transition hover:bg-[#0283ba]">
+                            <button className="absolute top-2 right-2 cursor-pointer rounded-full p-1 transition hover:bg-[#F2951B]">
                                 <Ellipsis className="h-5 w-5" />
                             </button>
                         </DropdownMenuTrigger>
@@ -85,7 +87,7 @@ export function ContentSidebar({ role }: { role: string }) {
                 {/* Dropdown Content */}
                 <DropdownMenuContent side="right" align="center" className="w-44">
                     <DropdownMenuItem asChild>
-                        <Link href="/login" className="text-red-500 hover:underline">
+                        <Link href="/login" className="hover:text-black-200 cursor-pointer text-red-500">
                             Sign out
                         </Link>
                     </DropdownMenuItem>

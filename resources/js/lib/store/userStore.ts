@@ -4,7 +4,7 @@ import { AdminNavItems, StudentNavItems, TeacherNavItems } from '@/lib/navigatio
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type RoleType = 'student' | 'lecturer' | 'admin';
+export type RoleType = 'student' | 'teacher' | 'admin';
 
 export interface UserClass {
     courseName: string;
@@ -42,13 +42,13 @@ export const useUserStore = create<UserStore>()(
             setName: (name) => set({ name }),
 
             setRole: (role) => {
-                let items: NavItem[] = role === 'admin' ? AdminNavItems : role === 'lecturer' ? TeacherNavItems : StudentNavItems;
+                let items: NavItem[] = role === 'admin' ? AdminNavItems : role === 'teacher' ? TeacherNavItems : StudentNavItems;
 
                 set({ role, navItems: items });
             },
 
             setUser: ({ name, role, courseId, classes }) => {
-                let items: NavItem[] = role === 'admin' ? AdminNavItems : role === 'lecturer' ? TeacherNavItems : StudentNavItems;
+                let items: NavItem[] = role === 'admin' ? AdminNavItems : role === 'teacher' ? TeacherNavItems : StudentNavItems;
 
                 set({
                     name,

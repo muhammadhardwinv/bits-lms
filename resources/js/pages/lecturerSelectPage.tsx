@@ -1,14 +1,14 @@
 'use client';
 
 import LecturerSelectPageContent from '@/components/app/lecturerPage/lecturer-selectPage';
-import { TeacherLayout } from '@/layouts/content-layout';
 import { Head } from '@inertiajs/react';
 
 export default function LecturerSelectPage() {
     return (
-        <TeacherLayout>
-            <Head title="Select Page - Lecturer" />
-            <LecturerSelectPageContent />
-        </TeacherLayout>
+        <></>
+        // <TeacherLayout>
+        //     <Head title="Select Page - Lecturer" />
+        //     <LecturerSelectPageContent />
+        // </TeacherLayout>
     );
 }

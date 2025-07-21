@@ -1,15 +1,25 @@
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import PeopleContent from '@/components/app/people/people-content';
-import { StudentLayout } from '@/layouts/content-layout';
+import { ContentLayout } from '@/layouts/content-layout';
+import { UserModel } from '@/lib/types';
 import { usePage } from '@inertiajs/react';
 
+interface PageProps {
+    auth: {
+        user: UserModel;
+    };
+    courseId: string;
+    [key: string]: any;
+}
+
 export default function People() {
-    const { props } = usePage();
-    const courseId = props.courseId as string;
+    const { auth, courseId } = usePage<PageProps>().props;
+    const role = auth.user.role;
+
     return (
-        <StudentLayout>
+        <ContentLayout user={auth.user}>
             <CourseGradeTop courseId={courseId} />
             <PeopleContent />
-        </StudentLayout>
+        </ContentLayout>
     );
 }

@@ -1,11 +1,8 @@
 export type UserModel = {
     name: string;
-    role: 'student' | 'lecturer';
-    classes?: {
-        courseName: string;
-        courseId: string;
-        classId: string;
-    }[];
+    email: string;
+    role: string;
+    status: string;
 };
 
 export type Assignment = {

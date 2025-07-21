@@ -26,8 +26,8 @@ export default function StudentCard({ courseId }: Props) {
             {/* PPT */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="flex flex-row items-center gap-3 hover:underline">
-                        <h2>(PPT) Introduction to {course.courseName}</h2>
+                    <a className="hover flex cursor-pointer flex-row items-center gap-3">
+                        <h2> (PPT) Introduction to {course.courseName}</h2>
                         <span className="flex flex-row items-center">
                             <Download className="mb-1 h-4 w-4" />
                         </span>
@@ -39,18 +39,19 @@ export default function StudentCard({ courseId }: Props) {
                         <AlertDialogDescription>This will add or replace the slideshow for this course.</AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/courses/${courseId}/slideshow`}>Yes</Link>
+                            <Link className="cursor-pointer" href={`/courses/${courseId}/slideshow`}>
+                                Yes
+                            </Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
-            {/* Forums */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="hover:underline">Go to Forums Page</a>
+                    <a className="cursor-pointer">Go to Forums Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -58,9 +59,11 @@ export default function StudentCard({ courseId }: Props) {
                         <AlertDialogDescription>This will open the course's discussion forum.</AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/discussion/${courseId}`}>Yes</Link>
+                            <Link className="cursor-pointer" href={`/discussion/${courseId}`}>
+                                Yes
+                            </Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
@@ -68,26 +71,7 @@ export default function StudentCard({ courseId }: Props) {
 
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="hover:underline">Go to Assignment Page</a>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                        <AlertDialogDescription>This opens the assignment page for this course.</AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction asChild>
-                            <Link href={`/assignment/${safeCourseName}/${courseId}`}>Yes</Link>
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
-
-            {/* Quiz */}
-            <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <a className="hover:underline">Go to Quiz Page</a>
+                    <a className="cursor-pointer">Go to Quiz Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -95,9 +79,11 @@ export default function StudentCard({ courseId }: Props) {
                         <AlertDialogDescription>This opens the quiz overview for this course.</AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/${courseId}/quiz`}>Yes</Link>
+                            <Link className="cursor-pointer" href={`/${courseId}/quiz`}>
+                                Yes
+                            </Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
@@ -106,7 +92,7 @@ export default function StudentCard({ courseId }: Props) {
             {/* Exam — optional, no route defined yet */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="hover:underline">Go to Exam Page</a>
+                    <a className="cursor-pointer">Go to Exam Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -114,9 +100,11 @@ export default function StudentCard({ courseId }: Props) {
                         <AlertDialogDescription>This opens the exam results for this course.</AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link href={`/courses/${courseId}/exam`}>Yes</Link>
+                            <Link className="cursor-pointer" href={`/courses/${courseId}/exam`}>
+                                Yes
+                            </Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

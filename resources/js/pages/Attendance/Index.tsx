@@ -1,16 +1,24 @@
 import AttendanceContent from '@/components/app/attendance/attendance-content';
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
-import { TeacherLayout } from '@/layouts/content-layout';
+import { ContentLayout } from '@/layouts/content-layout';
+import { UserModel } from '@/lib/types';
 import { Head, usePage } from '@inertiajs/react';
 
+interface PageProps {
+    auth: {
+        user: UserModel;
+    };
+    courseId: string;
+    [key: string]: any;
+}
+
 export default function Attendance() {
-    const { props } = usePage();
-    const courseId = props.courseId as string;
+    const { auth, courseId } = usePage<PageProps>().props;
     return (
-        <TeacherLayout>
+        <ContentLayout user={auth.user}>
             <Head title="Attendance" />;
             <CourseGradeTop courseId={courseId} />
-            <AttendanceContent />
-        </TeacherLayout>
+            <AttendanceContent user={auth.user} />
+        </ContentLayout>
     );
 }

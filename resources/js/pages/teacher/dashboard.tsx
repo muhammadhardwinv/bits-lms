@@ -2,25 +2,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Head, Link, usePage, router } from '@inertiajs/react';
-import { User } from '@/types';
 import { BookOpen, Users, FileText, Calendar, Clock, GraduationCap, MessageSquare, TrendingUp, Bell, LogOut, Plus } from 'lucide-react';
-import { TeacherLayout } from '@/layouts/content-layout';
+import { ContentLayout } from '@/layouts/content-layout';
+import { UserModel } from '@/lib/types';
 
 interface TeacherDashboardProps {
     auth: {
-        user: User;
+        user: UserModel;
     };
+    [key: string]: any;
 }
 
 export default function TeacherDashboard() {
-    const auth = {
-        user: {
-            id: 1,
-            name: 'Budi',
-            email: 'admin@lms.test',
-            role: 'teacher',
-        },
-    };
+    const { auth } = usePage<TeacherDashboardProps>().props;
 
     const handleLogout = () => {
         router.post(
@@ -62,7 +56,7 @@ export default function TeacherDashboard() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <TeacherLayout>
+            <ContentLayout user={auth.user}>
                 <div className="space-y-6">
                     {/* Welcome Section */}
                     <div className="rounded-lg bg-gradient-to-r from-green-500 to-blue-600 p-6 text-white">
@@ -287,7 +281,7 @@ export default function TeacherDashboard() {
                         </CardContent>
                     </Card>
                 </div>
-            </TeacherLayout>
+            </ContentLayout>
         </>
     );
 }

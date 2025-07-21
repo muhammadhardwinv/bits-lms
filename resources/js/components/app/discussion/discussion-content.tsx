@@ -16,12 +16,12 @@ export default function DiscussionContent({ courseId, user }: Props) {
     const { role, name, setUser } = useUserStore();
 
     useEffect(() => {
-        if (user) {
-            setUser({
-                name: user.name,
-                role: user.role as 'student' | 'lecturer',
-            });
-        }
+        // if (user) {
+        //     setUser({
+        //         name: user.name,
+        //         role: user.role as 'student' | 'lecturer',
+        //     });
+        // }
     }, [user, setUser]);
 
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
@@ -58,17 +58,17 @@ export default function DiscussionContent({ courseId, user }: Props) {
     function handlePostThread() {
         if (!newStudentArgument.trim() || !forum) return;
 
-        const posterName = name?.trim() || (role === 'lecturer' ? 'Lecturer' : 'Student');
-        storeNewDiscussion(
-            forum.courseId,
-            forum.classId,
-            forum.lecturerId,
-            forum.lecturerName,
-            forum.forumTitle,
-            newStudentArgument,
-            selectedSession,
-            posterName,
-        );
+        // const posterName = name?.trim() || (role === 'lecturer' ? 'Lecturer' : 'Student');
+        // storeNewDiscussion(
+        //     forum.courseId,
+        //     forum.classId,
+        //     forum.lecturerId,
+        //     forum.lecturerName,
+        //     forum.forumTitle,
+        //     newStudentArgument,
+        //     selectedSession,
+        //     posterName,
+        // );
 
         setNewStudentArgument('');
     }

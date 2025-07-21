@@ -1,15 +1,18 @@
 import { ContentSidebar } from '@/components/app/sidebar/content-sidebar';
 import { Button } from '@/components/ui/button';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { UserModel } from '@/lib/types';
 import { Head, Link } from '@inertiajs/react';
 import { Home, PanelLeftIcon } from 'lucide-react';
 
 interface ContentLayoutProps {
+    user: UserModel;
     children: React.ReactNode;
-    role: string;
 }
 
-export function ContentLayout({ children, role }: ContentLayoutProps) {
+export function ContentLayout({ user, children }: ContentLayoutProps) {
+    const role = user.role;
+
     return (
         <SidebarProvider>
             <ContentSidebar role={role} />
@@ -19,16 +22,4 @@ export function ContentLayout({ children, role }: ContentLayoutProps) {
             </main>
         </SidebarProvider>
     );
-}
-
-export function StudentLayout({ children }: { children: React.ReactNode }) {
-    return <ContentLayout role={'student'}>{children}</ContentLayout>;
-}
-
-export function AdminLayout({ children }: { children: React.ReactNode }) {
-    return <ContentLayout role={'admin'}>{children}</ContentLayout>;
-}
-
-export function TeacherLayout({ children }: { children: React.ReactNode }) {
-    return <ContentLayout role={'teacher'}>{children}</ContentLayout>;
 }

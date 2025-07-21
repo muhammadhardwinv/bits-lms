@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { courses, CourseType } from '@/lib/coursesDetails';
 import { useUserStore } from '@/lib/store/userStore';
-import { Assignment } from '@/lib/types';
+import { Assignment, UserModel } from '@/lib/types';
 import { Link } from '@inertiajs/react';
 import { ClipboardList } from 'lucide-react';
 import { useState } from 'react';
@@ -13,12 +13,14 @@ export default function AssignmentContent({
     icon,
     link,
     courseId,
+    user,
 }: {
     title: string;
     items: Assignment[];
     icon: React.ElementType;
     link: (assignment: Assignment) => string;
     courseId: string;
+    user: UserModel;
 }) {
     const [newAssignment, setNewAssignment] = useState<Partial<Assignment>>({
         title: '',
@@ -26,8 +28,6 @@ export default function AssignmentContent({
         dueDate: '',
         classId: '',
     });
-
-    const { role } = useUserStore();
 
     const courseIdFromItems = items.length > 0 ? items[0].courseId : courseId;
 
@@ -42,7 +42,7 @@ export default function AssignmentContent({
                                 <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
                             </div>
 
-                            {role === 'lecturer' && courseIdFromItems && (
+                            {user.role === 'teacher' && courseIdFromItems && (
                                 <Link
                                     href={route('assignment.new', courseIdFromItems)}
                                     className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none"

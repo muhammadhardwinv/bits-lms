@@ -1,7 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { AdminLayout } from '@/layouts/content-layout';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import { User } from '@/types';
 import {
@@ -21,11 +19,14 @@ import {
     Shield,
     Database,
 } from 'lucide-react';
+import { ContentLayout } from '@/layouts/content-layout';
+import { UserModel } from '@/lib/types';
 
 interface AdminDashboardProps {
     auth: {
-        user: User;
+        user: UserModel;
     };
+    [key: string]: any;
 }
 
 export function AdminControlButton() {
@@ -48,14 +49,7 @@ export function AdminControlButton() {
 }
 
 export default function AdminDashboard() {
-    const auth = {
-        user: {
-            id: 1,
-            name: 'Budi',
-            email: 'admin@lms.test',
-            role: 'admin',
-        },
-    };
+    const { auth } = usePage<AdminDashboardProps>().props;
 
     const handleLogout = () => {
         router.post(
@@ -110,7 +104,7 @@ export default function AdminDashboard() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <AdminLayout>
+            <ContentLayout user={auth.user}>
                 <div className="space-y-6">
                     {/* Welcome Section */}
                     <div className="rounded-lg bg-gradient-to-r from-blue-500 to-orange-400 p-6 text-white">
@@ -203,7 +197,7 @@ export default function AdminDashboard() {
                         </CardContent>
                     </Card>
                 </div>
-            </AdminLayout>
+            </ContentLayout>
         </>
     );
 }
