@@ -56,8 +56,6 @@ Route::get('/forum/{courseId}', fn ($courseId) => Inertia::render('Forum', [
     'courseId' => $courseId,
 ]))->name('forum.show');
 
-Route::get('/discussion', fn () => Inertia::render('baseDiscussion'))->name('base.discussion');
-
 Route::get('/discussion/{courseId}', fn ($courseId) => Inertia::render('discussion', [
     'courseId' => $courseId,
     'user' => [

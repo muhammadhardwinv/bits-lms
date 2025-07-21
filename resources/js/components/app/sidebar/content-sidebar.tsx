@@ -84,14 +84,6 @@ export function ContentSidebar({ role }: { role: string }) {
 
                 {/* Dropdown Content */}
                 <DropdownMenuContent side="right" align="center" className="w-44">
-                    <DropdownMenuLabel className="text-xs text-muted-foreground">Switch Role</DropdownMenuLabel>
-                    {/* <DropdownMenuItem onClick={() => setRole('student')} className={role === 'student' ? 'font-semibold text-blue-600' : ''}>
-                        Student
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setRole('lecturer')} className={role === 'lecturer' ? 'font-semibold text-blue-600' : ''}>
-                        Lecturer
-                    </DropdownMenuItem> */}
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                         <Link href="/login" className="text-red-500 hover:underline">
                             Sign out

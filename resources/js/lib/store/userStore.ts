@@ -1,3 +1,6 @@
+// stores/userStore.ts
+
+import { AdminNavItems, StudentNavItems, TeacherNavItems } from '@/lib/navigationItem';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -9,11 +12,18 @@ export interface UserClass {
     classId: string;
 }
 
+export interface NavItem {
+    title: string;
+    url: string;
+    icon: React.ElementType;
+}
+
 interface UserStore {
     name: string;
     role?: RoleType;
     courseId?: string;
     classes?: UserClass[];
+    navItems: NavItem[];
     setName: (name: string) => void;
     setRole: (role: RoleType) => void;
     setUser: (user: { name: string; role: RoleType; courseId?: string; classes?: UserClass[] }) => void;
@@ -27,25 +37,39 @@ export const useUserStore = create<UserStore>()(
             role: undefined,
             courseId: undefined,
             classes: [],
+            navItems: [],
+
             setName: (name) => set({ name }),
-            setRole: (role) => set({ role }),
-            setUser: (user) =>
+
+            setRole: (role) => {
+                let items: NavItem[] = role === 'admin' ? AdminNavItems : role === 'lecturer' ? TeacherNavItems : StudentNavItems;
+
+                set({ role, navItems: items });
+            },
+
+            setUser: ({ name, role, courseId, classes }) => {
+                let items: NavItem[] = role === 'admin' ? AdminNavItems : role === 'lecturer' ? TeacherNavItems : StudentNavItems;
+
                 set({
-                    name: user.name,
-                    role: user.role,
-                    courseId: user.courseId,
-                    classes: user.classes ?? [],
-                }),
+                    name,
+                    role,
+                    courseId,
+                    classes: classes ?? [],
+                    navItems: items,
+                });
+            },
+
             clearUser: () =>
                 set({
                     name: '',
                     role: undefined,
                     courseId: undefined,
                     classes: [],
+                    navItems: [],
                 }),
         }),
         {
-            name: 'user-storage', // localStorage key
+            name: 'user-storage',
         },
     ),
 );
