@@ -87,7 +87,7 @@ export function ContentSidebar({ role }: { role: string }) {
                 {/* Dropdown Content */}
                 <DropdownMenuContent side="right" align="center" className="w-44">
                     <DropdownMenuItem asChild>
-                        <Link href="/login" className="hover:text-black-200 cursor-pointer text-red-500">
+                        <Link href="/login" className="cursor-pointer text-red-500">
                             Sign out
                         </Link>
                     </DropdownMenuItem>
