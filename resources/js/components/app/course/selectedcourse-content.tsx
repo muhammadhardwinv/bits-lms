@@ -3,8 +3,9 @@ import { ForumContentType, forumContents } from '@/lib/forumContent';
 import { CourseDescription } from './section/courseDescription';
 import TeacherCard from './card/teachercourse-Card';
 import StudentCard from './card/studentcourse-Card';
-import { CourseGradeTop } from './panel/course-topPanel';
+// import { CourseGradeTop } from './panel/course-topPanel';
 import { UserModel } from '@/lib/types';
+import { SessionPanel } from './panel/session-Panel';
 
 interface PageProps {
     auth: {
@@ -26,11 +27,10 @@ export default function SelectedCourseContent({ auth, courseId }: PageProps) {
     }
 
     return (
-        <div className="space-y-8 p-6">
-            <div className="flex flex-col gap-6 lg:flex-row">
-                {/* Empty Space */}
+        <div className="mx-6 flex flex-col">
+            <SessionPanel courseId={courseId} currentUrl="{url}" />
+            <div className="my-6 flex flex-row gap-6">
                 <CourseDescription forum={forum} />
-                {/* Bagian Card */}
                 <Card className="h-fit w-full bg-white text-gray-900 shadow-lg lg:w-72 dark:bg-[#1c1c1c] dark:text-gray-100">
                     <CardContent className="space-y-4 p-6">
                         <h3 className="mb-6 text-lg font-semibold text-gray-900 dark:text-white">Things to do in this session</h3>

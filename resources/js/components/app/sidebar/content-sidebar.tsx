@@ -17,19 +17,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { AdminNavItems, StudentNavItems, TeacherNavItems } from '@/lib/navigationItem';
-// import { useUserStore } from '@/lib/store/userStore';
 import { Link, usePage } from '@inertiajs/react';
 import { BarChart, Calendar, ChevronUp, ClipboardList, Ellipsis, LayoutDashboardIcon, Library, User2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-// const items = [
-//     { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboardIcon },
-//     { title: 'Courses', url: '/courses', icon: Library },
-//     { title: 'Assignment', url: '/assignment', icon: ClipboardList },
-//     { title: 'Grade Books', url: '/gradebook', icon: BarChart },
-//     { title: 'Events', url: '/events', icon: Calendar },
-// ];
-
 function toCamelCase(str: string | undefined): string {
     if (!str) return 'Unknown';
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -53,7 +43,6 @@ export function ContentSidebar({ role }: { role: string }) {
         setIsDark(nowDark);
     };
 
-
     const navItems = role === 'admin' ? AdminNavItems : role === 'teacher' ? TeacherNavItems : StudentNavItems;
 
     return (
@@ -66,17 +55,14 @@ export function ContentSidebar({ role }: { role: string }) {
             </div>
 
             <DropdownMenu>
-                {/* Card with Ellipsis inside */}
                 <div className="bg-[#0397DA]">
                     <div className="relative mx-2 my-2 h-[20vh] rounded bg-[#066a9a] p-3 text-sm text-white">
-                        {/* Ellipsis Icon - Top Right */}
                         <DropdownMenuTrigger asChild>
                             <button className="absolute top-2 right-2 cursor-pointer rounded-full p-1 transition hover:bg-[#F2951B]">
                                 <Ellipsis className="h-5 w-5" />
                             </button>
                         </DropdownMenuTrigger>
 
-                        {/* Card Content */}
                         <div className="flex h-[15vh] flex-col justify-between">
                             <span className="text-md block">Role:</span>
                             <span className="mt-1 block font-semibold">{toCamelCase(role)}</span>
@@ -84,7 +70,6 @@ export function ContentSidebar({ role }: { role: string }) {
                     </div>
                 </div>
 
-                {/* Dropdown Content */}
                 <DropdownMenuContent side="right" align="center" className="w-44">
                     <DropdownMenuItem asChild>
                         <Link href="/login" className="cursor-pointer text-red-500">

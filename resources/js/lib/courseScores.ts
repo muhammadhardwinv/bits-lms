@@ -45,7 +45,7 @@ export const courseScores: CourseScoreType[] = [
         progress: calculateProgress(lessonPresets[0]),
         maxScore: 100,
         gradedAt: '2025-07-03',
-        remarks: 'Excellent understanding of chemical waste impact.',
+        remarks: 'Excellent understanding of Chemical impact.',
     },
     {
         courseId: 'BIO-2201',

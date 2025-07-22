@@ -1,5 +1,15 @@
 import { router } from '@inertiajs/react';
-import { BoxIcon, ClipboardList, LayoutDashboardIcon, LayoutList, LibraryBig, User, UserRoundCheck } from 'lucide-react';
+import {
+    BoxIcon,
+    ClipboardList,
+    LayoutDashboardIcon,
+    LayoutList,
+    LibraryBig,
+    MessageSquareText,
+    MessagesSquare,
+    User,
+    UserRoundCheck,
+} from 'lucide-react';
 
 export function redirectRoutes(courses: { courseId: string }[]) {
     if (courses.length > 0) {
@@ -25,7 +35,7 @@ export const TeacherNavItems = [
 
 export const StudentNavItems = [
     { title: 'Dashboard', url: '/student/dashboard', icon: LayoutList },
-    { title: 'Discussion', url: '/discussion/SCI-4321', icon: LibraryBig },
+    { title: 'Discussion', url: '/discussion/SCI-4321', icon: MessageSquareText },
     { title: 'Courses', url: '/courses', icon: BoxIcon },
     { title: 'Assignment', url: '/assignment', icon: ClipboardList },
     { title: 'People', url: '/people/SCI-4321', icon: User },

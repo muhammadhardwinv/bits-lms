@@ -68,14 +68,6 @@ export function CourseGradeTop({ courseId }: Props) {
 export function CourseGradeContent({ courseId }: Props) {
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
 
-    if (!forum) {
-        return (
-            <div className="p-6 text-red-600">
-                <h1 className="text-xl font-semibold">Forum not found for course ID: {courseId}</h1>
-            </div>
-        );
-    }
-
     return (
         <div className="space-y-8 p-6">
             <div className="flex flex-col gap-6 px-9">

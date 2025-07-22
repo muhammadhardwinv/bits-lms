@@ -14,9 +14,9 @@ export type ForumContentType = {
 
 export const forumContents: ForumContentType[] = [
     {
-        forumTitle: 'Environmental Impact of Chemical Waste',
+        forumTitle: 'Environmental Impact of Chemical',
         learningOutcome:
-            'Analyze the ecological consequences of improper chemical waste disposal and propose sustainable practices to mitigate environmental damage.',
+            'Analyze the ecological consequences of improper Chemical disposal and propose sustainable practices to mitigate environmental damage.',
         subTopics: ['Terrestrial pollution', 'Aquatic ecosystem effects', 'Chemical spill case studies', 'Global regulatory comparisons'],
         lecturerName: 'Dr. Sinta Dewi',
         lecturerId: 'LECT-SCI-01',

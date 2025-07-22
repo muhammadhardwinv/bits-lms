@@ -32,22 +32,22 @@ export default function AssignmentContent({
     const courseIdFromItems = items.length > 0 ? items[0].courseId : courseId;
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
-            <div className="flex min-h-screen items-center justify-center">
-                <div className="h-[90vh] overflow-y-auto rounded-xl border border-gray-200 bg-gradient-to-br from-white to-blue-50 p-6 shadow-lg dark:from-[#121212] dark:to-[#1f1f1f]">
-                    <div className="mb-6 ml-4 flex items-center justify-between border-b pb-4 dark:border-gray-600">
+        <div className="flex w-full flex-row">
+            <div className="flex min-h-screen w-full justify-center">
+                <div className="h-[90vh] w-full overflow-y-auto bg-gradient-to-br from-white to-blue-50 p-8 shadow-lg dark:from-[#121212] dark:to-[#1f1f1f]">
+                    <div className="mb-6 flex items-center justify-between">
                         <div className="flex w-full items-center justify-between gap-3">
                             <div className="flex flex-row items-center">
-                                <ClipboardList className="mx-2 h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+                                <ClipboardList className="mx-2 h-5 w-5 text-[#F2951B] dark:text-[#F2951B]" />
+                                <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
                             </div>
 
                             {user.role === 'teacher' && courseIdFromItems && (
                                 <Link
                                     href={route('assignment.new', courseIdFromItems)}
-                                    className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                    className="inline-flex items-center gap-2 rounded-md border border-gray-200 bg-gray-100 from-[#F2951B] to-[#FFD599] px-4 py-2 text-sm font-medium shadow hover:opacity-90 focus:ring-2 focus:ring-orange-400 focus:outline-none dark:bg-gradient-to-r dark:text-white"
                                 >
-                                    <ClipboardList className="h-4 w-4" />
+                                    <ClipboardList className="mx-1 h-5 w-5 text-[#F2951B] dark:text-white" />
                                     New Assignment
                                 </Link>
                             )}
@@ -92,8 +92,10 @@ export default function AssignmentContent({
                                                 </div>
 
                                                 <p className="text-sm text-gray-700 dark:text-gray-300">
-                                                    <span className="font-medium text-indigo-700 dark:text-indigo-400">{course?.courseName}</span> (
-                                                    {assignment.courseId}) — Class {assignment.classId}
+                                                    <span className="bg-gradient-to-r from-[#F2951B] to-[#FFD599] bg-clip-text font-medium text-transparent">
+                                                        {course?.courseName}
+                                                    </span>{' '}
+                                                    ({assignment.courseId}) — Class {assignment.classId}
                                                 </p>
 
                                                 <p className="text-sm text-gray-600 dark:text-gray-400">

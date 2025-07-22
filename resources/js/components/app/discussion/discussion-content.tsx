@@ -6,6 +6,7 @@ import { useUserStore } from '@/lib/store/userStore';
 import { UserModel } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { SessionPanel } from '../course/panel/session-Panel';
+import { ForumDescription } from '../course/section/forumDescription';
 
 interface Props {
     courseId: string;
@@ -37,11 +38,7 @@ export default function DiscussionContent({ courseId, user }: Props) {
     const [newStudentArgument, setNewStudentArgument] = useState('');
 
     if (!forum) {
-        return (
-            <div className="p-6 text-red-600">
-                <h1 className="text-xl font-semibold">Forum not found for course ID: {courseId}</h1>
-            </div>
-        );
+        return console.log('Forum not found for course ID:', courseId);
     }
 
     const storedThreads = getThreadsForSession(courseId, selectedSession);
@@ -57,19 +54,6 @@ export default function DiscussionContent({ courseId, user }: Props) {
 
     function handlePostThread() {
         if (!newStudentArgument.trim() || !forum) return;
-
-        // const posterName = name?.trim() || (role === 'lecturer' ? 'Lecturer' : 'Student');
-        // storeNewDiscussion(
-        //     forum.courseId,
-        //     forum.classId,
-        //     forum.lecturerId,
-        //     forum.lecturerName,
-        //     forum.forumTitle,
-        //     newStudentArgument,
-        //     selectedSession,
-        //     posterName,
-        // );
-
         setNewStudentArgument('');
     }
 
@@ -77,6 +61,9 @@ export default function DiscussionContent({ courseId, user }: Props) {
         <div className="space-y-8 px-6">
             <div className="w-full">
                 <SessionPanel courseId={courseId} currentUrl="{url}" />
+                <div className="my-6">
+                    <ForumDescription forum={forum} />
+                </div>
                 {/* Comment Area */}
                 <textarea
                     value={newStudentArgument}

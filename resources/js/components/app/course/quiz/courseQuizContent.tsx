@@ -43,7 +43,7 @@ export default function CourseQuizContent({ courseId, courseName }: Props) {
             const totalMistakes = recap.reduce((sum, r) => sum + r.count, 0);
 
             if (totalMistakes === 0) {
-                const categories = ['Algorithm', 'Database', 'HCI'];
+                const categories = ['Algoritma', 'DB', 'HCI'];
                 const baseCounts = [4, 3, 3];
                 let selected: QuizQuestion[] = [];
                 categories.forEach((cat, idx) => {

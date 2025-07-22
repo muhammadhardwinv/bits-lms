@@ -157,7 +157,7 @@ This document provides a complete inventory of all hardcoded data, mock values, 
 // Specific course assignments with detailed descriptions
 [
     {
-        title: 'Environmental Impact of Chemical Waste',
+        title: 'Environmental Impact of Chemical',
         courseName: 'Science',
         courseId: 'SCI-4321',
         classId: 'XII-Science-1',
@@ -188,7 +188,7 @@ This document provides a complete inventory of all hardcoded data, mock values, 
         progress: calculated percentage,
         maxScore: 100,
         gradedAt: '2025-07-03',
-        remarks: 'Excellent understanding of chemical waste impact.'
+        remarks: 'Excellent understanding of Chemical impact.'
     }
     // ... more course scores
 ]
@@ -204,13 +204,13 @@ This document provides a complete inventory of all hardcoded data, mock values, 
 // Multiple assignment records with detailed descriptions
 [
     {
-        title: 'Environmental Impact of Chemical Waste',
+        title: 'Environmental Impact of Chemical',
         courseName: 'Science',
         courseId: 'SCI-4321',
         classId: 'XII-Science-1',
         dueDate: '2025-07-10',
         type: 'Written Report',
-        description: 'Comprehensive report analyzing chemical waste disposal...',
+        description: 'Comprehensive report analyzing Chemical disposal...',
         link: '/assignment/science/SCI-4321'
     }
     // ... more assignments
@@ -227,7 +227,7 @@ This document provides a complete inventory of all hardcoded data, mock values, 
 // Forum discussion topics with learning outcomes
 [
     {
-        forumTitle: 'Environmental Impact of Chemical Waste',
+        forumTitle: 'Environmental Impact of Chemical',
         learningOutcome: 'Analyze ecological consequences...',
         subTopics: ['Terrestrial pollution', 'Aquatic ecosystem effects', ...],
         lecturerName: 'Dr. Sinta Dewi',
@@ -247,7 +247,7 @@ This document provides a complete inventory of all hardcoded data, mock values, 
     {
         classId: 'SCI-4321',
         studentName: 'Alya Nurhaliza',
-        studentArgument: 'I think local factories still dump chemical waste...',
+        studentArgument: 'I think local factories still dump Chemical...',
         lecturerResponse: 'Alya, that's a valid observation...',
         timestampStudent: '2025-06-28T09:14:00Z',
         timestampLecturer: '2025-06-28T11:23:00Z'

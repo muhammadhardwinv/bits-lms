@@ -21,18 +21,44 @@ interface Props {
 
 const course = courses[0];
 const safeCourseName = course.courseName.replace(/\s+/g, '-').toLowerCase();
+const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/files/Powerpoint.pdf';
+    link.download = 'Powerpoint.pdf'; // optional: force download name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
 
 export default function TeacherCard({ courseId }: Props) {
     return (
         <nav className="flex flex-col gap-3 text-sm text-blue-600">
+            {/* PPT Upload / View */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="hover flex cursor-pointer flex-row items-center gap-3">
-                        <h2> (PPT) Introduction to {course.courseName}</h2>
-                        <span className="flex flex-row items-center">
-                            <Download className="mb-1 h-4 w-4" />
-                        </span>
-                    </a>
+                    <div className="gap flex flex-row items-center justify-start">
+                        <a className="flex cursor-pointer flex-row items-center gap-3 rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">
+                            <h2> PPT - Introduction to {course.courseName}</h2>
+                        </a>
+                        <AlertDialogTrigger>
+                            <a className="flex cursor-pointer flex-row">
+                                <div className="group relative mb-1 ml-2 items-center">
+                                    <button
+                                        onClick={handleDownload}
+                                        className="h-full w-full cursor-pointer items-center rounded p-1 text-xs text-blue-500 hover:bg-[#F2951B] dark:text-white"
+                                    >
+                                        <Download size={20} className="text-black dark:text-white" />
+                                    </button>
+
+                                    <div className="group relative">
+                                        <button className="absolute top-full left-1/2 mt-2 w-max -translate-x-1/2 scale-0 transform cursor-pointer rounded !bg-gray-200 px-2 py-1 text-sm text-black opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
+                                            Download PPT
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+                        </AlertDialogTrigger>
+                    </div>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -50,9 +76,10 @@ export default function TeacherCard({ courseId }: Props) {
                 </AlertDialogContent>
             </AlertDialog>
 
+            {/* Forums Page */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="cursor-pointer">Go to Forums Page</a>
+                    <a className="cursor-pointer rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">Go to Forums Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -70,9 +97,10 @@ export default function TeacherCard({ courseId }: Props) {
                 </AlertDialogContent>
             </AlertDialog>
 
+            {/* Quiz Page */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="cursor-pointer">Go to Quiz Page</a>
+                    <a className="cursor-pointer rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">Go to Quiz Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -90,10 +118,10 @@ export default function TeacherCard({ courseId }: Props) {
                 </AlertDialogContent>
             </AlertDialog>
 
-            {/* Exam — optional, no route defined yet */}
+            {/* Exam Page */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="cursor-pointer">Go to Exam Page</a>
+                    <a className="cursor-pointer rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">Go to Exam Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -114,7 +142,10 @@ export default function TeacherCard({ courseId }: Props) {
             {/* Add New Items */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Button variant="outline" className="mt-3 flex cursor-pointer items-center justify-center hover:bg-[#F2951B]">
+                    <Button
+                        variant="outline"
+                        className="mt-3 flex cursor-pointer items-center justify-center text-black hover:bg-[#F2951B] dark:text-white"
+                    >
                         <span className="text-xl">+</span>
                         <span>Add New Items</span>
                     </Button>
@@ -122,9 +153,6 @@ export default function TeacherCard({ courseId }: Props) {
                 <AlertDialogContent className="max-w-[95vw] sm:max-w-lg">
                     <AlertDialogHeader>
                         <div className="relative flex h-8 items-center justify-center">
-                            {/* <button className="absolute left-4 cursor-pointer">
-                                <ArrowLeft />
-                            </button> */}
                             <AlertDialogTrigger asChild>
                                 <Button className="absolute left-4 cursor-pointer bg-white text-black hover:bg-[#F2951B] dark:bg-black dark:text-white dark:hover:bg-[#F2951B]">
                                     <ArrowLeft />
@@ -146,12 +174,12 @@ export default function TeacherCard({ courseId }: Props) {
                         </Card>
 
                         <Card
-                            className="cursor-pointer transition hover:bg-[#F2951B] dark:hover:bg-[#F2951B]"
                             onClick={() => router.visit(`/${courseId}/quiz`)}
+                            className="cursor-pointer transition hover:bg-[#F2951B] dark:hover:bg-[#F2951B]"
                         >
                             <CardContent className="flex flex-col items-center justify-center p-6">
                                 <HelpCircle className="mb-2 h-8 w-8 text-yellow-500" />
-                                <span className="cursor-pointer text-center font-medium">Quiz</span>
+                                <span className="text-center font-medium">Quiz</span>
                             </CardContent>
                         </Card>
                     </div>

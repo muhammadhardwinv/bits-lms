@@ -7,7 +7,6 @@ export type People = {
 };
 
 const peopleList: People[] = [];
-
 const courses = [
     { courseId: 'MAT-1010', classId: 'CLS-101', courseName: 'Mathematics' },
     { courseId: 'SCI-4321', classId: 'CLS-102', courseName: 'Science' },
@@ -18,10 +17,11 @@ const courses = [
 ];
 
 function generatePeopleName(index: number) {
-    const names = ['Alex', 'Sam', 'Jordan', 'Taylor', 'Morgan', 'Jamie', 'Riley', 'Casey', 'Skyler', 'Hayden'];
-    const lastNames = ['Smith', 'Johnson', 'Brown', 'Lee', 'Martinez', 'Davis', 'Miller', 'Wilson', 'Anderson', 'Thomas'];
-    return `${names[index % names.length]} ${lastNames[index % lastNames.length]}`;
+    const firstNames = ['Andi', 'Budi', 'Citra', 'Dewi', 'Eka', 'Farhan', 'Gita', 'Hana', 'Iqbal', 'Joko'];
+    const lastNames = ['Saputra', 'Sari', 'Wijaya', 'Pratama', 'Lestari', 'Putri', 'Santoso', 'Yuliana', 'Nugroho', 'Rahmawati'];
+    return `${firstNames[index % firstNames.length]} ${lastNames[index % lastNames.length]}`;
 }
+
 
 courses.forEach((course) => {
     for (let i = 1; i <= 20; i++) {

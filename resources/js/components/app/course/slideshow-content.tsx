@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
+import { Download } from 'lucide-react';
 
 const slidePages = Array.from({ length: 18 }, (_, i) => `/assets/slides/${i + 1}.png`);
 
@@ -29,6 +30,15 @@ export default function SlideshowContent() {
 
     const jumpToPage = (index: number) => {
         if (index >= 0 && index < slidePages.length) setCurrentSlide(index);
+    };
+
+    const handleDownload = () => {
+        const link = document.createElement('a');
+        link.href = '/files/Powerpoint.pdf';
+        link.download = 'Powerpoint.pdf'; // optional: force download name
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (
@@ -69,7 +79,7 @@ export default function SlideshowContent() {
                 </Card>
 
                 {/* --- Control Buttons --- */}
-                <div className="grid w-full max-w-4xl grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
+                <div className="flex w-full flex-row items-center justify-center gap-4">
                     <Button onClick={() => setCurrentSlide(0)} variant="secondary">
                         ⏮ First
                     </Button>
@@ -85,6 +95,14 @@ export default function SlideshowContent() {
                     <Button onClick={() => setCurrentSlide(slidePages.length - 1)} variant="secondary">
                         Last ⏭
                     </Button>
+                </div>
+                <div className="flex flex-row items-center gap-4">
+                    <button
+                        onClick={handleDownload}
+                        className="h-full w-full cursor-pointer items-center rounded p-1 text-xs text-blue-500 hover:bg-[#F2951B] dark:text-white"
+                    >
+                        <Download size={20} className="text-black dark:text-white" />
+                    </button>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
