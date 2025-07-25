@@ -17,9 +17,23 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { useUserStore } from '@/lib/store/userStore';
-import { Link } from '@inertiajs/react';
-import { BarChart, Calendar, ChevronUp, ClipboardList, Ellipsis, LayoutDashboardIcon, Library, User2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { usePage, router } from '@inertiajs/react';
+import { BarChart, Calendar, ChevronUp, ClipboardList, Ellipsis, LayoutDashboardIcon, Library, User2, MessageCircle } from 'lucide-react';
+import { useEffect } from 'react';
+
+interface AuthUser {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+}
+
+interface PageProps {
+    auth: {
+        user: AuthUser;
+    };
+    [key: string]: any;
+}
 
 const items = [
     { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboardIcon },
@@ -27,6 +41,7 @@ const items = [
     { title: 'Assignment', url: '/assignment', icon: ClipboardList },
     { title: 'Grade Books', url: '/gradebook', icon: BarChart },
     { title: 'Events', url: '/events', icon: Calendar },
+    { title: 'Chatbot', url: 'https://bisa-chatbot.streamlit.app', icon: MessageCircle, external: true },
 ];
 
 function toCamelCase(str: string | undefined): string {
@@ -35,22 +50,28 @@ function toCamelCase(str: string | undefined): string {
 }
 
 export function ContentSidebar() {
-    const { role, setRole } = useUserStore();
-    const [isDark, setIsDark] = useState(false);
+    const { role } = useUserStore();
+    const { auth } = usePage<PageProps>().props;
+
+    // Get the actual user role from the database
+    const actualUserRole = auth?.user?.role || role;
 
     useEffect(() => {
         const theme = localStorage.getItem('theme');
         const dark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        setIsDark(dark);
         if (dark) document.documentElement.classList.add('dark');
         else document.documentElement.classList.remove('dark');
     }, []);
 
-    const toggleDarkMode = () => {
-        const html = document.documentElement;
-        const nowDark = html.classList.toggle('dark');
-        localStorage.setItem('theme', nowDark ? 'dark' : 'light');
-        setIsDark(nowDark);
+    const handleLogout = () => {
+        router.post('/logout', {}, {
+            onSuccess: () => {
+                // Redirect will be handled by the controller
+            },
+            onError: (errors) => {
+                console.error('Logout failed:', errors);
+            }
+        });
     };
 
     return (
@@ -77,25 +98,20 @@ export function ContentSidebar() {
                         {/* Card Content */}
                         <div className="flex h-[15vh] flex-col justify-between">
                             <span className="text-md block">Role:</span>
-                            <span className="mt-1 block font-semibold">{toCamelCase(role)}</span>
+                            <span className="mt-1 block font-semibold">{toCamelCase(actualUserRole)}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Dropdown Content */}
                 <DropdownMenuContent side="right" align="center" className="w-44">
-                    <DropdownMenuLabel className="text-xs text-muted-foreground">Switch Role</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => setRole('student')} className={role === 'student' ? 'font-semibold text-blue-600' : ''}>
-                        Student
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setRole('lecturer')} className={role === 'lecturer' ? 'font-semibold text-blue-600' : ''}>
-                        Lecturer
+                    <DropdownMenuLabel className="text-xs text-muted-foreground">User Menu</DropdownMenuLabel>
+                    <DropdownMenuItem disabled className="font-semibold text-blue-600">
+                        {toCamelCase(actualUserRole)} Account
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                        <Link href="/login" className="text-red-500 hover:underline">
-                            Sign out
-                        </Link>
+                    <DropdownMenuItem onClick={handleLogout} className="text-red-500 hover:text-red-700 cursor-pointer">
+                        Sign out
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
@@ -107,10 +123,17 @@ export function ContentSidebar() {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
+                                        {item.external ? (
+                                            <a href={item.url} target="_blank" rel="noopener noreferrer">
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </a>
+                                        ) : (
+                                            <a href={item.url}>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </a>
+                                        )}
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
