@@ -43,73 +43,74 @@ function CalendarDemo() {
     );
 }
 function SectionCard({ title, icon: Icon, items, user }: { title: string; icon: React.ElementType; items: string[]; user: UserModel }) {
-    const { role, courseId } = useUserStore();
-    const firstClass = user.classes?.[0];
+    // const { role, courseId } = useUserStore();
+    // const firstClass = user.classes?.[0];
 
     return (
-        <div className="h-[60vh] w-full max-w-[32vw] flex-1 overflow-y-auto rounded-lg border bg-gradient-to-br from-white to-blue-50 p-4 shadow-md dark:from-[#121212] dark:to-[#1f1f1f]">
-            <div className="flex items-center gap-2 pb-4">
-                <div className="flex w-full flex-row items-center justify-between">
-                    <div className="space-between mx-1 flex flex-row items-center">
-                        <Icon className="mx-2 h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
-                    </div>
+        <></>
+        // <div className="h-[60vh] w-full max-w-[32vw] flex-1 overflow-y-auto rounded-lg border bg-gradient-to-br from-white to-blue-50 p-4 shadow-md dark:from-[#121212] dark:to-[#1f1f1f]">
+        //     <div className="flex items-center gap-2 pb-4">
+        //         <div className="flex w-full flex-row items-center justify-between">
+        //             <div className="space-between mx-1 flex flex-row items-center">
+        //                 <Icon className="mx-2 h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+        //                 <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+        //             </div>
 
-                    {role === 'lecturer' && (
-                        <Link
-                            href={route('select-class')}
-                            className="mr-4 items-center rounded-full bg-indigo-100 px-2 text-lg font-bold text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-300"
-                        >
-                            +
-                        </Link>
-                    )}
-                </div>
+        //             {role === 'lecturer' && (
+        //                 <Link
+        //                     href={route('select-class')}
+        //                     className="mr-4 items-center rounded-full bg-indigo-100 px-2 text-lg font-bold text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-300"
+        //                 >
+        //                     +
+        //                 </Link>
+        //             )}
+        //         </div>
 
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        {user.role === 'lecturer' && firstClass && (
-                            <Link
-                                href={`/assignment/${firstClass.courseName}/${firstClass.courseId}`}
-                                className="rounded-full border border-gray-300 bg-gray-100 p-2 text-2xl text-indigo-600 hover:bg-gray-200"
-                                title="Add Assignment"
-                            >
-                                +
-                            </Link>
-                        )}
-                    </AlertDialogTrigger>
+        //         <AlertDialog>
+        //             <AlertDialogTrigger asChild>
+        //                 {user.role === 'lecturer' && firstClass && (
+        //                     <Link
+        //                         href={`/assignment/${firstClass.courseName}/${firstClass.courseId}`}
+        //                         className="rounded-full border border-gray-300 bg-gray-100 p-2 text-2xl text-indigo-600 hover:bg-gray-200"
+        //                         title="Add Assignment"
+        //                     >
+        //                         +
+        //                     </Link>
+        //                 )}
+        //             </AlertDialogTrigger>
 
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                This action cannot be undone. This will permanently add a new response to the system and make it visible to all
-                                students.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction>Continue</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-            </div>
+        //             <AlertDialogContent>
+        //                 <AlertDialogHeader>
+        //                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+        //                     <AlertDialogDescription>
+        //                         This action cannot be undone. This will permanently add a new response to the system and make it visible to all
+        //                         students.
+        //                     </AlertDialogDescription>
+        //                 </AlertDialogHeader>
+        //                 <AlertDialogFooter>
+        //                     <AlertDialogCancel>Cancel</AlertDialogCancel>
+        //                     <AlertDialogAction>Continue</AlertDialogAction>
+        //                 </AlertDialogFooter>
+        //             </AlertDialogContent>
+        //         </AlertDialog>
+        //     </div>
 
-            <div className="space-y-2">
-                {items.map((label, index) => (
-                    <Card
-                        key={index}
-                        className="border border-gray-200 bg-white/80 transition-all duration-300 hover:scale-[1.01] hover:shadow-md dark:border-gray-700 dark:bg-[#181818]"
-                    >
-                        <CardContent className="ml-2 flex items-center gap-3 p-4">
-                            <span className="rounded bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300">
-                                {index + 1}
-                            </span>
-                            <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
-        </div>
+        //     <div className="space-y-2">
+        //         {items.map((label, index) => (
+        //             <Card
+        //                 key={index}
+        //                 className="border border-gray-200 bg-white/80 transition-all duration-300 hover:scale-[1.01] hover:shadow-md dark:border-gray-700 dark:bg-[#181818]"
+        //             >
+        //                 <CardContent className="ml-2 flex items-center gap-3 p-4">
+        //                     <span className="rounded bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300">
+        //                         {index + 1}
+        //                     </span>
+        //                     <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+        //                 </CardContent>
+        //             </Card>
+        //         ))}
+        //     </div>
+        // </div>
     );
 }
 export function ChartAreaInteractive({ user }: { user: UserModel }) {

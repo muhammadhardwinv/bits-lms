@@ -17,7 +17,7 @@ export const discussionThreads: DiscussionThread[] = [
         ...forumContents.find((f) => f.courseId === 'SCI-4321')!,
         classId: 'SCI-4321',
         studentName: 'Alya Nurhaliza',
-        studentArgument: 'I think local factories still dump chemical waste into rivers because the cost of proper disposal is too high.',
+        studentArgument: 'I think local factories still dump Chemical into rivers because the cost of proper disposal is too high.',
         lecturerResponse:
             'Alya, that’s a valid observation. Economic barriers are a major reason. In our next session, we’ll review cost-effective sustainable waste treatment alternatives being piloted in Southeast Asia.',
         timestampStudent: '2025-06-28T09:14:00Z',
@@ -252,7 +252,7 @@ export const discussionThreads: DiscussionThread[] = [
         ...forumContents.find((f) => f.courseId === 'SCI-4321')!,
         classId: 'SCI-4321',
         studentName: 'Alya Nurhaliza',
-        studentArgument: 'I think local factories still dump chemical waste into rivers because the cost of proper disposal is too high.',
+        studentArgument: 'I think local factories still dump Chemical into rivers because the cost of proper disposal is too high.',
         lecturerResponse:
             'Alya, that’s a valid observation. Economic barriers are a major reason. In our next session, we’ll review cost-effective sustainable waste treatment alternatives being piloted in Southeast Asia.',
         timestampStudent: '2025-06-28T09:14:00Z',
@@ -538,7 +538,7 @@ export const discussionThreads: DiscussionThread[] = [
         ...forumContents.find((f) => f.courseId === 'SCI-4321')!,
         classId: 'SCI-4321',
         studentName: 'Alya Nurhaliza',
-        studentArgument: 'I think local factories still dump chemical waste into rivers because the cost of proper disposal is too high.',
+        studentArgument: 'I think local factories still dump Chemical into rivers because the cost of proper disposal is too high.',
         lecturerResponse:
             'Alya, that’s a valid observation. Economic barriers are a major reason. In our next session, we’ll review cost-effective sustainable waste treatment alternatives being piloted in Southeast Asia.',
         timestampStudent: '2025-06-28T09:14:00Z',

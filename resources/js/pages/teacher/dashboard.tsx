@@ -1,41 +1,34 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import ContentLayout from '@/layouts/content-layout';
 import { Head, Link, usePage, router } from '@inertiajs/react';
-import { User } from '@/types';
-import {
-    BookOpen,
-    Users,
-    FileText,
-    Calendar,
-    Clock,
-    GraduationCap,
-    MessageSquare,
-    TrendingUp,
-    Bell,
-    LogOut,
-    Plus
-} from 'lucide-react';
+import { BookOpen, Users, FileText, Calendar, Clock, GraduationCap, MessageSquare, TrendingUp, Bell, LogOut, Plus } from 'lucide-react';
+import { ContentLayout } from '@/layouts/content-layout';
+import { UserModel } from '@/lib/types';
 
 interface TeacherDashboardProps {
     auth: {
-        user: User;
+        user: UserModel;
     };
+    [key: string]: any;
 }
 
 export default function TeacherDashboard() {
     const { auth } = usePage<TeacherDashboardProps>().props;
 
     const handleLogout = () => {
-        router.post(route('logout'), {}, {
-            onSuccess: () => {
-                // Redirect will be handled by the controller
+        router.post(
+            route('logout'),
+            {},
+            {
+                onSuccess: () => {
+                    // Redirect will be handled by the controller
+                },
+                onError: (errors) => {
+                    console.error('Logout failed:', errors);
+                },
             },
-            onError: (errors) => {
-                console.error('Logout failed:', errors);
-            }
-        });
+        );
     };
 
     // Mock data for teacher dashboard
@@ -63,33 +56,33 @@ export default function TeacherDashboard() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <ContentLayout>
+            <ContentLayout user={auth.user}>
                 <div className="space-y-6">
                     {/* Welcome Section */}
-                    <div className="bg-gradient-to-r from-green-500 to-blue-600 text-white p-6 rounded-lg">
-                        <div className="flex justify-between items-start">
+                    <div className="rounded-lg bg-gradient-to-r from-green-500 to-blue-600 p-6 text-white">
+                        <div className="flex items-start justify-between">
                             <div>
-                                <h1 className="text-2xl font-bold mb-2">Welcome back, Professor {auth.user.name}!</h1>
+                                <h1 className="mb-2 text-2xl font-bold">Welcome back, Professor {auth.user.name}!</h1>
                                 <p className="text-green-100">Ready to inspire and educate your students?</p>
                             </div>
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={handleLogout}
-                                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                                className="border-white/20 bg-white/10 text-white hover:bg-white/20"
                             >
-                                <LogOut className="h-4 w-4 mr-2" />
+                                <LogOut className="mr-2 h-4 w-4" />
                                 Logout
                             </Button>
                         </div>
                     </div>
 
                     {/* Quick Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                         <Card>
                             <CardContent className="p-4">
                                 <div className="flex items-center space-x-3">
-                                    <div className="bg-green-100 p-2 rounded-lg">
+                                    <div className="rounded-lg bg-green-100 p-2">
                                         <BookOpen className="h-6 w-6 text-green-600" />
                                     </div>
                                     <div>
@@ -102,13 +95,11 @@ export default function TeacherDashboard() {
                         <Card>
                             <CardContent className="p-4">
                                 <div className="flex items-center space-x-3">
-                                    <div className="bg-blue-100 p-2 rounded-lg">
+                                    <div className="rounded-lg bg-blue-100 p-2">
                                         <Users className="h-6 w-6 text-blue-600" />
                                     </div>
                                     <div>
-                                        <p className="text-2xl font-bold">
-                                            {teachingCourses.reduce((sum, course) => sum + course.students, 0)}
-                                        </p>
+                                        <p className="text-2xl font-bold">{teachingCourses.reduce((sum, course) => sum + course.students, 0)}</p>
                                         <p className="text-sm text-gray-600">Total Students</p>
                                     </div>
                                 </div>
@@ -117,7 +108,7 @@ export default function TeacherDashboard() {
                         <Card>
                             <CardContent className="p-4">
                                 <div className="flex items-center space-x-3">
-                                    <div className="bg-orange-100 p-2 rounded-lg">
+                                    <div className="rounded-lg bg-orange-100 p-2">
                                         <FileText className="h-6 w-6 text-orange-600" />
                                     </div>
                                     <div>
@@ -132,7 +123,7 @@ export default function TeacherDashboard() {
                         <Card>
                             <CardContent className="p-4">
                                 <div className="flex items-center space-x-3">
-                                    <div className="bg-purple-100 p-2 rounded-lg">
+                                    <div className="rounded-lg bg-purple-100 p-2">
                                         <Calendar className="h-6 w-6 text-purple-600" />
                                     </div>
                                     <div>
@@ -144,7 +135,7 @@ export default function TeacherDashboard() {
                         </Card>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                         {/* Teaching Courses */}
                         <Card>
                             <CardHeader>
@@ -157,8 +148,8 @@ export default function TeacherDashboard() {
                             <CardContent>
                                 <div className="space-y-4">
                                     {teachingCourses.map((course) => (
-                                        <div key={course.id} className="border rounded-lg p-4">
-                                            <div className="flex justify-between items-start mb-2">
+                                        <div key={course.id} className="rounded-lg border p-4">
+                                            <div className="mb-2 flex items-start justify-between">
                                                 <div>
                                                     <h3 className="font-semibold">{course.name}</h3>
                                                     <p className="text-sm text-gray-600">{course.code}</p>
@@ -168,12 +159,12 @@ export default function TeacherDashboard() {
                                                     <p className="text-sm text-gray-500">{course.assignments} assignments</p>
                                                 </div>
                                             </div>
-                                            <div className="flex space-x-2 mt-3">
+                                            <div className="mt-3 flex space-x-2">
                                                 <Button variant="outline" size="sm">
                                                     View Course
                                                 </Button>
                                                 <Button variant="outline" size="sm">
-                                                    <Plus className="h-4 w-4 mr-1" />
+                                                    <Plus className="mr-1 h-4 w-4" />
                                                     New Assignment
                                                 </Button>
                                             </div>
@@ -195,8 +186,8 @@ export default function TeacherDashboard() {
                             <CardContent>
                                 <div className="space-y-4">
                                     {pendingGrading.map((item) => (
-                                        <div key={item.id} className="border rounded-lg p-4">
-                                            <div className="flex justify-between items-start mb-2">
+                                        <div key={item.id} className="rounded-lg border p-4">
+                                            <div className="mb-2 flex items-start justify-between">
                                                 <div>
                                                     <h3 className="font-semibold">{item.assignment}</h3>
                                                     <p className="text-sm text-gray-600">{item.course}</p>
@@ -205,9 +196,9 @@ export default function TeacherDashboard() {
                                                     {item.graded}/{item.submissions}
                                                 </Badge>
                                             </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                                            <div className="mb-3 h-2 w-full rounded-full bg-gray-200">
                                                 <div
-                                                    className="bg-green-600 h-2 rounded-full"
+                                                    className="h-2 rounded-full bg-green-600"
                                                     style={{ width: `${(item.graded / item.submissions) * 100}%` }}
                                                 ></div>
                                             </div>
@@ -231,14 +222,12 @@ export default function TeacherDashboard() {
                             <CardDescription>Your schedule for today and tomorrow</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                                 {upcomingClasses.map((classItem) => (
-                                    <div key={classItem.id} className="border rounded-lg p-4">
-                                        <div className="flex justify-between items-start mb-2">
+                                    <div key={classItem.id} className="rounded-lg border p-4">
+                                        <div className="mb-2 flex items-start justify-between">
                                             <h3 className="font-semibold">{classItem.course}</h3>
-                                            <Badge variant={classItem.date === 'Today' ? 'default' : 'secondary'}>
-                                                {classItem.date}
-                                            </Badge>
+                                            <Badge variant={classItem.date === 'Today' ? 'default' : 'secondary'}>{classItem.date}</Badge>
                                         </div>
                                         <div className="space-y-1">
                                             <div className="flex items-center space-x-2">
@@ -263,28 +252,28 @@ export default function TeacherDashboard() {
                             <CardDescription>Common teaching tasks and shortcuts</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                                 <Link href="/courses">
                                     <Button variant="outline" className="w-full">
-                                        <BookOpen className="h-4 w-4 mr-2" />
+                                        <BookOpen className="mr-2 h-4 w-4" />
                                         Manage Courses
                                     </Button>
                                 </Link>
                                 <Link href="/gradebook">
                                     <Button variant="outline" className="w-full">
-                                        <FileText className="h-4 w-4 mr-2" />
+                                        <FileText className="mr-2 h-4 w-4" />
                                         Gradebook
                                     </Button>
                                 </Link>
                                 <Link href="/people">
                                     <Button variant="outline" className="w-full">
-                                        <Users className="h-4 w-4 mr-2" />
+                                        <Users className="mr-2 h-4 w-4" />
                                         Students
                                     </Button>
                                 </Link>
                                 <Link href="/select-class">
                                     <Button variant="outline" className="w-full">
-                                        <Plus className="h-4 w-4 mr-2" />
+                                        <Plus className="mr-2 h-4 w-4" />
                                         New Assignment
                                     </Button>
                                 </Link>

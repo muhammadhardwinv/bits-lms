@@ -43,7 +43,7 @@ export default function CourseQuizContent({ courseId, courseName }: Props) {
             const totalMistakes = recap.reduce((sum, r) => sum + r.count, 0);
 
             if (totalMistakes === 0) {
-                const categories = ['Algorithm', 'Database', 'HCI'];
+                const categories = ['Algoritma', 'DB', 'HCI'];
                 const baseCounts = [4, 3, 3];
                 let selected: QuizQuestion[] = [];
                 categories.forEach((cat, idx) => {
@@ -199,115 +199,159 @@ export default function CourseQuizContent({ courseId, courseName }: Props) {
             .map(([category]) => category);
     };
 
+    const renderNavigation = () => (
+        <div className="my-8 flex flex-col items-center gap-2">
+            <div className="mb-3 flex text-lg font-semibold text-gray-800 dark:text-gray-100">Question Navigation</div>
+            <div className="grid grid-cols-5 gap-3">
+                {questions.map((_, i) => {
+                    const isCurrent = i === currentIndex;
+                    const isAnswered = !!selectedAnswers[questions[i].id];
+
+                    return (
+                        <button
+                            key={i}
+                            onClick={() => setCurrentIndex(i)}
+                            className={`flex h-12 w-8 flex-col items-center rounded-md border pt-2 text-start text-sm font-semibold transition ${isCurrent ? 'bg-[#F2951B] text-white' : 'bg-gray-100 text-gray-800'} ${isAnswered ? 'border-green-500' : 'border-gray-300'} hover:bg-[#F2951B] hover:text-white`}
+                        >
+                            {i + 1}
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+
     return (
-        <div className="mx-auto w-[90vw] rounded-2xl bg-white p-6 shadow-lg dark:bg-[#1f1f1f]">
-            <h3 className="text-2xl font-black">Session 1</h3>
-            <h3 className="text-4xl">Quiz 1</h3>
-            <span>
-                {courseId} - {classId}
-            </span>
-            <Separator className="my-5 border" />
-            <div>
-                <div>
-                    {!submitted ? (
-                        <>
-                            <div className="my-2 mr-20 mb-5 flex flex-row justify-between text-4xl font-black text-[#EFA928]">
-                                <div>
-                                    <span>Question</span>
-                                    <span className="ml-4">{currentIndex + 1}</span>
-                                </div>
-                                <button
-                                    onClick={() => {
-                                        sessionStorage.setItem(`reset-${courseId}`, 'true');
-                                        window.location.reload();
-                                    }}
-                                    className="mt-20 mb-2 h-9 w-20 rounded bg-red-600 py-2 text-xs text-white hover:bg-red-700"
-                                >
-                                    Reset Quiz
-                                </button>
-                            </div>
-
-                            <div className="mb-4 text-center text-3xl font-black text-gray-800 dark:text-gray-100">{currentQuestion.question}</div>
-
-                            <div className="mt-15 flex flex-row flex-wrap items-center justify-center gap-8">
-                                {currentQuestion.options.map((opt, idx) => {
-                                    const selected = selectedAnswers[currentQuestion.id] === opt;
-                                    const colors = ['#2C71AE', '#2E9DA6', '#D5546D', '#EFA928'];
-                                    const color = colors[idx] || '#ccc';
-
-                                    return (
+        <div>
+            <div className='mx-10 my-4'>
+                <h3 className="text-2xl font-black">Session 1</h3>
+                <h3 className="text-4xl">Quiz 1</h3>
+                <span>
+                    {courseId} - {classId}
+                </span>
+                <Separator className="my-6 border" />
+            </div>
+            <div className="flex w-full flex-row items-start gap-6">
+                {/* Main Quiz Content */}
+                <div className="flex-1">
+                    <div className="w-full rounded-2xl bg-white p-6 shadow-lg dark:bg-[#1f1f1f]">
+                        <div className="rounded-2xl bg-[#CDE3E7] py-6">
+                            {!submitted ? (
+                                <>
+                                    <div className="mt-2 mb-5 ml-6 flex flex-row justify-between text-5xl font-black text-[#113F67]">
+                                        <div>
+                                            <span>Question</span>
+                                            <span className="ml-4">{currentIndex + 1}</span>
+                                        </div>
                                         <button
-                                            key={idx}
-                                            className={`flex h-[35vh] w-[15vw] cursor-pointer items-center justify-center rounded-xl border-2 p-6 text-center text-lg font-semibold shadow-md transition-all duration-300 hover:scale-105 ${
-                                                selected ? 'text-white' : 'text-white opacity-90 hover:opacity-100'
-                                            }`}
-                                            style={{
-                                                backgroundColor: selected ? color : `${color}bb`,
-                                                borderColor: color,
+                                            onClick={() => {
+                                                sessionStorage.setItem(`reset-${courseId}`, 'true');
+                                                window.location.reload();
                                             }}
-                                            onClick={() => handleSelect(opt)}
-                                            disabled={submitted}
+                                            className="mt-15 mr-6 mb-2 h-10 w-25 cursor-pointer items-center rounded-xl bg-red-600 text-center text-sm text-white hover:bg-red-700"
                                         >
-                                            {opt}
+                                            Restart Quiz
                                         </button>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="mt-15 flex justify-center px-10">
-                                <button
-                                    onClick={handleNext}
-                                    className="rounded-xl bg-[#2C71AE] px-8 py-3 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#2E9DA6] disabled:cursor-not-allowed disabled:opacity-40"
-                                    disabled={!selectedAnswers[currentQuestion.id]}
-                                >
-                                    {currentIndex === questions.length - 1 ? 'Submit' : 'Next'}
-                                </button>
-                            </div>
-                        </>
-                    ) : (
-                        <div className="py-10 text-center">
-                            <h2 className="mb-20 text-5xl font-bold text-[#2C71AE]">Quiz Completed!</h2>
-                            <p className="mt-35 mb-20 text-xl font-semibold text-gray-700 dark:text-gray-100">
-                                Your score: {score} / {questions.length}
-                            </p>
-
-                            {getFrequentlyWrongQuestions().length > 0 ? (
-                                <div className="mt-6 font-semibold text-red-600 dark:text-red-400">
-                                    <h3 className="mb-2 text-lg">Frequently Wrong Questions:</h3>
-                                    <ul className="list-inside list-disc">
-                                        {getFrequentlyWrongQuestions().map((q) => (
-                                            <li key={q.id}>{q.question}</li>
-                                        ))}
-                                    </ul>
-
-                                    <div className="mt-4 text-red-500 dark:text-red-300">
-                                        <h3 className="font-bold">Categories to Improve:</h3>
-                                        <ul className="list-inside list-disc">
-                                            {getWeakCategories().map((cat, idx) => (
-                                                <li key={idx}>{cat}</li>
-                                            ))}
-                                        </ul>
                                     </div>
-                                </div>
+
+                                    <div className="mb-4 text-center text-3xl font-black text-gray-800 dark:text-gray-100">
+                                        {currentQuestion.question}
+                                    </div>
+
+                                    <div className="my-15 flex flex-row flex-wrap items-center justify-center gap-8">
+                                        {currentQuestion.options.map((opt, idx) => {
+                                            const selected = selectedAnswers[currentQuestion.id] === opt;
+                                            const colors = ['#2C71AE', '#2E9DA6', '#D5546D', '#EFA928'];
+                                            const color = colors[idx] || '#ccc';
+
+                                            return (
+                                                <button
+                                                    key={idx}
+                                                    className={`flex h-[35vh] w-[15vw] cursor-pointer items-center justify-center rounded-xl border-2 p-6 text-center text-lg font-semibold shadow-md transition-all duration-300 hover:scale-105 ${
+                                                        selected ? 'text-white' : 'text-white opacity-90 hover:opacity-100'
+                                                    }`}
+                                                    style={{
+                                                        backgroundColor: selected ? color : `${color}bb`,
+                                                        borderColor: color,
+                                                    }}
+                                                    onClick={() => handleSelect(opt)}
+                                                    disabled={submitted}
+                                                >
+                                                    {opt}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="my-6 flex justify-center px-10">
+                                        <button
+                                            onClick={handleNext}
+                                            className="rounded-xl bg-[#2C71AE] px-8 py-3 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#2E9DA6] disabled:cursor-not-allowed disabled:opacity-40"
+                                            disabled={!selectedAnswers[currentQuestion.id]}
+                                        >
+                                            {currentIndex === questions.length - 1 ? 'Submit' : 'Next'}
+                                        </button>
+                                    </div>
+                                </>
                             ) : (
-                                <div className="mx-auto flex w-fit flex-col text-left text-green-700 dark:text-green-400">
-                                    <h3 className="my-15 mb-2 text-2xl font-black">Answer Recap – Categories to Improve:</h3>
-                                    <ul className="text-md flex list-inside list-disc">
-                                        {getWrongAnswerRecap(questions, selectedAnswers).length > 0 ? (
-                                            getWrongAnswerRecap(questions, selectedAnswers).map((item, idx) => (
-                                                <li key={idx}>
-                                                    {item.category}: {item.count} incorrect {item.count === 1 ? 'answer' : 'answers'}
-                                                </li>
-                                            ))
-                                        ) : (
-                                            <li>Excellent! All answers correct across all categories.</li>
-                                        )}
-                                    </ul>
+                                <div className="py-10 text-center">
+                                    <h2 className="mb-20 text-5xl font-bold text-[#2C71AE]">Quiz Completed!</h2>
+                                    <p className="mt-35 mb-20 text-xl font-semibold text-gray-700 dark:text-gray-100">
+                                        Your score: {score} / {questions.length}
+                                    </p>
+
+                                    {getFrequentlyWrongQuestions().length > 0 ? (
+                                        <div className="mt-6 font-semibold text-red-600 dark:text-red-400">
+                                            <h3 className="mb-2 text-lg">Frequently Wrong Questions:</h3>
+                                            <ul className="list-inside list-disc">
+                                                {getFrequentlyWrongQuestions().map((q) => (
+                                                    <li key={q.id}>{q.question}</li>
+                                                ))}
+                                            </ul>
+                                            <div className="mt-4 text-red-500 dark:text-red-300">
+                                                <h3 className="font-bold">Categories to Improve:</h3>
+                                                <ul className="list-inside list-disc">
+                                                    {getWeakCategories().map((cat, idx) => (
+                                                        <li key={idx}>{cat}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="mx-auto flex w-fit flex-col text-center text-green-700 dark:text-green-400">
+                                            <h3 className="my-20 mb-5 text-2xl font-black">Answer Recap – Categories to Improve:</h3>
+                                            <ul className="flex list-inside list-disc text-lg">
+                                                {getWrongAnswerRecap(questions, selectedAnswers).length > 0 ? (
+                                                    getWrongAnswerRecap(questions, selectedAnswers).map((item, idx) => (
+                                                        <li className="my-2 mr-10" key={idx}>
+                                                            {item.category}: {item.count} incorrect {item.count === 1 ? 'answer' : 'answers'}
+                                                        </li>
+                                                    ))
+                                                ) : (
+                                                    <li>Excellent! All answers correct across all categories.</li>
+                                                )}
+                                            </ul>
+                                            <div className="flex justify-center">
+                                                <button
+                                                    onClick={() => {
+                                                        sessionStorage.setItem(`reset-${courseId}`, 'true');
+                                                        window.location.reload();
+                                                    }}
+                                                    className="mt-20 mb-2 h-15 w-25 rounded-xl bg-red-600 py-2 text-center text-sm text-white hover:bg-red-700"
+                                                >
+                                                    Retake Quiz
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
-                    )}
+                    </div>
                 </div>
+
+                {/* Quiz Navigation – right side */}
+                <div className="mr-10 my-30 flex w-[180px] flex-col items-center justify-center">{renderNavigation()}</div>
             </div>
         </div>
     );

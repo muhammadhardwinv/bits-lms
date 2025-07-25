@@ -1,16 +1,20 @@
 import PerAssignmentContent from '@/components/app/assignment/perassignment-content';
-import ContentLayout from '@/layouts/content-layout';
+import { ContentLayout } from '@/layouts/content-layout';
 import { courses, CourseType } from '@/lib/coursesDetails';
+import { UserModel } from '@/lib/types';
 import { Head, usePage } from '@inertiajs/react';
 
-type Props = {
+interface PageProps {
+    auth: {
+        user: UserModel;
+    };
     courseId: string;
-};
+    [key: string]: any;
+}
 
 export default function PerAssignmentPage() {
-    const { courseId } = usePage<Props>().props;
+    const { auth, courseId } = usePage<PageProps>().props;
 
-    // ✅ Use ONLY ONE course declaration
     const course: CourseType | undefined = courses.find((c) => c.courseId === courseId);
 
     if (!course) {
@@ -34,7 +38,7 @@ export default function PerAssignmentPage() {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            <ContentLayout>
+            <ContentLayout user={auth.user}>
                 <PerAssignmentContent assignment={course} user={user} onSubmit={onSubmit} loading={false} errors={{}} />
             </ContentLayout>
         </>

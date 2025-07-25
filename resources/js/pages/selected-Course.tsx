@@ -1,15 +1,23 @@
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import SelectedCourseContent from '@/components/app/course/selectedcourse-content';
-import ContentLayout from '@/layouts/content-layout';
+import { ContentLayout } from '@/layouts/content-layout';
 import { useUserStore } from '@/lib/store/userStore';
-import { Head } from '@inertiajs/react';
+import { UserModel } from '@/lib/types';
+import { Head, usePage } from '@inertiajs/react';
 
-interface Props {
+interface PageProps {
+    auth: {
+        user: UserModel;
+    };
     courseId: string;
+    [key: string]: any;
 }
 
-export default function SelectedCourse({ courseId }: Props) {
-    const role = useUserStore((state) => state.role) as 'student' | 'lecturer';
+export default function SelectedCourse() {
+    const { auth, courseId } = usePage<PageProps>().props;
+
+    const role = auth.user.role;
+    console.log(role);
 
     return (
         <>
@@ -18,9 +26,9 @@ export default function SelectedCourse({ courseId }: Props) {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            <ContentLayout>
+            <ContentLayout user={auth.user}>
                 <CourseGradeTop courseId={courseId} />
-                <SelectedCourseContent role={role} courseId={courseId} />
+                <SelectedCourseContent auth={auth} courseId={courseId} />
             </ContentLayout>
         </>
     );

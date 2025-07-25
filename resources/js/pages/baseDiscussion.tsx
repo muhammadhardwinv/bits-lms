@@ -1,12 +1,12 @@
 import DiscussionContent from '@/components/app/discussion/discussion-content';
-import ContentLayout from '@/layouts/content-layout';
+// import { StudentLayout } from '@/layouts/content-layout';
 
 export default function BaseDiscussion() {
     return (
         <>
-            <ContentLayout>
+            {/* <StudentLayout>
                 <DiscussionContent courseId="SCI-4321" />
-            </ContentLayout>
+            </StudentLayout> */}
         </>
     );
 }

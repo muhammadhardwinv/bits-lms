@@ -45,6 +45,7 @@ class AuthenticatedSessionController extends Controller
 
             // Get the authenticated user
             $user = Auth::user();
+            // dd($user);
 
             // Redirect based on user role
             $dashboardRoute = match ($user->role ?? 'student') {

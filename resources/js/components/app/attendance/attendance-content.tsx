@@ -1,18 +1,12 @@
 import { peopleData } from '@/lib/peopleData';
 import { useUserStore } from '@/lib/store/userStore';
+import { UserModel } from '@/lib/types';
 import { Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 useUserStore;
 
 export interface SharedData {
-    auth: {
-        user: {
-            id: number;
-            name: string;
-            email: string;
-        };
-    };
-    course?: string;
+    user: UserModel;
     [key: string]: any;
 }
 
@@ -20,7 +14,7 @@ function generateAvatar(id: string) {
     return `https://api.dicebear.com/7.x/personas/svg?seed=${id}`;
 }
 
-export default function AttendanceContent() {
+export default function AttendanceContent({ user }: SharedData) {
     const { courseId } = usePage<SharedData>().props;
     const role = useUserStore((state) => state.role); // ✅ Get role from Zustand
 
@@ -49,7 +43,7 @@ export default function AttendanceContent() {
                             </div>
                         </div>
 
-                        {role === 'lecturer' && (
+                        {user.role === 'teacher' && (
                             <button
                                 onClick={() => toggleAttendance(person.id)}
                                 className={`rounded-md px-3 py-1.5 text-xs font-medium ${

@@ -34,7 +34,7 @@ export default function DualNavButtons() {
     };
 
     return (
-        <div className="fixed right-6 bottom-6 z-50 flex space-x-3">
+        <div className="fixed top-6 left-6 z-50 flex space-x-3">
             <button
                 type="button"
                 onClick={scrollToTop}

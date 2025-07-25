@@ -49,14 +49,14 @@ export const cls = [
 
 export const courses: CourseType[] = [
     {
-        title: 'Environmental Impact of Chemical Waste',
+        title: 'Environmental Impact of Chemical',
         courseName: 'Science',
         courseId: 'SCI-4321',
         classId: 'XII-Science-1',
         dueDate: '2025-07-10',
         type: 'Written Report',
         description:
-            'Prepare a comprehensive report analyzing how improper disposal of industrial and household chemical waste affects terrestrial and aquatic ecosystems. Your report should include scientific data, case studies of major chemical spills, and a comparison between developed and developing countries in terms of chemical regulation enforcement. Conclude by suggesting actionable steps to minimize environmental risks.',
+            'Prepare a comprehensive report analyzing how improper disposal of industrial and household Chemical affects terrestrial and aquatic ecosystems. Your report should include scientific data, case studies of major chemical spills, and a comparison between developed and developing countries in terms of chemical regulation enforcement. Conclude by suggesting actionable steps to minimize environmental risks.',
         link: '/assignment/science/SCI-4321',
     },
     {
