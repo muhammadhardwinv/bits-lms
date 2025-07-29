@@ -8,6 +8,7 @@ use App\Models\Material;
 
 class MaterialsController extends Controller
 {
+
     public function create()
     {
         return Inertia::render('admin/materials/newmaterials');

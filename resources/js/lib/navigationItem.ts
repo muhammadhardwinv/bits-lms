@@ -18,9 +18,9 @@ export function redirectRoutes(courses: { courseId: string }[]) {
     }
 }
 export const AdminNavItems = [
-    { title: 'Dashboard admdin', url: '/admin/dashboard', icon: LayoutDashboardIcon },
-    { title: 'Add User', url: 'admin.user.create', icon: User },
-    { title: 'Add Course', url: 'admin.add.materials', icon: BoxIcon },
+    { title: 'Dashboard', url: '/admin/dashboard', icon: LayoutDashboardIcon },
+    { title: 'Add User', url: '/admin/users/create', icon: User },
+    { title: 'Add Course', url: '/admin/materials/create', icon: BoxIcon },
 ];
 4;
 

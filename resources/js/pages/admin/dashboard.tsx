@@ -167,7 +167,7 @@ export default function AdminDashboard() {
                                 </Button>
                                 <Button variant="outline" className="w-full">
                                     <BookOpen className="mr-2 h-4 w-4" />
-                                    Manage Courses
+                                    <Link href="/courses">Manage Courses</Link>
                                 </Button>
                                 <Button variant="outline" className="w-full">
                                     <Settings className="mr-2 h-4 w-4" />

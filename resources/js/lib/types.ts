@@ -5,6 +5,13 @@ export type UserModel = {
     status: string;
 };
 
+export type CourseModel = {
+    id: string;
+    name: string;
+    description: string;
+    teacher_id: string;
+};
+
 export type Assignment = {
     title: string;
     description?: string;

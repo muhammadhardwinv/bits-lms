@@ -7,6 +7,9 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MaterialsController;
+use App\Http\Controllers\Course\CourseController;
+
+
 
 // Authentication Routes (Enhanced with proper controller)
 Route::get('/', fn () => Inertia::render('login'))->name('login');
@@ -25,10 +28,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/materials', [MaterialsController::class, 'store'])->name('store.materials');
 });
 
+Route::prefix('teacher')->name('teacher.')->group(function () {
+    Route::get('/materials/create', [MaterialsController::class, 'create'])->name('add.materials');
+    Route::post('/materials', [MaterialsController::class, 'store'])->name('store.materials');
+});
+
 // Basic Dashboard Routes
 Route::get('/dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
 Route::get('/courses', fn () => Inertia::render('courses', [
     'auth' => ['user' => Auth::user()],
+    'allCourse' => app(CourseController::class)->fetch(),
+
 ]))->name('courses');
 Route::get('/events', fn () => Inertia::render('events'))->name('events');
 Route::get('/lecturer-dashboard', fn () => Inertia::render('lecturerdashboard'))->name('lecturerdashboard');

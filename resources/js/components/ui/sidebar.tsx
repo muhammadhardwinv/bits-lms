@@ -281,7 +281,7 @@ function SidebarTrigger({
   data-slot="sidebar-trigger"
   // variant="ghost"
   size="icon"
-  className="button p-2 text-gray-700 bg-white hover:bg-[#EFA928] dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#EFA928] cursor-pointer"
+  className="button p-2 text-gray-700 bg-white hover:bg-[#0097DA] hover:text-white dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#014769] cursor-pointer"
   onClick={(event) => {
     onClick?.(event);
     toggleSidebar();
@@ -297,7 +297,7 @@ function SidebarTrigger({
         onClick={toggleDarkMode}
         size="icon"
         // variant="joker"
-        className="button p-2 text-gray-700 hover:bg-[#EFA928]  bg-white  dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#EFA928] cursor-pointer"
+        className="button p-2 text-black hover:text-white hover:bg-[#0097DA] bg-white  dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#014769] cursor-pointer"
 
         aria-label="Toggle Dark Mode"
       >
@@ -510,7 +510,7 @@ const sidebarMenuButtonVariants = cva(
   {
     variants: {
       variant: {
-        default: "hover:bg-[#F2951B] dark:hover:bg-[#F2951B] hover:text-sidebar-accent-foreground",
+        default: "hover:bg-[#014769] hover:text-white dark:hover:bg-[#014769]",
         outline:
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },
