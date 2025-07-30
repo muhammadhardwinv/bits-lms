@@ -26,6 +26,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/materials/create', [MaterialsController::class, 'create'])->name('add.materials');
     Route::post('/materials', [MaterialsController::class, 'store'])->name('store.materials');
+    Route::post('/courses/create', [CourseController::class, 'store'])->name('store.courses');
 });
 
 Route::prefix('teacher')->name('teacher.')->group(function () {

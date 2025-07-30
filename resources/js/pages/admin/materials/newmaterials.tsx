@@ -1,54 +1,61 @@
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { courses } from '@/lib/coursesDetails';
+import { FailAlert, SuccessAlert } from '@/components/app/alert/custom-alert';
 import { router, useForm } from '@inertiajs/react';
 import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type Checked = DropdownMenuCheckboxItemProps['checked'];
 
 export default function NewMaterials() {
-    const { data, setData, post, processing, errors } = useForm({
-        title: '',
+    const { data, setData, errors } = useForm({
+        name: '',
         description: '',
-        teacherId: '',
-        file: null as File | null,
+        // teacherId: '',
+        // file: null as File | null,
     });
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [alertType, setAlertType] = useState<'success' | 'fail' | null>(null);
 
-    const handleAddMaterials = () => {
-        router.visit(route('admin.add.materials'));
-    };
-
-    const [selectedCourses, setSelectedCourses] = useState<Record<string, boolean>>({});
-
-    useEffect(() => {
-        const initial: Record<string, boolean> = {};
-        courses.forEach((course) => {
-            initial[course.courseId] = false;
+    function handleCreateCourse() {
+        const payload = {
+            name: data.name,
+            description: data.description,
+        };
+        router.post(route('admin.store.courses'), payload, {
+            // console.log('anjing')
+            onStart: () => {
+                setIsLoading(true);
+            },
+            onSuccess: () => {
+                setAlertType('success');
+                setTimeout(() => setAlertType(null), 3000);
+            },
+            onError: () => {
+                setAlertType('fail');
+                setTimeout(() => setAlertType(null), 3000);
+            },
         });
-        setSelectedCourses(initial);
-    }, []);
+    }
 
     return (
         <div className="flex min-h-screen items-center justify-center border border-gray-300 bg-gray-100 px-4">
             <div className="w-full max-w-lg space-y-6 rounded-2xl border border-gray-300 p-8 shadow-md">
-                <h2 className="text-center text-2xl font-bold text-black dark:text-[#F2951B]">Upload New Material</h2>
-                <form onSubmit={handleAddMaterials} className="space-y-4">
+                <h2 className="text-center text-2xl font-bold text-black dark:text-[#F2951B]">Upload New Courses</h2>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault(); // ⛔ prevent reload
+                        handleCreateCourse(); // ✅ your logic
+                    }}
+                    className="space-y-4"
+                >
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Title</label>
+                        <label className="block text-sm font-medium text-gray-700">Name</label>
                         <input
                             type="text"
-                            value={data.title}
-                            onChange={(e) => setData('title', e.target.value)}
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
                             className="mt-1 block w-full rounded-md border px-3 py-2"
                         />
-                        {errors.title && <div className="text-sm text-red-500">{errors.title}</div>}
+                        {errors.name && <div className="text-sm text-red-500">{errors.name}</div>}
                     </div>
 
                     <div>
@@ -61,7 +68,7 @@ export default function NewMaterials() {
                         {errors.description && <div className="text-sm text-red-500">{errors.description}</div>}
                     </div>
 
-                    <div>
+                    {/* <div>
                         <label className="text-sm font-medium text-gray-700">
                             Add Course:
                             <br />
@@ -96,9 +103,9 @@ export default function NewMaterials() {
                             </DropdownMenu>
                         </label>
                         {errors.description && <div className="text-sm text-red-500">{errors.description}</div>}
-                    </div>
+                    </div> */}
 
-                    <div>
+                    {/* <div>
                         <label className="block text-sm font-medium text-gray-700">File</label>
                         <input
                             type="file"
@@ -106,17 +113,19 @@ export default function NewMaterials() {
                             className="mt-1 block w-full cursor-pointer rounded-lg border p-2 text-black"
                         />
                         {errors.file && <div className="text-sm text-red-500">{errors.file}</div>}
-                    </div>
+                    </div> */}
 
                     <button
                         type="submit"
-                        disabled={processing}
+                        disabled={isLoading}
                         className="w-full cursor-pointer rounded-md border bg-gray-200 py-2 text-black hover:bg-[#F2951B]"
                     >
-                        {processing ? 'Uploading...' : 'Upload Material'}
+                        {isLoading ? 'Creating...' : 'Create Material'}
                     </button>
                 </form>
             </div>
+            {alertType === 'success' && <SuccessAlert />}
+            {alertType === 'fail' && <FailAlert />}
         </div>
     );
 }
