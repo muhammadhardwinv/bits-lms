@@ -1,35 +1,28 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { courses, CourseType } from '@/lib/coursesDetails';
-import { useUserStore } from '@/lib/store/userStore';
-import { Assignment, UserModel } from '@/lib/types';
+import { AssignmentsModel, CourseModel, UserModel } from '@/lib/types';
 import { Link } from '@inertiajs/react';
-import { ClipboardList } from 'lucide-react';
-import { useState } from 'react';
+import { ClipboardList, LucideIcon } from 'lucide-react';
 
-export default function AssignmentContent({
-    title,
-    items,
-    icon,
-    link,
-    courseId,
-    user,
-}: {
+interface PageProps {
+    auth: {
+        user: UserModel;
+    };
+    allCourse: CourseModel[];
+    assignments: AssignmentsModel[];
+}
+
+interface AssignmentsContentProps {
     title: string;
-    items: Assignment[];
-    icon: React.ElementType;
-    link: (assignment: Assignment) => string;
-    courseId: string;
+    items: AssignmentsModel[];
+    icon: LucideIcon;
+    link: (a: AssignmentsModel) => string;
+    allCourse: CourseModel[];
     user: UserModel;
-}) {
-    const [newAssignment, setNewAssignment] = useState<Partial<Assignment>>({
-        title: '',
-        type: 'Essay',
-        dueDate: '',
-        classId: '',
-    });
+}
 
-    const courseIdFromItems = items.length > 0 ? items[0].courseId : courseId;
+export default function AssignmentsContent({ title, items, icon, link, allCourse, user }: AssignmentsContentProps) {
+    const courseIdFromItems = items.length > 0 ? items[0].courseId : (allCourse[0]?.id ?? '');
 
     return (
         <div className="flex w-full flex-row">
@@ -42,7 +35,7 @@ export default function AssignmentContent({
                                 <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
                             </div>
 
-                            {user.role === 'teacher' && courseIdFromItems && (
+                            {user.role === 'admin' && courseIdFromItems && (
                                 <Link
                                     href={route('assignment.new', courseIdFromItems)}
                                     className="inline-flex items-center gap-2 rounded-md border border-gray-200 bg-gray-100 from-[#F2951B] to-[#FFD599] px-4 py-2 text-sm font-medium shadow hover:opacity-90 focus:ring-2 focus:ring-orange-400 focus:outline-none dark:bg-gradient-to-r dark:text-white"
@@ -56,12 +49,12 @@ export default function AssignmentContent({
 
                     <div className="space-y-4">
                         {items.length === 0 ? (
-                            <div className="text-center text-gray-500 dark:text-gray-400">
+                            <div className="flex h-[72vh] flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400">
                                 No threads available. Be the first to start a discussion for this class.
                             </div>
                         ) : (
                             items.map((assignment, index) => {
-                                const course = courses.find((c: CourseType) => c.courseId === assignment.courseId);
+                                const course = allCourse.find((c) => c.id === assignment.courseId);
 
                                 return (
                                     <a
@@ -93,16 +86,15 @@ export default function AssignmentContent({
 
                                                 <p className="text-sm text-gray-700 dark:text-gray-300">
                                                     <span className="bg-gradient-to-r from-[#F2951B] to-[#FFD599] bg-clip-text font-medium text-transparent">
-                                                        {course?.courseName}
-                                                    </span>{' '}
-                                                    ({assignment.courseId}) — Class {assignment.classId}
+                                                        Session ID: {assignment.session_id}
+                                                    </span>
                                                 </p>
 
                                                 <p className="text-sm text-gray-600 dark:text-gray-400">
                                                     {assignment.description || 'No description provided for this thread.'}
                                                 </p>
 
-                                                <p className="text-xs text-gray-400 dark:text-gray-500">📅 Due: {assignment.dueDate}</p>
+                                                <p className="text-xs text-gray-400 dark:text-gray-500">📅 Due: {assignment.due_date}</p>
                                             </CardContent>
                                         </Card>
                                     </a>

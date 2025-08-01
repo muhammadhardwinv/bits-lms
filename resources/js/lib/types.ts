@@ -1,4 +1,5 @@
 export type UserModel = {
+    id: string;
     name: string;
     email: string;
     role: string;
@@ -12,13 +13,13 @@ export type CourseModel = {
     teacher_id: string;
 };
 
-export type Assignment = {
+export type AssignmentsModel = {
     title: string;
     description?: string;
     courseId: string;
-    classId: string;
+    session_id: string;
     type: string;
-    dueDate: string;
+    due_date: string;
     link: string;
 };
 

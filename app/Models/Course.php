@@ -29,4 +29,9 @@ class Course extends Model
         'description',
         'teacher_id',
     ];
+
+    // public function students()
+    // {
+    //     return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id');
+    // }
 }

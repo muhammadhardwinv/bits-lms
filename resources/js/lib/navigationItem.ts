@@ -20,7 +20,7 @@ export function redirectRoutes(courses: { courseId: string }[]) {
 export const AdminNavItems = [
     { title: 'Dashboard', url: '/admin/dashboard', icon: LayoutDashboardIcon },
     { title: 'Add User', url: '/admin/users/create', icon: User },
-    { title: 'Add Course', url: '/admin/materials/create', icon: BoxIcon },
+    { title: 'Add Course', url: '/admin/courses/create', icon: BoxIcon },
 ];
 4;
 

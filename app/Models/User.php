@@ -17,7 +17,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = "users";
+    protected $primaryKey = "id";
+    protected $keyType = 'string';
+    public $timestamps = false;
+
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -33,6 +39,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
 
     /**
      * Get the attributes that should be cast.
