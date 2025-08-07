@@ -90,7 +90,7 @@ class UserManagementController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|in:admin,teacher,student',
-            'status' => 'required|in:active,on-leave,perm-leave,suspended',
+            'status' => 'sometimes|in:active,on-leave,perm-leave,suspended',
         ]);
 
         // Generate auto-incremented ID based on role
@@ -105,6 +105,23 @@ class UserManagementController extends Controller
             'status' => $request->status ?? 'active',
         ]);
 
+        // Check if this is an AJAX request (from modal)
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => "User created successfully with ID: {$generatedId}",
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                    'status' => $user->status,
+                ],
+                'generated_id' => $generatedId
+            ], 201);
+        }
+
+        // Traditional form submission (redirect)
         return redirect()->route('admin.users.index')
                         ->with('success', "User created successfully with ID: {$generatedId}");
     }

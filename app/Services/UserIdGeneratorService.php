@@ -17,14 +17,14 @@ class UserIdGeneratorService
             'pattern' => 'ST%06d'
         ],
         'teacher' => [
-            'prefix' => 'D',
-            'length' => 4,   // D0001
-            'pattern' => 'D%04d'
+            'prefix' => 'LE',
+            'length' => 4,   // LE0001
+            'pattern' => 'LE%04d'
         ],
         'admin' => [
-            'prefix' => 'ADM',
-            'length' => 3,   // ADM001
-            'pattern' => 'ADM%03d'
+            'prefix' => 'AD',
+            'length' => 4,   // AD001
+            'pattern' => 'AD%04d'
         ]
     ];
 

@@ -23,12 +23,27 @@ class MaterialsController extends Controller
 
         $path = $request->file('file')->store('materials');
 
-        Material::create([
+        $material = Material::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'file_path' => $path,
         ]);
 
+        // Check if this is an AJAX request (from modal)
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Material uploaded successfully!',
+                'material' => [
+                    'id' => $material->id,
+                    'title' => $material->title,
+                    'description' => $material->description,
+                    'file_path' => $material->file_path,
+                ],
+            ], 201);
+        }
+
+        // Traditional form submission (redirect)
         return redirect()->route('admin.add.materials')->with('success', 'Material uploaded.');
     }
 }
