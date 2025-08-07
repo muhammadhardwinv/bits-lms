@@ -294,6 +294,10 @@ export default function AdminDashboard() {
         }
     };
 
+    const handleAddCourses = () => {
+        router.visit(route('admin.courses.create'));
+    };
+
     return (
         <>
             <Head title="Admin Dashboard">
@@ -326,7 +330,7 @@ export default function AdminDashboard() {
                             <Card className="group relative h-[36vh] w-[36vw] cursor-pointer overflow-hidden p-0">
                                 <Button
                                     onClick={handleAddUser}
-                                    className="transition-all-text-xs h-full w-full rounded-none bg-gray-200 text-lg text-black hover:bg-[#F1911A] hover:text-white"
+                                    className="transition-all-text-xs h-full w-full cursor-pointer items-center justify-center rounded-none bg-gray-200 text-center text-lg text-black hover:bg-[#F1911A] hover:text-white"
                                 >
                                     + Add New User
                                 </Button>
@@ -336,10 +340,10 @@ export default function AdminDashboard() {
                         <div className="flex flex-row items-center justify-center text-center">
                             <Card className="group relative h-[36vh] w-[36vw] cursor-pointer overflow-hidden p-0">
                                 <Button
-                                    onClick={handleAddMaterials}
-                                    className="transition-all-text-xs h-full w-full items-center justify-center rounded-none bg-gray-200 text-center text-lg text-black hover:bg-[#F1911A] hover:text-white"
+                                    onClick={handleAddCourses}
+                                    className="transition-all-text-xs h-full w-full cursor-pointer items-center justify-center rounded-none bg-gray-200 text-center text-lg text-black hover:bg-[#F1911A] hover:text-white"
                                 >
-                                    + Add New Materials
+                                    + Add New Courses
                                 </Button>
                             </Card>
                         </div>
@@ -357,38 +361,61 @@ export default function AdminDashboard() {
                         </CardHeader>
                         <CardContent>
                             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                                <Button variant="outline" className="w-full">
-                                    <Users className="mr-2 h-4 w-4" />
-                                    Manage Users
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <BookOpen className="mr-2 h-4 w-4" />
-                                    Manage Courses
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <Settings className="mr-2 h-4 w-4" />
-                                    System Settings
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <BarChart3 className="mr-2 h-4 w-4" />
-                                    Reports
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <Shield className="mr-2 h-4 w-4" />
-                                    Security
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <Database className="mr-2 h-4 w-4" />
-                                    Database
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <Bell className="mr-2 h-4 w-4" />
-                                    Announcements
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Backup System
-                                </Button>
+                                <Link href="/admin/users" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <Users className="mr-2 h-4 w-4" />
+                                        Manage Users
+                                    </Button>
+                                </Link>
+
+                                <Link href="/courses" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <BookOpen className="mr-2 h-4 w-4" />
+                                        Manage Courses
+                                    </Button>
+                                </Link>
+
+                                <Link href="/settings" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <Settings className="mr-2 h-4 w-4" />
+                                        System Settings
+                                    </Button>
+                                </Link>
+
+                                <Link href="/reports" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <BarChart3 className="mr-2 h-4 w-4" />
+                                        Reports
+                                    </Button>
+                                </Link>
+
+                                <Link href="/security" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <Shield className="mr-2 h-4 w-4" />
+                                        Security
+                                    </Button>
+                                </Link>
+
+                                <Link href="/database" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <Database className="mr-2 h-4 w-4" />
+                                        Database
+                                    </Button>
+                                </Link>
+
+                                <Link href="/announcements" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <Bell className="mr-2 h-4 w-4" />
+                                        Announcements
+                                    </Button>
+                                </Link>
+
+                                <Link href="/backup" className="block">
+                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Backup System
+                                    </Button>
+                                </Link>
                             </div>
                         </CardContent>
                     </Card>

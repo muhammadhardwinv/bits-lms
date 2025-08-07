@@ -1,17 +1,25 @@
 export type UserModel = {
+    id: string;
     name: string;
     email: string;
     role: string;
     status: string;
 };
 
-export type Assignment = {
+export type CourseModel = {
+    id: string;
+    name: string;
+    description: string;
+    teacher_id: string;
+};
+
+export type AssignmentsModel = {
     title: string;
     description?: string;
     courseId: string;
-    classId: string;
+    session_id: string;
     type: string;
-    dueDate: string;
+    due_date: string;
     link: string;
 };
 

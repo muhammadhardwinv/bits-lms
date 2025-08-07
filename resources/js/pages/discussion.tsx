@@ -16,22 +16,6 @@ interface PageProps {
 export default function Discussion() {
     const { auth, courseId } = usePage<PageProps>().props;
 
-    // if (!isHydrated) {
-    //     return (
-    //         <StudentLayout>
-    //             <p className="text-center text-sm text-gray-500">Loading user data...</p>
-    //         </StudentLayout>
-    //     );
-    // }
-
-    // if (!role) {
-    //     return (
-    //         <StudentLayout>
-    //             <p className="text-center text-red-500">❌ User role not found. Please log in again.</p>
-    //         </StudentLayout>
-    //     );
-    // }
-
     return (
         <>
             <Head title={`Discussion - ${courseId}`} />

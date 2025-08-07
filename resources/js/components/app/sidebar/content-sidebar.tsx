@@ -71,7 +71,7 @@ export function ContentSidebar() {
             <div className="font-weight-900 flex items-center justify-between bg-[#0397DA] px-3 py-2 text-3xl dark:bg-[#0397DA]">
                 <div className="flex items-center gap-2">
                     <img className="h-12 w-12" src="/assets/logo-bits.png" alt="BITS Logo" />
-                    <h2 className="text-3xl font-semibold text-gray-800 text-white dark:text-black">BITS</h2>
+                    <h2 className="text-3xl font-semibold text-gray-800 text-white dark:text-white">BITS</h2>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@ export function ContentSidebar() {
                 <div className="bg-[#0397DA]">
                     <div className="relative mx-2 my-2 h-[20vh] rounded bg-[#066a9a] p-3 text-sm text-white">
                         <DropdownMenuTrigger asChild>
-                            <button className="absolute top-2 right-2 cursor-pointer rounded-full p-1 transition hover:bg-[#F2951B]">
+                            <button className="absolute top-2 right-2 cursor-pointer rounded-full p-1 transition hover:bg-[#014769]">
                                 <Ellipsis className="h-5 w-5" />
                             </button>
                         </DropdownMenuTrigger>

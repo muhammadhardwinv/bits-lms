@@ -14,17 +14,6 @@ interface Props {
 }
 
 export default function DiscussionContent({ courseId, user }: Props) {
-    const { role, name, setUser } = useUserStore();
-
-    useEffect(() => {
-        // if (user) {
-        //     setUser({
-        //         name: user.name,
-        //         role: user.role as 'student' | 'lecturer',
-        //     });
-        // }
-    }, [user, setUser]);
-
     const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
     const initialThreads = discussionThreads.filter((thread) => thread.courseId === courseId);
 
@@ -38,7 +27,11 @@ export default function DiscussionContent({ courseId, user }: Props) {
     const [newStudentArgument, setNewStudentArgument] = useState('');
 
     if (!forum) {
-        return console.log('Forum not found for course ID:', courseId);
+        {
+            console.warn(`Forum not found for course ID: ${courseId}`, courseId);
+            console.log(`Forum not found for course ID: ${courseId}`, courseId);
+        }
+        return <p className="text-center text-gray-500">Forum not found for this course.</p>; // ✅ return JSX instead
     }
 
     const storedThreads = getThreadsForSession(courseId, selectedSession);
