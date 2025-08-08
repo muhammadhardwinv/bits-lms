@@ -32,6 +32,11 @@ class Assignments extends Model
     'attempt_limit',
   ];
 
+  public function session()
+  {
+    return $this->belongsTo(Sessions::class, 'session_id', 'id');
+  }
+
   // public function students()
   // {
   //   return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id');

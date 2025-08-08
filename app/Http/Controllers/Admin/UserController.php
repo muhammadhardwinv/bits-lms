@@ -40,21 +40,35 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name'      => ['required', 'max:64'],
-            'email'     => ['required', 'max:64'],
+            'email'     => ['required', 'max:64', 'email', 'unique:users,email'],
             'password'  => ['required', 'max:64'],
-            'role'      => ['required'],
+            'role'      => ['required', 'in:admin,teacher,student'], // restrict roles here if needed
         ]);
 
-        $newUserId = HelperController::createUniqueId();
+        // Map roles to prefixes
+        $rolePrefixes = [
+            'admin' => 'AD',
+            'teacher' => 'LE',
+            'student' => 'ST',
+        ];
+
+        $baseId = HelperController::createUniqueId(); // generates numeric id, e.g. 8499
+        $prefix = $rolePrefixes[$data['role']] ?? 'XX'; // fallback to 'XX' if role not found
+
+        $newUserId = $prefix . $baseId;
+
         User::create([
             'id' => $newUserId,
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => bcrypt($data['password']), // hash password before storing!
             'role' => $data['role'],
+            'status' => 'active', // optional, if your DB requires it
         ]);
+
         return back()->with('Success', 'UserAdded');
     }
+
 
     public function destroy(string $id)
     {

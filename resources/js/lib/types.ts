@@ -5,20 +5,35 @@ export type UserModel = {
     role: string;
     status: string;
 };
-
-export type CourseModel = {
+export interface CourseModel {
     id: string;
     name: string;
     description: string;
+    teacher_id: string;
+}
+
+export type SessionType = {
+    id: string;
+    title: string;
+    course_id: string;
+    description: string;
+    schedule_date: string;
+};
+
+export type ClassroomType = {
+    id: string;
+    name: string;
+    course_id: string;
     teacher_id: string;
 };
 
 export type AssignmentsModel = {
     title: string;
+    id: string;
     description?: string;
-    courseId: string;
+    course_id: string;
     session_id: string;
-    type: string;
+    attempt_limit: string;
     due_date: string;
     link: string;
 };

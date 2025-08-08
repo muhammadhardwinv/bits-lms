@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('forum_contents', function (Blueprint $table) {
+        Schema::create('classrooms', function (Blueprint $table) {
             $table->id();
-            $table->string('forumTitle');
-            $table->text('learningOutcome');
-            $table->string('courseId');
-            $table->string('lecturerName');
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('forum_contents');
+        Schema::dropIfExists('classrooms');
     }
 };

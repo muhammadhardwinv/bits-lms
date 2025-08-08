@@ -8,6 +8,8 @@ use Inertia\Inertia;
 use App\Models\Course;
 use App\Http\Controllers\HelperController;
 use App\Models\Assignments;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\RedirectResponse;
 
 
@@ -93,6 +95,9 @@ class AssignmentsController extends Controller
   // 'auth' => ['user' => \Illuminate\Support\Facades\Auth::user()],
   public function show()
   {
+
+    // dd(Auth::user());
+
     return Inertia::render('assignments', [
       'auth' => ['user' => \Illuminate\Support\Facades\Auth::user()],
       'assignments' => Assignments::all(),

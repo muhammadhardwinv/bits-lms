@@ -1,6 +1,7 @@
 import { ForumContentType, forumContents } from '@/lib/forumContent';
 import { usePage } from '@inertiajs/react';
 import GradeBookCard from './gradebook-card';
+import { CourseModel } from '@/lib/types';
 
 const gradeBoxes = [
     { gradeNumber: 1, gradeName: 'Assignment', value: 95 },
@@ -9,16 +10,16 @@ const gradeBoxes = [
 ];
 
 interface Props {
-    courseId: string;
+    course: CourseModel;
 }
-export function CourseGradeTop({ courseId }: Props) {
+export function CourseGradeTop({ course }: Props) {
     const { url } = usePage();
-    const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
+    const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === course.id);
 
     if (!forum) {
         return (
             <div className="p-6 text-red-600">
-                <h1 className="text-xl font-semibold">Forum not found for course ID: {courseId}</h1>
+                <h1 className="text-xl font-semibold">Forum not found for course ID: {course.id}</h1>
             </div>
         );
     }
@@ -65,8 +66,8 @@ export function CourseGradeTop({ courseId }: Props) {
         </div>
     );
 }
-export function CourseGradeContent({ courseId }: Props) {
-    const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
+export function CourseGradeContent({ course }: Props) {
+    const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === course.id);
 
     return (
         <div className="space-y-8 p-6">

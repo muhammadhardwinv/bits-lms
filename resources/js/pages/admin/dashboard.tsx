@@ -18,6 +18,7 @@ import {
     Settings,
     Shield,
     Database,
+    Goal,
 } from 'lucide-react';
 import { ContentLayout } from '@/layouts/content-layout';
 import { UserModel } from '@/lib/types';
@@ -67,34 +68,42 @@ export default function AdminDashboard() {
     };
 
     // Mock data for admin dashboard
-    const systemStats = [
-        { id: 1, label: 'Total Users', value: 1250, change: '+12%', color: 'text-blue-600' },
-        { id: 2, label: 'Active Courses', value: 45, change: '+5%', color: 'text-green-600' },
-        { id: 3, label: 'Total Assignments', value: 320, change: '+8%', color: 'text-purple-600' },
-        { id: 4, label: 'System Uptime', value: '99.9%', change: 'Stable', color: 'text-emerald-600' },
-    ];
+    // const systemStats = [
+    //     { id: 1, label: 'Total Users', value: 1250, change: '+12%', color: 'text-blue-600' },
+    //     { id: 2, label: 'Active Courses', value: 45, change: '+5%', color: 'text-green-600' },
+    //     { id: 3, label: 'Total Assignments', value: 320, change: '+8%', color: 'text-purple-600' },
+    //     { id: 4, label: 'System Uptime', value: '99.9%', change: 'Stable', color: 'text-emerald-600' },
+    // ];
 
-    const recentActivity = [
-        { id: 1, user: 'Dosen: Prof. Rudi Santoso', action: 'Online' },
-        { id: 2, user: 'Student: Ahmad Fadhlurrahman', action: 'Away' },
-        { id: 3, user: 'Admin C', action: 'Tambah user baru - Siti Nurhaliza' },
-        { id: 4, user: 'Dosen: Dr. Lina Agustina', action: 'Online' },
-        { id: 5, user: 'Student: Budi Prasetyo', action: 'Online' },
-        { id: 6, user: 'Student: Citra Melati', action: 'Away' },
-        { id: 7, user: 'Ir. Bambang Sutrisno', action: 'Online' },
-    ];
+    // const recentActivity = [
+    //     { id: 1, user: 'Dosen: Prof. Rudi Santoso', action: 'Online' },
+    //     { id: 2, user: 'Student: Ahmad Fadhlurrahman', action: 'Away' },
+    //     { id: 3, user: 'Admin C', action: 'Tambah user baru - Siti Nurhaliza' },
+    //     { id: 4, user: 'Dosen: Dr. Lina Agustina', action: 'Online' },
+    //     { id: 5, user: 'Student: Budi Prasetyo', action: 'Online' },
+    //     { id: 6, user: 'Student: Citra Melati', action: 'Away' },
+    //     { id: 7, user: 'Ir. Bambang Sutrisno', action: 'Online' },
+    // ];
 
-    const pendingApprovals = [
-        { id: 1, type: 'course', title: 'Machine Learning Fundamentals', requester: 'Dr. Smith', date: '2025-07-08' },
-        { id: 2, type: 'user', title: 'Teacher Account Request', requester: 'Prof. Wilson', date: '2025-07-07' },
-        { id: 3, type: 'resource', title: 'Library Access Request', requester: 'Student Union', date: '2025-07-06' },
-    ];
+    // const pendingApprovals = [
+    //     { id: 1, type: 'course', title: 'Machine Learning Fundamentals', requester: 'Dr. Smith', date: '2025-07-08' },
+    //     { id: 2, type: 'user', title: 'Teacher Account Request', requester: 'Prof. Wilson', date: '2025-07-07' },
+    //     { id: 3, type: 'resource', title: 'Library Access Request', requester: 'Student Union', date: '2025-07-06' },
+    // ];
     const handleAddUser = () => {
         router.get(route('admin.users.create'));
     };
 
     const handleAddCourses = () => {
         router.visit(route('admin.courses.create'));
+    };
+
+    const handleViewClassroom = () => {
+        router.visit(route('classrooms.index'));
+    };
+
+    const handleViewAssignments = () => {
+        router.visit(route(''));
     };
 
     return (
@@ -104,9 +113,9 @@ export default function AdminDashboard() {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
             <ContentLayout user={auth.user}>
-                <div className="space-y-6">
+                <div className="space-y-16">
                     {/* Welcome Section */}
-                    <div className="rounded-lg bg-gradient-to-r from-blue-500 to-orange-400 p-6 text-white">
+                    <div className="rounded-xl bg-gradient-to-r from-[#0097da] to-gray-700 p-6 text-white">
                         <div className="flex items-start justify-between">
                             <div>
                                 <h1 className="mb-2 text-2xl font-bold">Welcome back, Admin {auth.user.name}!</h1>
@@ -124,12 +133,12 @@ export default function AdminDashboard() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mx-2">
                         <div className="flex flex-row items-center justify-center">
-                            <Card className="group relative h-[36vh] w-[36vw] cursor-pointer overflow-hidden p-0">
+                            <Card className="group relative h-[40vh] w-[42vw] cursor-pointer overflow-hidden p-0">
                                 <Button
                                     onClick={handleAddUser}
-                                    className="transition-all-text-xs h-full w-full cursor-pointer items-center justify-center rounded-none bg-gray-200 text-center text-lg text-black hover:bg-[#F1911A] hover:text-white"
+                                    className="text-md h-full w-full cursor-pointer items-center justify-center rounded-none bg-white text-black hover:bg-[#0097da] hover:text-white dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]"
                                 >
                                     + Add New User
                                 </Button>
@@ -137,87 +146,93 @@ export default function AdminDashboard() {
                         </div>
 
                         <div className="flex flex-row items-center justify-center text-center">
-                            <Card className="group relative h-[36vh] w-[36vw] cursor-pointer overflow-hidden p-0">
+                            <Card className="group relative h-[40vh] w-[42vw] cursor-pointer overflow-hidden p-0">
                                 <Button
                                     onClick={handleAddCourses}
-                                    className="transition-all-text-xs h-full w-full cursor-pointer items-center justify-center rounded-none bg-gray-200 text-center text-lg text-black hover:bg-[#F1911A] hover:text-white"
+                                    className="text-md h-full w-full cursor-pointer items-center justify-center rounded-none bg-white text-black hover:bg-[#0097da] hover:text-white dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]"
                                 >
                                     + Add New Courses
                                 </Button>
                             </Card>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-6">
-                        {/* <EventSlideshow /> */}
-                        {/* Recent Activity */}
+                    {/* <div className="grid grid-cols-1 gap-6"> */}
+                    {/* <EventSlideshow /> */}
+                    {/* Recent Activity */}
+                    {/* </div> */}
+
+                    {/* Administrative Tools*/}
+                    <div>
+                        <div className="pt-4 -mx-4">
+                            <CardHeader>
+                                <CardTitle>Administrative Tools</CardTitle>
+                                <CardDescription className="pb-5">Quick access to system management functions</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                    <Link href="/admin/users" className="block">
+                                        <Button className="w-full cursor-pointer justify-center border bg-white text-black outline hover:bg-[#0097da] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]">
+                                            <Users className="mr-2 h-4 w-4" />
+                                            Manage Users
+                                        </Button>
+                                    </Link>
+
+                                    <Link href="/courses" className="block">
+                                        <Button className="w-full cursor-pointer justify-center border bg-white text-black outline hover:bg-[#0097da] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]">
+                                            <BookOpen className="mr-2 h-4 w-4" />
+                                            Manage Courses
+                                        </Button>
+                                    </Link>
+
+                                    <Button
+                                        onClick={handleViewClassroom}
+                                        className="w-full cursor-pointer justify-center border bg-white text-black outline hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]"
+                                    >
+                                        <Goal className="mr-2 h-4 w-4" />
+                                        Manage Classroom
+                                    </Button>
+
+                                    <Link href="/reports" className="block">
+                                        <Button
+                                            onClick={handleViewAssignments}
+                                            className="w-full cursor-pointer justify-center border bg-white text-black outline hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]"
+                                        >
+                                            <FileText className="mr-2 h-4 w-4" />
+                                            Manage Assignments
+                                        </Button>
+                                    </Link>
+
+                                    <Link href="/security" className="block">
+                                        <Button className="w-full cursor-pointer justify-center border bg-white text-black hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]">
+                                            <Shield className="mr-2 h-4 w-4" />
+                                            Security
+                                        </Button>
+                                    </Link>
+
+                                    <Link href="/database" className="block">
+                                        <Button className="w-full cursor-pointer justify-center border bg-white text-black hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]">
+                                            <Database className="mr-2 h-4 w-4" />
+                                            Database
+                                        </Button>
+                                    </Link>
+
+                                    <Link href="/announcements" className="block">
+                                        <Button className="w-full cursor-pointer justify-center border bg-white text-black hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]">
+                                            <Bell className="mr-2 h-4 w-4" />
+                                            Announcements
+                                        </Button>
+                                    </Link>
+
+                                    <Link href="/backup" className="block">
+                                        <Button className="w-full cursor-pointer justify-center border bg-white text-black hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]">
+                                            <Plus className="mr-2 h-4 w-4" />
+                                            Backup System
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </CardContent>
+                        </div>
                     </div>
-
-                    {/* Quick Actions */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Administrative Tools</CardTitle>
-                            <CardDescription>Quick access to system management functions</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                                <Link href="/admin/users" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <Users className="mr-2 h-4 w-4" />
-                                        Manage Users
-                                    </Button>
-                                </Link>
-
-                                <Link href="/courses" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <BookOpen className="mr-2 h-4 w-4" />
-                                        Manage Courses
-                                    </Button>
-                                </Link>
-
-                                <Link href="/settings" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <Settings className="mr-2 h-4 w-4" />
-                                        System Settings
-                                    </Button>
-                                </Link>
-
-                                <Link href="/reports" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <BarChart3 className="mr-2 h-4 w-4" />
-                                        Reports
-                                    </Button>
-                                </Link>
-
-                                <Link href="/security" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <Shield className="mr-2 h-4 w-4" />
-                                        Security
-                                    </Button>
-                                </Link>
-
-                                <Link href="/database" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <Database className="mr-2 h-4 w-4" />
-                                        Database
-                                    </Button>
-                                </Link>
-
-                                <Link href="/announcements" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <Bell className="mr-2 h-4 w-4" />
-                                        Announcements
-                                    </Button>
-                                </Link>
-
-                                <Link href="/backup" className="block">
-                                    <Button variant="outline" className="w-full cursor-pointer justify-center hover:bg-[#F2951B]">
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        Backup System
-                                    </Button>
-                                </Link>
-                            </div>
-                        </CardContent>
-                    </Card>
                 </div>
             </ContentLayout>
         </>

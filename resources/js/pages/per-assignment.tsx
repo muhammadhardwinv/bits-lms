@@ -1,4 +1,4 @@
-import PerAssignmentContent from '@/components/app/assignment/perassignment-content';
+import AssignmentsContent from '@/components/app/assignment/baseAssignmentsContents';
 import { ContentLayout } from '@/layouts/content-layout';
 import { courses, CourseType } from '@/lib/coursesDetails';
 import { UserModel } from '@/lib/types';
@@ -21,11 +21,6 @@ export default function PerAssignmentPage() {
         return <p className="mt-6 text-center text-red-600">Assignment not found.</p>;
     }
 
-    const user = {
-        name: 'Jane Doe',
-        role: 'student',
-    };
-
     const onSubmit = (data: { response: string; attachment: File | null }) => {
         console.log('Submitted:', data);
     };
@@ -39,7 +34,7 @@ export default function PerAssignmentPage() {
             </Head>
 
             <ContentLayout user={auth.user}>
-                <PerAssignmentContent assignment={course} user={user} onSubmit={onSubmit} loading={false} errors={{}} />
+                <AssignmentsContent assignment={course} user={auth.role} onSubmit={onSubmit} loading={false} errors={{}} />
             </ContentLayout>
         </>
     );

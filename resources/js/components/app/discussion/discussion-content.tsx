@@ -31,7 +31,7 @@ export default function DiscussionContent({ courseId, user }: Props) {
             console.warn(`Forum not found for course ID: ${courseId}`, courseId);
             console.log(`Forum not found for course ID: ${courseId}`, courseId);
         }
-        return <p className="text-center text-gray-500">Forum not found for this course.</p>; // ✅ return JSX instead
+        return <p className="flex h-[50vh] flex-col justify-center text-center text-gray-500">Forum not found for this course.</p>; // ✅ return JSX instead
     }
 
     const storedThreads = getThreadsForSession(courseId, selectedSession);
@@ -53,7 +53,7 @@ export default function DiscussionContent({ courseId, user }: Props) {
     return (
         <div className="space-y-8 px-6">
             <div className="w-full">
-                <SessionPanel courseId={courseId} currentUrl="{url}" />
+                {/* <SessionPanel courseId={courseId} currentUrl="{url}" /> */}
                 <div className="my-6">
                     <ForumDescription forum={forum} />
                 </div>

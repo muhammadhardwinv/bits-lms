@@ -23,31 +23,31 @@ const safeCourseName = course.courseName.replace(/\s+/g, '-').toLowerCase();
 const handleDownload = () => {
     const link = document.createElement('a');
     link.href = '/files/Powerpoint.pdf';
-    link.download = 'Powerpoint.pdf'; // optional: force download name
+    link.download = 'Powerpoint.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 };
 export default function StudentCard({ courseId }: Props) {
     return (
-        <nav className="flex flex-col gap-3 text-sm text-black dark:text-white">
+        <nav className="flex flex-col gap-3 text-sm text-white dark:text-white">
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <div className="gap flex flex-row items-center justify-start">
-                        <a className="flex cursor-pointer flex-row items-center gap-3 rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">
+                        <a className="flex cursor-pointer flex-row items-center gap-3 rounded-sm px-1 py-1 text-white hover:bg-black dark:text-white">
                             <h2> PPT - Introduction to {course.courseName}</h2>
                         </a>
                         <a className="flex cursor-pointer flex-row">
                             <div className="group relative mb-1 ml-2 items-center">
                                 <button
                                     onClick={handleDownload}
-                                    className="h-full w-full cursor-pointer items-center rounded p-1 text-xs text-blue-500 hover:bg-[#F2951B] dark:text-white"
+                                    className="h-full w-full cursor-pointer items-center rounded p-1 text-xs text-blue-500 hover:bg-black dark:text-white"
                                 >
-                                    <Download size={20} className="text-black dark:text-white" />
+                                    <Download size={20} className="text-white dark:text-white" />
                                 </button>
 
                                 <div className="group relative">
-                                    <button className="absolute top-full left-1/2 mt-2 w-max -translate-x-1/2 scale-0 transform cursor-pointer rounded !bg-gray-200 px-2 py-1 text-sm text-black opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
+                                    <button className="absolute top-full left-1/2 mt-2 w-max -translate-x-1/2 scale-0 transform cursor-pointer rounded !bg-black px-2 py-1 text-sm text-white opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
                                         Download PPT
                                     </button>
                                 </div>
@@ -73,7 +73,7 @@ export default function StudentCard({ courseId }: Props) {
 
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="cursor-pointer rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">Navigate to Forums Page</a>
+                    <a className="w-fit cursor-pointer rounded-sm px-1 py-1 text-white hover:bg-black dark:text-white">Navigate to Forums Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -93,7 +93,7 @@ export default function StudentCard({ courseId }: Props) {
 
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="cursor-pointer rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">Go to Quiz Page</a>
+                    <a className="w-fit cursor-pointer rounded-sm px-1 py-1 text-white hover:bg-black dark:text-white">Go to Quiz Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -113,7 +113,7 @@ export default function StudentCard({ courseId }: Props) {
 
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <a className="cursor-pointer rounded-sm px-1 py-1 text-black hover:bg-[#F2951B] dark:text-white">Go to Exam Page</a>
+                    <a className="w-fit cursor-pointer rounded-sm px-1 py-1 text-white hover:bg-black dark:text-white">Go to Exam Page</a>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

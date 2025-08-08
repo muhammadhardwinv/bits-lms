@@ -15,6 +15,7 @@ export default function NewCourses() {
     const { data, setData, errors } = useForm({
         name: '',
         description: '',
+        teacher_id: auth.user.id,
         // teacherId: '',
         // file: null as File | null,
     });
@@ -25,11 +26,12 @@ export default function NewCourses() {
         const payload = {
             name: data.name,
             description: data.description,
+            teacher_id: data.teacher_id,
         };
         const toastStatus = toast.loading('Adding course to database. Please wait!');
         setIsLoading(true);
 
-        router.post(route('admin.courses.store'), payload, {
+        router.post(route('courses.store'), payload, {
             onError: () => {
                 toast.error('Failed to create course. Invalid data input');
                 toast.dismiss(toastStatus);
@@ -41,12 +43,13 @@ export default function NewCourses() {
                     setData({
                         name: '',
                         description: '',
+                        teacher_id: auth.user.id, // ✅ reset with current user ID
                     });
                     setIsLoading(false);
                     setTimeout(() => {
                         router.visit('/courses');
                     }, 2000);
-                }, 5000);
+                }, 1500); // ⏱ Shortened delay
             },
         });
     }
@@ -57,21 +60,22 @@ export default function NewCourses() {
             <div className="flex min-h-screen items-center justify-center border border-gray-300 bg-gray-100 px-4">
                 <Toaster richColors position="top-center" />
                 <div className="w-full max-w-lg space-y-6 rounded-2xl border border-gray-300 p-8 shadow-md">
-                    <h2 className="text-center text-2xl font-bold text-black dark:text-[#F2951B]">Input New Course</h2>
+                    <h2 className="text-center text-2xl font-bold text-black dark:text-[#F2951B]">New Course</h2>
                     <form
                         onSubmit={(e) => {
-                            e.preventDefault(); // ⛔ prevent reload
-                            handleCreateCourse(); // ✅ your logic
+                            e.preventDefault();
+                            handleCreateCourse();
                         }}
                         className="space-y-4"
                     >
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Name</label>
+                            <label className="block text-sm font-medium text-gray-700">Course Name</label>
                             <input
                                 type="text"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                className="mt-1 block w-full rounded-md border px-3 py-2"
+                                placeholder="e.g., Software Engineering"
+                                className="mt-1 block w-full rounded-md border px-3 py-2 dark:bg-[#1c1c1c]"
                             />
                             {errors.name && <div className="text-sm text-red-500">{errors.name}</div>}
                         </div>
@@ -81,7 +85,8 @@ export default function NewCourses() {
                             <textarea
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                className="mt-1 block w-full rounded-md border px-3 py-2"
+                                placeholder="Brief course summary..."
+                                className="mt-1 block w-full rounded-md border px-3 py-2 dark:bg-[#1c1c1c]"
                             />
                             {errors.description && <div className="text-sm text-red-500">{errors.description}</div>}
                         </div>
@@ -89,11 +94,11 @@ export default function NewCourses() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className={`w-full rounded-md border bg-gray-200 py-2 text-black hover:bg-[#F2951B] ${
-                                isLoading ? 'cursor-wait opacity-50' : 'cursor-pointer'
+                            className={`w-full rounded-md border bg-gray-200 py-2 text-black transition-colors duration-200 ${
+                                isLoading ? 'cursor-wait opacity-50' : 'cursor-pointer hover:bg-[#F2951B]'
                             }`}
                         >
-                            {isLoading ? 'Creating...' : 'Create Material'}
+                            {isLoading ? 'Creating...' : 'Create Course'}
                         </button>
                     </form>
                 </div>

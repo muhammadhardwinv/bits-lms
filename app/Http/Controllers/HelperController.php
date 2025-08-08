@@ -11,7 +11,7 @@ class HelperController extends Controller
 {
   public static function createUniqueId($numericLength = 4)
   {
-    return Str::random($numericLength);
+    return str_pad(mt_rand(0, pow(10, $numericLength) - 1), $numericLength, '0', STR_PAD_LEFT);
   }
 
   public static function createSecondaryId($length = 6)

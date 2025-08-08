@@ -1,55 +1,22 @@
 import { Separator } from '@/components/ui/separator';
-import { ForumContentType, forumContents } from '@/lib/forumContent';
 import { smt } from '@/lib/semesterDetails';
 import { Semester } from '@/lib/types';
 import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-const cPanelItems = [
-    {
-        title: 'Session',
-        url: 'session',
-    },
-    {
-        title: 'Discussion',
-        url: 'discussion',
-    },
-    {
-        title: 'Assessment',
-        url: 'assessment',
-    },
-    {
-        title: 'Gradebook',
-        url: 'gradebook',
-    },
-    {
-        title: 'People',
-        url: 'people',
-    },
-    {
-        title: 'Attendance',
-        url: 'attendance',
-    },
-];
 interface Props {
     courseId: string;
+    courseName: string;
 }
 
 export type semesterOptions = (typeof smt)[number];
 
-export function CourseGradeTop({ courseId }: Props) {
+export function CourseGradeTop({ courseId, courseName }: Props) {
     const { url } = usePage();
     const cleanUrl = url.split(/[?#]/)[0];
-    const forum: ForumContentType | undefined = forumContents.find((f) => f.courseId === courseId);
 
-    if (!forum) {
-        return (
-            <div className="p-6 text-red-600">
-                <h1 className="text-xl font-semibold">Forum not found for course ID: {courseId}</h1>
-            </div>
-        );
-    }
-
+    const lecturerName = 'Prof. Dr. Ir. Widodo Budiharto, S.Si., M.Kom., IPM., SMIEEE';
+    const lecturerId = 'D2637 - Primary Instructor';
     const [newSemester, setNewSemester] = useState<Partial<Semester>>({
         name: '',
         academicYear: '',
@@ -62,63 +29,57 @@ export function CourseGradeTop({ courseId }: Props) {
         setNewSemester((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = () => {
-        console.log('Submitting semester: ', newSemester);
-    };
-
     return (
-        <div className="space-y-2 p-4">
+        <div className="space-y-2 px-6 py-4">
+            <div className="mb-4 w-full">
+                <div>
+                    <h1 className="text-4xl">{courseName}</h1>
+                    <div className="my-1 ml-8 flex w-[28vw] flex-row justify-start gap-12">
+                        <p className="text-xl text-gray-600">COMPSCI{courseId}</p>
+                        <p className="mb-6 text-xl text-gray-600">LEC-{courseId}</p>
+                    </div>
+                    <Separator />
+                </div>
+                <div className="my-3 flex flex-row">
+                    <div>
+                        <p className="ml-16 text-lg font-semibold">{lecturerName}</p>
+                        <p className="text-md ml-16 text-gray-500">{lecturerId}</p>
+                    </div>
+                </div>
+            </div>
             <div>
-                <label className="text-gray text-md block text-sm font-medium dark:text-gray-300">Select Semester:</label>
-                <select
-                    value={newSemester.name}
-                    onChange={(e) => handleChange('name', e.target.value)}
-                    className="w-[15vw] rounded border border-gray-300 text-sm dark:bg-gray-800 dark:text-white"
-                >
-                    <option value="">YYYY, Odd Semester</option>
-                    {smt.map((item) => (
-                        <option key={item} value={item}>
-                            {item}
-                        </option>
-                    ))}
-                </select>
+                <Separator />
             </div>
-            <div className="mb-4 space-y-1">
-                <h1 className="text-4xl font-bold">{forum.forumTitle}</h1>
-                <p className="text-xl text-gray-600">{forum.courseId}</p>
-                <p className="mt-8 ml-16 text-lg font-semibold">{forum.lecturerName}</p>
-                <p className="text-md ml-16 text-gray-500">{forum.lecturerId}</p>
-            </div>
-            <Separator />
 
-            <div className="mx-10 flex flex-row items-center justify-between gap-4 py-4 text-center">
+            <div className="flex flex-row items-center justify-between gap-4 py-4 text-center">
                 {[
-                    { label: 'Session', href: `/current-session/${forum.courseId}` },
-                    { label: 'Discussion', href: `/discussion/${forum.courseId}` },
-                    { label: 'Assessment', href: `/assignment/${forum.courseId}` },
-                    { label: 'Gradebook', href: `/gradebook/${forum.courseId}` },
-                    { label: 'People', href: `/people/${forum.courseId}` },
-                    { label: 'Attendance', href: `/attendance/${forum.courseId}` },
+                    { label: 'Session', href: `/sessions/${courseId}` }, // ✅ FIXED here
+                    { label: 'Discussion', href: `/discussion/${courseId}` },
+                    { label: 'Assessment', href: `/assignment/${courseId}` },
+                    { label: 'Gradebook', href: `/gradebook/${courseId}` },
+                    { label: 'People', href: `/people/${courseId}` },
+                    { label: 'Attendance', href: `/attendance/${courseId}` },
                 ].map((item, index) => {
                     const normalize = (path: string) => (path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path);
                     const normalizedUrl = normalize(cleanUrl);
                     const normalizedHref = normalize(item.href);
 
-                    const isActive =
-                        normalizedUrl === normalizedHref ||
-                        normalizedUrl.startsWith(normalizedHref + '/') ||
-                        (normalizedUrl.startsWith(`/selected-course/${forum.courseId}`) && item.label === 'Session');
+                    // ✅ FIXED: Treat both `/sessions/...` and `/current-session/...` as active for Session tab
+                    const isSessionRoute =
+                        (normalizedUrl.startsWith(`/sessions/${courseId}`) || normalizedUrl.startsWith(`/current-session/${courseId}`)) &&
+                        item.label === 'Session';
 
+                    const isActive = normalizedUrl === normalizedHref || normalizedUrl.startsWith(normalizedHref + '/') || isSessionRoute;
                     return (
                         <a key={index} href={item.href} className="w-full">
                             <div
+                                //'border-gray-200 bg-[#0097DA] text-white hover:bg-[#014769] dark:border-black dark:bg-[#1b1b1b] dark:text-white dark:hover:bg-[#F2951B]'
                                 className={`w-full items-center rounded-lg px-4 py-6 text-center text-sm font-medium shadow-sm transition duration-200 ${
                                     isActive
-                                        ? 'text-black-900 border-indigo-300 bg-[#F2951B] hover:bg-[#f2b463] dark:bg-[#F2951B] dark:text-indigo-100 dark:hover:bg-[#F2951B]'
-                                        : 'border-gray-300 bg-white text-gray-800 hover:bg-[#f2b463] hover:underline hover:shadow-md dark:bg-[#1b1b1b] dark:text-gray-200 dark:hover:bg-[#f2b463]'
+                                        ? 'border text-[#F2951B] hover:bg-white hover:text-white dark:border-gray-300 dark:bg-[#1b1b1b] dark:text-[#F2951B] dark:hover:bg-[#F2951B] dark:hover:text-white'
+                                        : 'border border-gray-200 bg-white text-black hover:bg-[#F2951B] hover:text-white hover:shadow-md dark:border-gray-700 dark:bg-[#1b1b1b] dark:text-white dark:hover:bg-[#F2951B]'
                                 } flex items-center justify-center gap-2`}
                             >
-                                {/* + if active (green), - if inactive (red) */}
                                 <span
                                     className={`font-bold ${isActive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                                 ></span>
@@ -128,7 +89,9 @@ export function CourseGradeTop({ courseId }: Props) {
                     );
                 })}
             </div>
-            <Separator />
+            <div>
+                <Separator />
+            </div>
         </div>
     );
 }

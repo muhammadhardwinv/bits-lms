@@ -21,8 +21,6 @@ class Course extends Model
     protected $table = "courses";
     protected $primaryKey = 'id';
     protected $keyType = 'string';
-    public $timestamps = false;
-    
     protected $fillable = [
         'id',
         'name',
@@ -30,8 +28,14 @@ class Course extends Model
         'teacher_id',
     ];
 
-    // public function students()
-    // {
-    //     return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id');
-    // }
+    public $timestamps = false;
+    public function sessions()
+    {
+        return $this->hasMany(Sessions::class, 'course_id');
+    }
+
+    public function classroom()
+    {
+        return $this->hasMany(Classroom::class, 'course_id');
+    }
 }

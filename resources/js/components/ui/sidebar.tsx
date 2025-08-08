@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, VariantProps } from "class-variance-authority"
-import { Home, Moon, PanelLeftIcon, Sun } from "lucide-react"
+import { ArrowLeft, ChevronLeft, Home, Moon, PanelLeftIcon, Sun } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -273,24 +273,28 @@ function SidebarTrigger({
     document.documentElement.classList.toggle('dark', nowDark);
   };
 
+  const previousPage = () => {
+    window.history.back();
+  }
+
   return (
-    <div className="flex items-center gap-2 px-2 h-16 bg-white dark:bg-black">
+    <div className="flex items-center gap-2 px-2 h-16 mt-2 align-items-center bg-white dark:bg-black">
       {/* Sidebar toggle */}
       <Button
-  data-sidebar="trigger"
-  data-slot="sidebar-trigger"
-  // variant="ghost"
-  size="icon"
-  className="button p-2 text-gray-700 bg-white hover:bg-[#0097DA] hover:text-white dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#014769] cursor-pointer"
-  onClick={(event) => {
-    onClick?.(event);
-    toggleSidebar();
-  }}
-  {...props}
->
-  <PanelLeftIcon className="!size-5" />
-  <span className="sr-only">Toggle Sidebar</span>
-</Button>
+        data-sidebar="trigger"
+        data-slot="sidebar-trigger"
+        // variant="ghost"
+        size="icon"
+        className="button p-2 text-gray-700 bg-white hover:bg-[#0097DA] hover:text-white dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#014769] cursor-pointer"
+        onClick={(event) => {
+          onClick?.(event);
+          toggleSidebar();
+        }}
+        {...props}
+      >
+        <PanelLeftIcon className="!size-5" />
+        <span className="sr-only">Toggle Sidebar</span>
+      </Button>
 
       {/* Dark mode toggle */}
       <Button
@@ -306,6 +310,12 @@ function SidebarTrigger({
         ) : (
           <Sun className="!size-6" />
         )}
+      </Button>
+      <Button onClick={previousPage}
+        size="icon"
+        className="button items-center text-black h-8 w-8 hover:text-white hover:bg-[#0097DA] bg-white  dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#014769] cursor-pointer"
+        aria-label="Previous Page Button"
+        ><ChevronLeft className="!size-7"/>
       </Button>
     </div>
   );

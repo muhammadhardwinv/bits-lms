@@ -1,8 +1,11 @@
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AssignmentsModel, CourseModel, UserModel } from '@/lib/types';
-import { Link } from '@inertiajs/react';
-import { ClipboardList, LucideIcon } from 'lucide-react';
+import { Link, router } from '@inertiajs/react';
+import { ClipboardList, LucideIcon, Pencil, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface PageProps {
     auth: {
@@ -22,7 +25,39 @@ interface AssignmentsContentProps {
 }
 
 export default function AssignmentsContent({ title, items, icon, link, allCourse, user }: AssignmentsContentProps) {
-    const courseIdFromItems = items.length > 0 ? items[0].courseId : (allCourse[0]?.id ?? '');
+    const [isLoading, setIsLoading] = useState(false);
+    const courseIdFromItems = items.length > 0 ? items[0].course_id : (allCourse[0]?.id ?? '');
+
+    function handleDeleteAssignment(id: string | number) {
+        if (confirm('Are you sure you want to delete this course?')) {
+            const toastStatus = toast.loading('Deleting course...');
+            setIsLoading(true);
+
+            router.delete(`/admin/courses/${id}`, {
+                onSuccess: () => {
+                    toast.success('Course deleted successfully!');
+                },
+                onError: () => {
+                    toast.error('Failed to delete course.');
+                },
+                onFinish: () => {
+                    setIsLoading(false);
+                    toast.dismiss(toastStatus);
+                },
+            });
+        }
+    }
+
+    function handleUpdateAssignment(id: string | number) {
+        const toastStatus = toast.loading('Redirecting...');
+        setIsLoading(true);
+
+        setTimeout(() => {
+            toast.dismiss(toastStatus);
+            // router.get(route('assignments.edit', id));
+            router.get(route('assignments.edit', id));
+        }, 500);
+    }
 
     return (
         <div className="flex w-full flex-row">
@@ -35,9 +70,9 @@ export default function AssignmentsContent({ title, items, icon, link, allCourse
                                 <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
                             </div>
 
-                            {user.role === 'admin' && courseIdFromItems && (
+                            {(user.role === 'admin' || user.role === 'teacher') && courseIdFromItems && (
                                 <Link
-                                    href={route('assignment.new', courseIdFromItems)}
+                                    href={route('assignments.create', courseIdFromItems)} // assuming this is your route
                                     className="inline-flex items-center gap-2 rounded-md border border-gray-200 bg-gray-100 from-[#F2951B] to-[#FFD599] px-4 py-2 text-sm font-medium shadow hover:opacity-90 focus:ring-2 focus:ring-orange-400 focus:outline-none dark:bg-gradient-to-r dark:text-white"
                                 >
                                     <ClipboardList className="mx-1 h-5 w-5 text-[#F2951B] dark:text-white" />
@@ -54,20 +89,13 @@ export default function AssignmentsContent({ title, items, icon, link, allCourse
                             </div>
                         ) : (
                             items.map((assignment, index) => {
-                                const course = allCourse.find((c) => c.id === assignment.courseId);
+                                const course = allCourse.find((c) => c.id === assignment.course_id);
 
                                 return (
-                                    <a
-                                        href={`/assignment/${assignment.courseId}`}
-                                        key={index}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="block"
-                                    >
+                                    <a key={index} target="_blank" rel="noopener noreferrer" className="block">
                                         <Card
                                             role="button"
                                             tabIndex={0}
-                                            onClick={() => console.log('Card clicked')}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter' || e.key === ' ') {
                                                     e.preventDefault();
@@ -76,26 +104,47 @@ export default function AssignmentsContent({ title, items, icon, link, allCourse
                                             }}
                                             className="cursor-pointer transition-shadow duration-200 hover:shadow-lg focus:ring-2 focus:ring-ring focus:outline-none"
                                         >
-                                            <CardContent className="space-y-3">
-                                                <div className="flex items-center justify-between">
-                                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{assignment.title}</h3>
-                                                    <Badge variant="secondary" className="text-xs">
-                                                        {assignment.type}
-                                                    </Badge>
+                                            <div className="flex flex-row">
+                                                <CardContent className="space-y-3">
+                                                    <div className="flex items-center justify-between">
+                                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{assignment.title}</h3>
+                                                        <Badge variant="secondary" className="text-xs">
+                                                            Attempt Limit: {assignment.attempt_limit}
+                                                        </Badge>
+                                                    </div>
+
+                                                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                                                        <span className="bg-gradient-to-r from-[#F2951B] to-[#FFD599] bg-clip-text font-medium text-transparent">
+                                                            Session ID: {assignment.session_id}
+                                                        </span>
+                                                    </p>
+
+                                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                        {assignment.description || 'No description provided for this thread.'}
+                                                    </p>
+
+                                                    <p className="text-xs text-gray-400 dark:text-gray-500">📅 Due: {assignment.due_date}</p>
+                                                </CardContent>
+                                                <div className="flex flex-col">
+                                                    <Button
+                                                        size="icon"
+                                                        variant="outline"
+                                                        onClick={() => handleUpdateAssignment(assignment.id)} // ✅
+                                                        className="cursor-pointer hover:bg-white dark:hover:bg-slate-700"
+                                                    >
+                                                        <Pencil className="h-4 w-4" />
+                                                    </Button>
+                                                    <Button
+                                                        className="cursor-pointer"
+                                                        size="icon"
+                                                        variant="destructive"
+                                                        disabled={isLoading}
+                                                        onClick={() => handleDeleteAssignment(assignment.id)} // ✅
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
                                                 </div>
-
-                                                <p className="text-sm text-gray-700 dark:text-gray-300">
-                                                    <span className="bg-gradient-to-r from-[#F2951B] to-[#FFD599] bg-clip-text font-medium text-transparent">
-                                                        Session ID: {assignment.session_id}
-                                                    </span>
-                                                </p>
-
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                    {assignment.description || 'No description provided for this thread.'}
-                                                </p>
-
-                                                <p className="text-xs text-gray-400 dark:text-gray-500">📅 Due: {assignment.due_date}</p>
-                                            </CardContent>
+                                            </div>
                                         </Card>
                                     </a>
                                 );

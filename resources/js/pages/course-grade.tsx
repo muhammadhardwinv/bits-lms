@@ -1,27 +1,26 @@
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import { CourseGradeContent } from '@/components/app/gradebook/coursegrade-content';
 import { ContentLayout } from '@/layouts/content-layout';
-import { UserModel } from '@/lib/types';
+import { CourseModel, UserModel } from '@/lib/types';
 import { Head, usePage } from '@inertiajs/react';
 
 interface PageProps {
     auth: {
         user: UserModel;
     };
-    courseId: string;
+    course: CourseModel;
     [key: string]: any;
 }
 
 export default function CourseGrade() {
-    const { auth, courseId } = usePage<PageProps>().props;
+    const { auth, course } = usePage<PageProps>().props;
 
     return (
         <>
             <Head title="Course Grade" />
             <ContentLayout user={auth.user}>
-                {/* <CourseGradeHeader courseId={courseId} /> */}
-                <CourseGradeTop courseId={courseId} />
-                <CourseGradeContent courseId={courseId} />
+                <CourseGradeTop courseId={course.id} courseName={course.name} />
+                <CourseGradeContent course={course} />
             </ContentLayout>
         </>
     );
