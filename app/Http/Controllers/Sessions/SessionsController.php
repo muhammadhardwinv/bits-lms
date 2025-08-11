@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sessions;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelperController;
+use App\Models\Classroom;
 use App\Models\Sessions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,13 +15,20 @@ class SessionsController extends Controller
     /**
      * Show the form to create a new session.
      */
-    public function create(Request $request)
-    {
-        return Inertia::render('sessions/createSessions', [
-            'role' => $request->user()->role,
-            'courseId' => $request->query('course_id'),
-        ]);
-    }
+    public function create(Request $request, $courseId)
+{
+    // Find the classroom associated with the courseId
+    $classroom = Classroom::where('course_id', $courseId)->firstOrFail();
+
+    return Inertia::render('sessions/createSessions', [
+        'auth' => [
+            'user' => $request->user(),
+        ],
+        'courseId' => $courseId,
+        'classroomId' => $classroom->id,
+        'teacher_id' => $classroom->teacher_id,
+    ]);
+}
 
     /**
      * Fetch all sessions (debugging only).
@@ -29,7 +37,7 @@ class SessionsController extends Controller
     {
         $allSessions = Sessions::all();
         // Remove dd() in production
-        dd($allSessions[0]);
+        // dd($allSessions[0]);
         return $allSessions;
     }
 
@@ -37,28 +45,27 @@ class SessionsController extends Controller
      * Store a new session in database.
      */
     public function store(Request $request, $classroomId)
-{
-    $data = $request->validate([
-        'title' => ['required', 'max:64'],
-        'description' => ['required', 'max:256'],
-        'schedule_date' => ['required', 'date'],
-        'course_id' => ['required', 'exists:courses,id'],
-    ]);
+    {
+        $data = $request->validate([
+            'title' => ['required', 'max:64'],
+            'description' => ['required', 'max:256'],
+            'schedule_date' => ['required', 'date'],
+            'course_id' => ['required', 'exists:courses,id'],
+        ]);
 
-    $newSessionId = HelperController::createUniqueId();
+        $newSessionId = HelperController::createUniqueId();
 
-    Sessions::create([
-        'id' => $newSessionId,
-        'title' => $data['title'],
-        'description' => $data['description'],
-        'schedule_date' => $data['schedule_date'],
-        'course_id' => $data['course_id'],
-        'classroom_id' => $classroomId,
-    ]);
+        Sessions::create([
+            'id' => $newSessionId,
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'schedule_date' => $data['schedule_date'],
+            'course_id' => $data['course_id'],
+            'classroom_id' => $classroomId,
+        ]);
 
-    return back()->with('success', 'Session added successfully.');
-}
-
+        return back()->with('success', 'Session added successfully.');
+    }
 
     /**
      * Delete a session.

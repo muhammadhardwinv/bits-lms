@@ -31,11 +31,11 @@ class Course extends Model
     public $timestamps = false;
     public function sessions()
     {
-        return $this->hasMany(Sessions::class, 'course_id');
+        return $this->hasMany(Sessions::class, 'course_id', 'id');
     }
 
     public function classroom()
     {
-        return $this->hasMany(Classroom::class, 'course_id');
+        return $this->hasMany(Classroom::class, 'course_id', 'id');
     }
 }

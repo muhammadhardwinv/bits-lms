@@ -31,6 +31,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Classroom
     Route::get('/classroom', [ClassroomController::class, 'index'])->name('classroom.index');
     Route::post('/classroom', [ClassroomController::class, 'store'])->name('classroom.store');
+    Route::get('/classroom/create', [ClassroomController::class, 'create'])->middleware('role:admin,teacher')->name('classroom.create');
+    
+    // Route::get('/classrooms/{id}', [ClassroomController::class, 'show'])->name('admin.classrooms.show');
+
+    // Route::post('/classroom', [ClassroomController::class, 'store'])->name('classroom.store');
+    Route::get('/classrooms/{id}/edit', [ClassroomController::class, 'edit'])->name('admin.classrooms.edit');
+    Route::put('/classrooms/{id}', [ClassroomController::class, 'update'])->name('admin.classrooms.update');
+
 
     // Courses
     Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
@@ -38,6 +46,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('/courses/{id}', [CourseController::class, 'update'])->name('courses.update');
     Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
+
+Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
+    Route::get('/course/{courseId}/create', [SessionsController::class, 'create'])->name('sessions.create');
+    Route::post('/course/{courseId}/sessions', [SessionsController::class, 'store'])->name('sessions.store');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/classroom/{id}', [ClassroomController::class, 'show'])->name('classroom.show');
+});
+
 
 // ---------- Teacher ----------
 Route::prefix('teacher')->name('teacher.')->middleware(['auth', 'role:teacher'])->group(function () {
@@ -76,27 +95,28 @@ Route::middleware(['auth'])->group(function () {
         'courseId' => $courseId,
     ]))->name('assignments.view');
     Route::get('/assignments/new/{courseId}', [AssignmentsController::class, 'create'])->name('assignments.create');
-    Route::get('/assignments/new', [AssignmentsController::class, 'create'])->name('assignments.new');
     Route::post('/assignments', [AssignmentsController::class, 'store'])->name('assignments.store');
     Route::get('/assignments/{id}/edit', [AssignmentsController::class, 'edit'])->name('assignments.edit');
     Route::put('/assignments/{id}', [AssignmentsController::class, 'update'])->name('assignments.update');
 
     // Sessions
     Route::middleware('role:admin,teacher')->group(function () {
-    // Classroom-specific sessions
-    Route::get('/classroom/{id}/sessions/create', [SessionsController::class, 'create'])->name('sessions.create');
-    Route::post('/classroom/{id}/sessions', [SessionsController::class, 'store'])->name('sessions.store');
+        Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
 
-    // General session management
-    Route::delete('/sessions/{id}', [SessionsController::class, 'destroy'])->name('sessions.destroy');
-    Route::get('/sessions/{id}/edit', [SessionsController::class, 'edit'])->name('sessions.edit');
-    Route::put('/sessions/{id}', [SessionsController::class, 'update'])->name('sessions.update');
-    Route::get('/sessions/{id}/show', [SessionsController::class, 'show'])->name('sessions.show');
+        // Classroom-specific sessions
+        Route::get('/classroom/{id}/sessions/create', [SessionsController::class, 'create'])->name('sessions.create');
+        Route::post('/classroom/{id}/sessions', [SessionsController::class, 'store'])->name('sessions.store');
 
-    // Optional: If needed for course-specific session creation (but redundant with classroom)
-    // Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
-    // Route::get('/sessions/create/{course}', [SessionsController::class, 'create'])->name('sessions.create');
-});
+        // Session management
+        Route::delete('/sessions/{id}', [SessionsController::class, 'destroy'])->name('sessions.destroy');
+        Route::get('/sessions/{id}/edit', [SessionsController::class, 'edit'])->name('sessions.edit');
+        Route::post('/sessions/{id}', [SessionsController::class, 'store'])->name('sessions.store');
+
+        Route::put('/sessions/{id}', [SessionsController::class, 'update'])->name('sessions.update');
+        Route::get('/sessions/{id}/show', [SessionsController::class, 'show'])->name('sessions.show');
+
+        Route::get('/classroom/{id}', [ClassroomController::class, 'show'])->name('classroom.show');
+    });
 
     // Session Fallbacks
     Route::get('/sessions/{id}', [CourseController::class, 'show'])->name('sessions.fallback');
@@ -104,15 +124,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Classroom (singular/public-facing)
     Route::get('/classroom', [ClassroomController::class, 'index'])->name('classrooms.index');
-    Route::get('/classroom/create', [ClassroomController::class, 'create'])->middleware('role:admin,teacher')->name('classroom.create');
+    
     Route::post('/admin/classrooms', [ClassroomController::class, 'store'])->middleware('role:admin,teacher')->name('admin.classrooms.store');
-    Route::get('/classroom/{id}', function ($id) {
-        return Inertia::render('classroom/selectedClassroom', [
-            'id' => $id,
-            'auth' => ['user' => Auth::user()],
-        ]);
-    })->name('classroom.show');
-    Route::get('/classroom/{id}', [ClassroomController::class, 'show'])->name('classroom.show');
+    
 
 
 

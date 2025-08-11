@@ -125,34 +125,7 @@ export function CourseAreaInteractive({
                                     </p>
                                 )}
 
-                                {user.role === 'admin' && (
-                                    <div className="mt-4 flex flex-row justify-center gap-2">
-                                        <AlertDialog>
-                                            <AlertDialogTrigger asChild>
-                                                <Button
-                                                    variant="destructive"
-                                                    size="icon"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                    }}
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
-                                            </AlertDialogTrigger>
-                                            <AlertDialogContent>
-                                                <AlertDialogHeader>
-                                                    <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
-                                                    <AlertDialogDescription>This will permanently delete the course.</AlertDialogDescription>
-                                                </AlertDialogHeader>
-                                                <AlertDialogFooter>
-                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => handleDeleteCourse(course.id)}>Confirm</AlertDialogAction>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                        </AlertDialog>
-                                    </div>
-                                )}
+                                {user.role === 'admin' && <div className="mt-4 flex flex-row justify-center gap-2"></div>}
                             </CardContent>
                         </Card>
 
@@ -182,6 +155,19 @@ export function CourseAreaInteractive({
                                     }}
                                 >
                                     <Trash2 className="h-4 w-4" />
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild></AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
+                                                <AlertDialogDescription>Are you sure want to delete the selected course?</AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => handleDeleteCourse(course.id)}>Confirm</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </Button>
                             </div>
                         )}

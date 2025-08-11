@@ -29,9 +29,4 @@ class Sessions extends Model
     {
         return $this->belongsTo(Course::class);
     }
-
-    public function classroom()
-{
-    return $this->belongsTo(Classroom::class);
-}
 }

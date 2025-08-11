@@ -54,7 +54,7 @@ export default function ClassroomContent() {
 
                 {auth.user.role === 'admin' && (
                     <Button
-                        onClick={() => router.visit(route('classroom.create'))}
+                        onClick={() => router.visit(route('admin.classroom.create'))}
                         className="cursor-pointer rounded-lg border bg-white px-4 py-2 text-black shadow hover:bg-[#0097da] hover:text-white dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#0097DA]"
                     >
                         + New Classroom

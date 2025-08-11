@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $keyType = 'string';
     public $timestamps = false;
 
+
     protected $fillable = [
         'id',
         'name',
@@ -91,4 +92,15 @@ class User extends Authenticatable
         };
     }
 
+    // One user (student) belongs to one classroom
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class, 'classroom_id');
+    }
+
+    // Many-to-many: user enrolled in many courses
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
+    }
 }

@@ -4,7 +4,7 @@ import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { toast, Toaster } from 'sonner';
 
-export default function CreateSessions({ courseId, classroomId }: { courseId: string; classroomId: string }) {
+export default function CreateSessions({ courseId, classroomId, teacher_id }: { courseId: string; classroomId: string; teacher_id: string }) {
     const { auth } = usePage<{ auth: { user: UserModel } }>().props;
 
     const [isLoading, setIsLoading] = useState(false);
@@ -13,6 +13,7 @@ export default function CreateSessions({ courseId, classroomId }: { courseId: st
         description: '',
         schedule_date: '',
         course_id: courseId ?? '',
+        teacher_id: teacher_id ?? '',
     });
 
     useEffect(() => {
@@ -27,26 +28,31 @@ export default function CreateSessions({ courseId, classroomId }: { courseId: st
         const toastId = toast.loading('Adding session to database...');
         setIsLoading(true);
 
-        router.post(`/classroom/${classroomId}/sessions`, data, {
-            onSuccess: () => {
-                toast.success('Session created successfully!', { id: toastId });
-                setData({
-                    title: '',
-                    description: '',
-                    schedule_date: '',
-                    course_id: courseId ?? '',
-                });
-                setTimeout(() => {
-                    router.visit(`/sessions/${courseId}`);
-                }, 1500);
-            },
-            onError: () => {
-                toast.error('Failed to create session. Please check the form.', { id: toastId });
-            },
-            onFinish: () => {
-                setIsLoading(false);
-            },
-        });
+        console.log('classroomId:', classroomId);
+
+        route('sessions.create.classroom', { id: classroomId }),
+            data,
+            {
+                onSuccess: () => {
+                    toast.success('Session created successfully!', { id: toastId });
+                    setData({
+                        title: '',
+                        description: '',
+                        schedule_date: '',
+                        course_id: courseId ?? '',
+                        teacher_id: teacher_id ?? '',
+                    });
+                    setTimeout(() => {
+                        router.visit(`/sessions/${courseId}`);
+                    }, 1500);
+                },
+                onError: () => {
+                    toast.error('Failed to create session. Please check the form.', { id: toastId });
+                },
+                onFinish: () => {
+                    setIsLoading(false);
+                },
+            };
     };
 
     return (
@@ -57,7 +63,7 @@ export default function CreateSessions({ courseId, classroomId }: { courseId: st
                 <div className="w-full max-w-lg rounded-2xl border border-gray-300 bg-white p-8 shadow-md">
                     <h2 className="mb-6 text-center text-2xl font-bold text-black dark:text-[#F2951B]">Create New Session</h2>
                     <form onSubmit={handleCreateSession} className="space-y-6">
-                        <input type="hidden" value={data.course_id} readOnly />
+                        <input type="hidden" name="course_id" value={data.course_id} readOnly />
 
                         <div>
                             <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -87,6 +93,19 @@ export default function CreateSessions({ courseId, classroomId }: { courseId: st
                                 rows={4}
                             />
                             {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
+                        </div>
+                        <div>
+                            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                                Teacher Id
+                            </label>
+                            <input
+                                id="teacher_id"
+                                value={data.teacher_id}
+                                onChange={(e) => setData('teacher_id', e.target.value)}
+                                className="mt-1 block w-full rounded-md border px-3 py-2"
+                                placeholder="Teacher Id"
+                            />
+                            {errors.teacher_id && <p className="mt-1 text-sm text-red-500">{errors.teacher_id}</p>}
                         </div>
 
                         <div>

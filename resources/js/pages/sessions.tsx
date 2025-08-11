@@ -2,7 +2,7 @@ import SessionsContents from '@/components/app/course/courseSessionContent';
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import { ContentLayout } from '@/layouts/content-layout';
 import { CourseModel, SessionType, UserModel } from '@/lib/types';
-import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import { PageProps as InertiaPageProps, router } from '@inertiajs/core';
 import { Head, usePage } from '@inertiajs/react';
 
 interface PageProps extends InertiaPageProps {
@@ -10,11 +10,14 @@ interface PageProps extends InertiaPageProps {
         user: UserModel;
     };
     course: CourseModel;
+    classroomId: string;
+    courseId: string;
     sessions: SessionType[];
 }
 
 export default function CourseSessions() {
-    const { auth, course, sessions } = usePage<PageProps>().props;
+    const { auth, course, sessions, classroomId, courseId } = usePage<PageProps>().props;
+
     if (sessions === undefined || sessions === null) {
         return <div>Loading sessions...</div>;
     }
@@ -27,18 +30,19 @@ export default function CourseSessions() {
                         <h2 className="mb-6 text-4xl font-black text-gray-500 dark:text-white">Session for {course?.id ?? 'unknown'} not found.</h2>
                         <p className="mb-10 text-gray-500 dark:text-white">Please contact your administrator!</p>
                         {(auth.user.role === 'admin' || auth.user.role === 'teacher') && (
-                            <a
-                                href={route('sessions.create', { course: course.id })}
-                                className="inline-block rounded rounded-xl bg-[#f2951b] px-6 py-3 font-black text-white hover:bg-gray-600 dark:bg-gray-400 dark:hover:bg-[#014769]"
+                            <button
+                                onClick={() => router.visit(`/course/${courseId}/create`)}
+                                className="inline-block cursor-pointer rounded-xl bg-[#f2951b] px-6 py-3 font-black text-white hover:bg-gray-600 dark:bg-gray-400 dark:hover:bg-[#014769]"
                             >
                                 New Session
-                            </a>
+                            </button>
                         )}
                     </div>
                 </ContentLayout>
             </div>
         );
     }
+
     return (
         <>
             <Head title={course.name}>
@@ -48,7 +52,6 @@ export default function CourseSessions() {
 
             <ContentLayout user={auth.user}>
                 <CourseGradeTop courseId={course.id} courseName={course.name} />
-
                 <SessionsContents auth={auth} course={course} sessions={sessions} />
             </ContentLayout>
         </>

@@ -133,7 +133,7 @@ export default function AdminDashboard() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mx-2">
+                    <div className="mx-2 grid grid-cols-1 gap-4 lg:grid-cols-2">
                         <div className="flex flex-row items-center justify-center">
                             <Card className="group relative h-[40vh] w-[42vw] cursor-pointer overflow-hidden p-0">
                                 <Button
@@ -163,7 +163,7 @@ export default function AdminDashboard() {
 
                     {/* Administrative Tools*/}
                     <div>
-                        <div className="pt-4 -mx-4">
+                        <div className="-mx-4 pt-4">
                             <CardHeader>
                                 <CardTitle>Administrative Tools</CardTitle>
                                 <CardDescription className="pb-5">Quick access to system management functions</CardDescription>
@@ -192,7 +192,11 @@ export default function AdminDashboard() {
                                         Manage Classroom
                                     </Button>
 
-                                    <Link href="/reports" className="block">
+                                    <Link
+                                        href="/assignments
+                                "
+                                        className="block"
+                                    >
                                         <Button
                                             onClick={handleViewAssignments}
                                             className="w-full cursor-pointer justify-center border bg-white text-black outline hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white hover:dark:bg-[#0097da]"

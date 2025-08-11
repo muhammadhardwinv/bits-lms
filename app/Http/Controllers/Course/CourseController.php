@@ -97,11 +97,8 @@ class CourseController extends Controller
   public function destroy(string $id): RedirectResponse
   {
     $course = Course::findOrFail($id);
-
-    // Delete related sessions and assignments manually
-    // $course->sessions()->delete();
-    // $course->assignments()->delete();
-
+    $course->sessions()->delete();
+    $course->classroom  ()->delete();
     $course->delete();
 
     return redirect('/courses')->with('success', 'Course deleted successfully.');
