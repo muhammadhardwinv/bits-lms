@@ -19,7 +19,16 @@ import {
     Shield,
     Database,
     Goal,
+    X,
+    UserPlus,
+    Eye,
+    EyeOff,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+// Set up CSRF token for axios
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 import { ContentLayout } from '@/layouts/content-layout';
 import { UserModel } from '@/lib/types';
 
@@ -51,6 +60,37 @@ export function AdminControlButton() {
 
 export default function AdminDashboard() {
     const { auth } = usePage<AdminDashboardProps>().props;
+
+    // User Modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [nextUserId, setNextUserId] = useState('');
+
+    // Materials Modal state
+    const [isMaterialsModalOpen, setIsMaterialsModalOpen] = useState(false);
+    const [isMaterialsLoading, setIsMaterialsLoading] = useState(false);
+
+    // User Form state
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        role: 'student' as 'student' | 'teacher' | 'admin',
+        status: 'active' as 'active' | 'on-leave' | 'perm-leave' | 'suspended'
+    });
+
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+    // Materials Form state
+    const [materialsFormData, setMaterialsFormData] = useState({
+        title: '',
+        description: '',
+        file: null as File | null
+    });
+    const [materialsErrors, setMaterialsErrors] = useState<Record<string, string[]>>({});
 
     const handleLogout = () => {
         router.post(
@@ -85,13 +125,174 @@ export default function AdminDashboard() {
     //     { id: 7, user: 'Ir. Bambang Sutrisno', action: 'Online' },
     // ];
 
-    // const pendingApprovals = [
-    //     { id: 1, type: 'course', title: 'Machine Learning Fundamentals', requester: 'Dr. Smith', date: '2025-07-08' },
-    //     { id: 2, type: 'user', title: 'Teacher Account Request', requester: 'Prof. Wilson', date: '2025-07-07' },
-    //     { id: 3, type: 'resource', title: 'Library Access Request', requester: 'Student Union', date: '2025-07-06' },
-    // ];
+    const pendingApprovals = [
+        { id: 1, type: 'course', title: 'Machine Learning Fundamentals', requester: 'Dr. Smith', date: '2025-07-08' },
+        { id: 2, type: 'user', title: 'Teacher Account Request', requester: 'Prof. Wilson', date: '2025-07-07' },
+        { id: 3, type: 'resource', title: 'Library Access Request', requester: 'Student Union', date: '2025-07-06' },
+    ];
+
+    // Fetch next user ID when role changes
+    const fetchNextUserId = async (role: string) => {
+        try {
+            const response = await axios.post('/admin/users/get-next-id', { role });
+            if (response.data.success) {
+                setNextUserId(response.data.next_id);
+            }
+        } catch (error) {
+            console.error('Error fetching next user ID:', error);
+            setNextUserId('Error');
+        }
+    };
+
+    // Handle opening the modal
     const handleAddUser = () => {
-        router.get(route('admin.users.create'));
+        setIsModalOpen(true);
+        fetchNextUserId(formData.role);
+    };
+
+    // Handle closing the modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setFormData({
+            name: '',
+            email: '',
+            password: '',
+            password_confirmation: '',
+            role: 'student',
+            status: 'active'
+        });
+        setErrors({});
+        setNextUserId('');
+    };
+
+    // Handle form input changes
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        // Fetch new ID when role changes
+        if (name === 'role') {
+            fetchNextUserId(value);
+        }
+
+        // Clear specific error when user starts typing
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: []
+            }));
+        }
+    };
+
+    // Handle form submission
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setErrors({});
+
+        try {
+            const response = await axios.post('/admin/users', formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            });
+
+            if (response.status === 200 || response.status === 201) {
+                // Success - close modal and show success message
+                closeModal();
+
+                // Show success message with the generated ID
+                const generatedId = response.data.generated_id || nextUserId;
+                alert(`✅ User created successfully!\n\nGenerated ID: ${generatedId}\nName: ${formData.name}\nEmail: ${formData.email}\nRole: ${formData.role}`);
+
+                // Optionally refresh the page to show updated data
+                window.location.reload();
+            }
+        } catch (error: any) {
+            if (error.response?.status === 422) {
+                // Validation errors
+                setErrors(error.response.data.errors || {});
+            } else {
+                console.error('Error creating user:', error);
+                const errorMessage = error.response?.data?.message || 'An error occurred while creating the user. Please try again.';
+                alert(`❌ Error: ${errorMessage}`);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Materials Modal Functions
+    const handleAddMaterials = () => {
+        setIsMaterialsModalOpen(true);
+    };
+
+    const closeMaterialsModal = () => {
+        setIsMaterialsModalOpen(false);
+        setMaterialsFormData({
+            title: '',
+            description: '',
+            file: null
+        });
+        setMaterialsErrors({});
+    };
+
+    const handleMaterialsInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setMaterialsFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        setMaterialsFormData(prev => ({
+            ...prev,
+            file: file
+        }));
+    };
+
+    const handleMaterialsSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsMaterialsLoading(true);
+        setMaterialsErrors({});
+
+        try {
+            const formDataToSend = new FormData();
+            formDataToSend.append('title', materialsFormData.title);
+            formDataToSend.append('description', materialsFormData.description);
+            if (materialsFormData.file) {
+                formDataToSend.append('file', materialsFormData.file);
+            }
+
+            const response = await axios.post('/admin/materials', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': 'application/json',
+                }
+            });
+
+            if (response.status === 200 || response.status === 201) {
+                closeMaterialsModal();
+                alert(`✅ Material uploaded successfully!\n\nTitle: ${materialsFormData.title}\nDescription: ${materialsFormData.description}`);
+                window.location.reload();
+            }
+        } catch (error: any) {
+            if (error.response?.status === 422) {
+                setMaterialsErrors(error.response.data.errors || {});
+            } else {
+                console.error('Error uploading material:', error);
+                const errorMessage = error.response?.data?.message || 'An error occurred while uploading the material. Please try again.';
+                alert(`❌ Error: ${errorMessage}`);
+            }
+        } finally {
+            setIsMaterialsLoading(false);
+        }
     };
 
     const handleAddCourses = () => {
@@ -239,6 +440,260 @@ export default function AdminDashboard() {
                     </div>
                 </div>
             </ContentLayout>
+
+            {/* User Creation Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                    <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+                        <div className="flex items-center justify-between p-6 border-b">
+                            <h2 className="text-xl font-semibold text-gray-900">Create New User</h2>
+                            <button
+                                onClick={closeModal}
+                                className="text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                            {/* Next User ID Display */}
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <div className="flex items-center space-x-2">
+                                    <UserPlus className="h-5 w-5 text-blue-600" />
+                                    <span className="text-sm font-medium text-blue-900">Next User ID:</span>
+                                    <span className="text-lg font-bold text-blue-600">{nextUserId || 'Loading...'}</span>
+                                </div>
+                            </div>
+
+                            {/* Role Selection */}
+                            <div>
+                                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Role *
+                                </label>
+                                <select
+                                    id="role"
+                                    name="role"
+                                    value={formData.role}
+                                    onChange={handleInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required
+                                >
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                                {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role[0]}</p>}
+                            </div>
+
+                            {/* Name */}
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Full Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter full name"
+                                    required
+                                />
+                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name[0]}</p>}
+                            </div>
+
+                            {/* Email */}
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Email Address *
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter email address"
+                                    required
+                                />
+                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email[0]}</p>}
+                            </div>
+
+                            {/* Password */}
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Password *
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        id="password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter password"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                    >
+                                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                    </button>
+                                </div>
+                                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password[0]}</p>}
+                            </div>
+
+                            {/* Confirm Password */}
+                            <div>
+                                <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Confirm Password *
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        id="password_confirmation"
+                                        name="password_confirmation"
+                                        value={formData.password_confirmation}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Confirm password"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                    >
+                                        {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                    </button>
+                                </div>
+                                {errors.password_confirmation && <p className="text-red-500 text-sm mt-1">{errors.password_confirmation[0]}</p>}
+                            </div>
+
+
+
+                            {/* Submit Buttons */}
+                            <div className="flex space-x-3 pt-4">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={closeModal}
+                                    className="flex-1"
+                                    disabled={isLoading}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? 'Creating...' : 'Create User'}
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Materials Upload Modal */}
+            {isMaterialsModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                    <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+                        <div className="flex items-center justify-between p-6 border-b">
+                            <h2 className="text-xl font-semibold text-gray-900">Upload New Material</h2>
+                            <button
+                                onClick={closeMaterialsModal}
+                                className="text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleMaterialsSubmit} className="p-6 space-y-4">
+                            {/* Title */}
+                            <div>
+                                <label htmlFor="materials_title" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Title *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="materials_title"
+                                    name="title"
+                                    value={materialsFormData.title}
+                                    onChange={handleMaterialsInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter material title"
+                                    required
+                                />
+                                {materialsErrors.title && <p className="text-red-500 text-sm mt-1">{materialsErrors.title[0]}</p>}
+                            </div>
+
+                            {/* Description */}
+                            <div>
+                                <label htmlFor="materials_description" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Description
+                                </label>
+                                <textarea
+                                    id="materials_description"
+                                    name="description"
+                                    value={materialsFormData.description}
+                                    onChange={handleMaterialsInputChange}
+                                    rows={4}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter material description (optional)"
+                                />
+                                {materialsErrors.description && <p className="text-red-500 text-sm mt-1">{materialsErrors.description[0]}</p>}
+                            </div>
+
+                            {/* File Upload */}
+                            <div>
+                                <label htmlFor="materials_file" className="block text-sm font-medium text-gray-700 mb-1">
+                                    File *
+                                </label>
+                                <input
+                                    type="file"
+                                    id="materials_file"
+                                    name="file"
+                                    onChange={handleFileChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.jpg,.jpeg,.png,.gif,.mp4,.mp3"
+                                    required
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Supported formats: PDF, DOC, PPT, XLS, TXT, Images, Videos, Audio (Max: 10MB)
+                                </p>
+                                {materialsErrors.file && <p className="text-red-500 text-sm mt-1">{materialsErrors.file[0]}</p>}
+                            </div>
+
+                            {/* Submit Buttons */}
+                            <div className="flex space-x-3 pt-4">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={closeMaterialsModal}
+                                    className="flex-1"
+                                    disabled={isMaterialsLoading}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    className="flex-1 bg-green-600 hover:bg-green-700"
+                                    disabled={isMaterialsLoading}
+                                >
+                                    {isMaterialsLoading ? 'Uploading...' : 'Upload Material'}
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

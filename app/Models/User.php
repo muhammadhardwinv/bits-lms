@@ -29,7 +29,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'status',
     ];
+
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -102,5 +106,46 @@ class User extends Authenticatable
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
+    }
+    /**}}
+     * Get courses taught by this user (if teacher)
+     */
+    public function taughtCourses()
+    {
+        return $this->hasMany(Course::class, 'teacher_id');
+    }
+
+    /**
+     * Get course enrollments for this user (if student)
+     */
+    public function courseEnrollments()
+    {
+        return $this->hasMany(CourseEnrollment::class, 'student_id');
+    }
+
+    /**
+     * Get courses this user is enrolled in (if student)
+     */
+    public function enrolledCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_enrollments', 'student_id', 'course_id')
+                    ->withPivot(['enrolled_at', 'status', 'final_grade', 'grade_points'])
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get assignment submissions by this user (if student)
+     */
+    public function assignmentSubmissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'student_id');
+    }
+
+    /**
+     * Get assignments graded by this user (if teacher)
+     */
+    public function gradedAssignments()
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'graded_by');
     }
 }
