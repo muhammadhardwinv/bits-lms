@@ -16,7 +16,13 @@ export default function EditClassroom() {
     const classroom = props.classroom;
     const { auth } = usePage<{ auth: { user: UserModel } }>().props;
 
-    const { data, setData, errors } = useForm({
+    // const { data, setData, errors } = useForm({
+    //     name: classroom.name,
+    //     course_id: classroom.course_id,
+    //     teacher_id: classroom.teacher_id,
+    // });
+
+    const { data, setData, errors, put, processing } = useForm({
         name: classroom.name,
         course_id: classroom.course_id,
         teacher_id: classroom.teacher_id,
@@ -35,7 +41,11 @@ export default function EditClassroom() {
         setIsLoading(true);
 
         router.put(`/admin/classrooms/${classroom.id}`, payload, {
-            onError: () => {
+            onError: (errs: any) => {
+                // Log backend validation errors
+                console.log('Validation Errors:', errs);
+
+                // Keep current toast/loading behavior
                 toast.dismiss(toastStatus);
                 toast.error('Failed to update classroom. Check your input.');
                 setIsLoading(false);
@@ -53,6 +63,7 @@ export default function EditClassroom() {
             },
         });
     }
+
 
     return (
         <ContentLayout user={auth.user}>

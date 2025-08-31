@@ -1,16 +1,5 @@
 'use client';
 
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CourseModel, UserModel } from '@/lib/types';
@@ -19,13 +8,7 @@ import { BookOpenText, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export function CourseAreaInteractive({
-    user,
-    allCourse = [], // default to empty array to prevent undefined
-}: {
-    user: UserModel;
-    allCourse?: CourseModel[];
-}) {
+export function CourseAreaInteractive({ user, allCourse = [] }: { user: UserModel; allCourse?: CourseModel[] }) {
     const [isLoading, setIsLoading] = useState(false);
 
     function handleAddCourses() {
@@ -38,37 +21,42 @@ export function CourseAreaInteractive({
             console.warn('Unauthorized role:', role);
         }
     }
-
     function handleUpdateCourse(id: string | number) {
-        if (confirm('Do you want to update this course?')) {
-            const toastStatus = toast.loading('Redirecting to update page...');
-            setIsLoading(true);
-            toast.dismiss(toastStatus);
+        const confirmed = window.confirm('Are you sure you want to edit this course?');
+        if (!confirmed) return; // stop if misclick
+
+        const toastId = toast.loading('Redirecting to update page...');
+        setIsLoading(true);
+        {
+            toast.dismiss(toastId);
+            toast.success('Redirecting now...');
             router.visit(`/courses/${id}/edit`);
+            setIsLoading(false);
         }
     }
 
     function handleDeleteCourse(id: string | number) {
-        if (confirm('Are you sure you want to delete this course?')) {
-            const toastStatus = toast.loading('Deleting course...');
-            setIsLoading(true);
+        const confirmed = window.confirm('Are you sure want to delete this course?');
+        if (!confirmed) return;
+        
+        const toastId = toast.loading('Deleting course...');
+        setIsLoading(true);
 
-            router.delete(`/admin/courses/${id}`, {
-                onSuccess: () => {
-                    toast.success('Course deleted successfully!');
-                },
-                onError: () => {
-                    toast.error('Failed to delete course.');
-                },
-                onFinish: () => {
-                    setIsLoading(false);
-                    toast.dismiss(toastStatus);
-                    setTimeout(() => {
-                        router.visit('/courses');
-                    }, 2000); // 2 seconds delay before redirect
-                },
-            });
-        }
+        router.delete(`/admin/courses/${id}`, {
+            onSuccess: () => {
+                toast.success('Course deleted successfully!');
+            },
+            onError: () => {
+                toast.error('Failed to delete course.');
+            },
+            onFinish: () => {
+                setIsLoading(false);
+                toast.dismiss(toastId);
+                setTimeout(() => {
+                    router.visit('/courses');
+                }, 2000);
+            },
+        });
     }
 
     return (
@@ -90,7 +78,7 @@ export function CourseAreaInteractive({
                     <button
                         type="button"
                         onClick={handleAddCourses}
-                        className="cursor-pointer rounded-xl border bg-[#0097DA] px-2 py-2 text-sm text-white hover:bg-[#014769] dark:bg-[#0097DA] dark:hover:bg-[#014769]"
+                        className="cursor-pointer rounded-xl border bg-white px-2 py-2 text-sm text-black hover:bg-[#0097DA] dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#0097da]"
                     >
                         New Course
                     </button>
@@ -135,39 +123,25 @@ export function CourseAreaInteractive({
                                     size="icon"
                                     variant="outline"
                                     onClick={(e) => {
-                                        e.preventDefault();
                                         e.stopPropagation();
                                         handleUpdateCourse(course.id);
                                     }}
-                                    className="cursor-pointer hover:bg-white dark:hover:bg-slate-700"
+                                    className="cursor-pointer hover:bg-slate-500 dark:bg-gray-700 dark:hover:bg-slate-400"
                                 >
                                     <Pencil className="h-4 w-4" />
                                 </Button>
+
                                 <Button
                                     size="icon"
                                     variant="destructive"
                                     disabled={isLoading}
-                                    className="hover:-bg-[#F2951B] cursor-pointer"
                                     onClick={(e) => {
-                                        e.preventDefault();
                                         e.stopPropagation();
                                         handleDeleteCourse(course.id);
                                     }}
+                                    className="cursor-pointer hover:bg-red-900 dark:bg-red-700 dark:hover:bg-red-900"
                                 >
                                     <Trash2 className="h-4 w-4" />
-                                    <AlertDialog>
-                                        <AlertDialogTrigger asChild></AlertDialogTrigger>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
-                                                <AlertDialogDescription>Are you sure want to delete the selected course?</AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => handleDeleteCourse(course.id)}>Confirm</AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
                                 </Button>
                             </div>
                         )}

@@ -1,58 +1,53 @@
 import SessionsContents from '@/components/app/course/courseSessionContent';
 import { CourseGradeTop } from '@/components/app/course/panel/course-topPanel';
 import { ContentLayout } from '@/layouts/content-layout';
-import { CourseModel, SessionType, UserModel } from '@/lib/types';
+import { ClassesType, CourseModel, SessionType, UserModel } from '@/lib/types';
 import { PageProps as InertiaPageProps, router } from '@inertiajs/core';
 import { Head, usePage } from '@inertiajs/react';
+import { Content } from '@radix-ui/react-dialog';
 
 interface PageProps extends InertiaPageProps {
-    auth: {
-        user: UserModel;
-    };
+    auth: { user: UserModel };
     course: CourseModel;
-    classroomId: string;
+    classes: ClassesType;
     courseId: string;
-    sessions: SessionType[];
+    courseSessions: SessionType[];
 }
 
 export default function CourseSessions() {
-    const { auth, course, sessions, classroomId, courseId } = usePage<PageProps>().props;
+    const { auth, course, courseSessions, classes, courseId } = usePage<PageProps>().props;
 
-    if (sessions === undefined || sessions === null) {
-        return <div>Loading sessions...</div>;
-    }
-
-    if (sessions.length === 0) {
+    if (!course) return <div>Loading course...</div>;
+    if (!courseSessions) {
         return (
-            <div>
-                <ContentLayout user={auth.user}>
-                    <div className="flex h-full w-full flex-col items-center justify-center pb-30 text-center">
-                        <h2 className="mb-6 text-4xl font-black text-gray-500 dark:text-white">Session for {course?.id ?? 'unknown'} not found.</h2>
-                        <p className="mb-10 text-gray-500 dark:text-white">Please contact your administrator!</p>
-                        {(auth.user.role === 'admin' || auth.user.role === 'teacher') && (
-                            <button
-                                onClick={() => router.visit(`/course/${courseId}/create`)}
-                                className="inline-block cursor-pointer rounded-xl bg-[#f2951b] px-6 py-3 font-black text-white hover:bg-gray-600 dark:bg-gray-400 dark:hover:bg-[#014769]"
-                            >
-                                New Session
-                            </button>
-                        )}
-                    </div>
-                </ContentLayout>
-            </div>
+            <ContentLayout user={auth.user}>
+                <div className="flex h-full w-full flex-col items-center justify-center pb-30 text-center">
+                    <h2 className="mb-6 text-4xl font-black text-gray-500 dark:text-white">
+                        Sessions for {course.name ?? 'unknown'} - {course.id} not found.
+                    </h2>
+                    <p className="mb-10 text-gray-500 dark:text-white">Please contact your administrator!</p>
+                    {(auth.user.role === 'admin' || auth.user.role === 'teacher') && (
+                        <button
+                            onClick={() => router.visit(`/course/${courseId}/create`)}
+                            className="inline-block cursor-pointer rounded-xl bg-[#f2951b] px-6 py-3 font-black text-white hover:bg-gray-600 dark:bg-gray-400 dark:hover:bg-[#014769]"
+                        >
+                            Create New Session
+                        </button>
+                    )}
+                </div>
+            </ContentLayout>
         );
     }
 
     return (
         <>
-            <Head title={course.name}>
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+            <Head>
+                <title>{course.name}</title>
             </Head>
 
             <ContentLayout user={auth.user}>
                 <CourseGradeTop courseId={course.id} courseName={course.name} />
-                <SessionsContents auth={auth} course={course} sessions={sessions} />
+                <SessionsContents auth={auth} course={course} courseSessions={courseSessions} classes={classes} />{' '}
             </ContentLayout>
         </>
     );

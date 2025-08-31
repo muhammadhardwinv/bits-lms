@@ -5,26 +5,39 @@ export type UserModel = {
     role: string;
     status: string;
 };
+
 export interface CourseModel {
     id: string;
     name: string;
     description: string;
     teacher_id: string;
+    course_code: string | null;
+    credits: number;
+    schedule: string | null; // ISO date string, can be NULL
+    max_students: number;
+    status: 'active' | 'inactive'; // match your DB values
+    created_at: string | null; // ISO string
+    updated_at: string | null; // ISO string
 }
 
-export type SessionType = {
+export interface SessionType {
     id: string;
     title: string;
-    course_id: string;
-    description: string;
-    schedule_date: string;
-};
+    description?: string;
+    schedule_date?: string;
+    course_id?: string;
+    classes_id?: string;
+    lecturer_name?: string;
+    lecturer_id?: string;
+    slides?: string[]; // <-- add this
+}
 
-export type ClassroomType = {
+export type ClassesType = {
     id: string;
     name: string;
     course_id: string;
     teacher_id: string;
+    teacher?: UserModel;
 };
 
 export type AssignmentsModel = {

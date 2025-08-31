@@ -23,7 +23,6 @@ export default function Courses() {
             <Head title="Courses" />
             <ContentLayout user={auth.user}>
                 {/* <h1>{allCourse}</h1> */}
-                {/* <h1>anjing</h1> */}
                 <CourseAreaInteractive user={auth.user} allCourse={allCourse} />
             </ContentLayout>
         </>

@@ -311,6 +311,7 @@ function SidebarTrigger({
           <Sun className="!size-6" />
         )}
       </Button>
+
       <Button onClick={previousPage}
         size="icon"
         className="button items-center text-black h-8 w-8 hover:text-white hover:bg-[#0097DA] bg-white  dark:bg-black mt-3 dark:text-gray-100 dark:hover:bg-[#014769] cursor-pointer"

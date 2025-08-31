@@ -92,11 +92,6 @@ export function ContentSidebar() {
                 </div>
 
                 <DropdownMenuContent side="right" align="center" className="w-44">
-                    <DropdownMenuLabel className="text-xs text-muted-foreground">User Menu</DropdownMenuLabel>
-                    <DropdownMenuItem disabled className="font-semibold text-blue-600">
-                        {toCamelCase(actualUserRole)} Account
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="text-red-500 hover:text-red-700 cursor-pointer">
                         Sign out
                     </DropdownMenuItem>

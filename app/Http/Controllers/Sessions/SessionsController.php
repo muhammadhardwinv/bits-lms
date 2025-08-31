@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Sessions;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelperController;
-use App\Models\Classroom;
-use App\Models\Sessions;
+use App\Models\Classes;
+use App\Models\CourseSession;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,7 +18,7 @@ class SessionsController extends Controller
     public function create(Request $request, $courseId)
 {
     // Find the classroom associated with the courseId
-    $classroom = Classroom::where('course_id', $courseId)->firstOrFail();
+    $classes = Classes::where('course_id', $courseId)->firstOrFail();
 
     return Inertia::render('sessions/createSessions', [
         'auth' => [
@@ -35,9 +35,7 @@ class SessionsController extends Controller
      */
     public function fetch()
     {
-        $allSessions = Sessions::all();
-        // Remove dd() in production
-        // dd($allSessions[0]);
+        $allSessions = CourseSession::all();
         return $allSessions;
     }
 
@@ -55,7 +53,7 @@ class SessionsController extends Controller
 
         $newSessionId = HelperController::createUniqueId();
 
-        Sessions::create([
+        CourseSession::create([
             'id' => $newSessionId,
             'title' => $data['title'],
             'description' => $data['description'],
@@ -72,8 +70,8 @@ class SessionsController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $session = Sessions::findOrFail($id);
-        $session->delete();
+        $courseSession = CourseSession::findOrFail($id);
+        $courseSession->delete();
 
         return redirect('/sessions')->with('success', 'Session deleted successfully.');
     }
@@ -83,9 +81,9 @@ class SessionsController extends Controller
      */
     public function edit($id)
     {
-        $session = Sessions::findOrFail($id);
+        $courseSession = CourseSession::findOrFail($id);
         return Inertia::render('sessions/editSessions', [
-            'session' => $session,
+            'session' => $courseSession,
         ]);
     }
 
@@ -99,8 +97,8 @@ class SessionsController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $session = Sessions::findOrFail($id);
-        $session->update($validated);
+        $courseSession = CourseSession::findOrFail($id);
+        $courseSession->update($validated);
 
         return back()->with('success', 'Session updated successfully.');
     }
@@ -110,15 +108,15 @@ class SessionsController extends Controller
      */
     public function show($id)
     {
-        $session = Sessions::findOrFail($id);
+        $courseSession = CourseSession::findOrFail($id);
 
         return Inertia::render('sessions/showSession', [
-            'sessionId' => $session->id,
+            'sessionId' => $courseSession->id,
             'session' => [
-                'id' => (string) $session->id,
-                'title' => $session->title,
-                'description' => $session->description,
-                'teacher_id' => (string) $session->teacher_id,
+                'id' => (string) $courseSession->id,
+                'title' => $courseSession->title,
+                'description' => $courseSession->description,
+                'teacher_id' => (string) $courseSession->teacher_id,
             ],
             'auth' => ['user' => \Illuminate\Support\Facades\Auth::user()],
         ]);

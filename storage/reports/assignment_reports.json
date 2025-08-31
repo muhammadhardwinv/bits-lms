@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1",
+        "session_id": "1",
+        "course_id": "CS301",
+        "title": "CS301",
+        "created_at": "2025-08-22 09:32:14",
+        "status": "created"
+    },
+    {
+        "id": "2",
+        "session_id": "1",
+        "course_id": "CS301",
+        "title": "Assignment 301",
+        "created_at": "2025-08-22 09:33:18",
+        "status": "created"
+    },
+    {
+        "id": "3",
+        "session_id": "2",
+        "course_id": "CS201",
+        "title": "CS201",
+        "created_at": "2025-08-22 09:34:00",
+        "status": "created"
+    },
+    {
+        "id": "4",
+        "session_id": "1",
+        "course_id": "1",
+        "title": "woi jing",
+        "created_at": "2025-08-22 10:05:46",
+        "status": "created"
+    },
+    {
+        "id": "5",
+        "session_id": "1",
+        "course_id": "1",
+        "title": "1",
+        "created_at": "2025-08-22 10:07:05",
+        "status": "created"
+    }
+]

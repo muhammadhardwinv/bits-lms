@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Course\CourseController;
-use App\Http\Controllers\Assignments\AssignmentsController;
+use App\Http\Controllers\Assignments\AssignmentController;
 use App\Http\Controllers\Sessions\SessionsController;
 use App\Http\Controllers\Classroom\ClassroomController;
 use App\Http\Controllers\AttendanceController;
@@ -32,12 +32,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/classroom', [ClassroomController::class, 'index'])->name('classroom.index');
     Route::post('/classroom', [ClassroomController::class, 'store'])->name('classroom.store');
     Route::get('/classroom/create', [ClassroomController::class, 'create'])->middleware('role:admin,teacher')->name('classroom.create');
-    
+    Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy'])
+    ->name('admin.classrooms.destroy');
+    Route::resource('classrooms', ClassroomController::class)
+        ->names('admin.classroom');
+
+
     // Route::get('/classrooms/{id}', [ClassroomController::class, 'show'])->name('admin.classrooms.show');
 
     // Route::post('/classroom', [ClassroomController::class, 'store'])->name('classroom.store');
     Route::get('/classrooms/{id}/edit', [ClassroomController::class, 'edit'])->name('admin.classrooms.edit');
     Route::put('/classrooms/{id}', [ClassroomController::class, 'update'])->name('admin.classrooms.update');
+    // Route::get('/classrooms/{id}', [ClassroomController::class, 'show'])
+    // ->name('admin.classrooms.show');
+    Route::get('/classroom/{id}', [ClassroomController::class, 'show'])->name('admin.classroom.show');
+
 
 
     // Courses
@@ -54,16 +63,17 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/classroom/{id}', [ClassroomController::class, 'show'])->name('classroom.show');
+    Route::get('/classroom', [ClassroomController::class, 'show'])->name('classroom.show');
 });
 
 
 // ---------- Teacher ----------
 Route::prefix('teacher')->name('teacher.')->middleware(['auth', 'role:teacher'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('teacher/dashboard'))->name('dashboard');
+
+Route::get('/dashboard', [CourseController::class, 'fetchTeacherCourses'])->name('dashboard');
     Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
-    Route::get('/assignments', [AssignmentsController::class, 'show'])->name('assignments.index');
-    Route::get('/assignments/{id}/edit', [AssignmentsController::class, 'edit'])->name('assignments.edit');
+    Route::get('/assignments', [AssignmentController::class, 'show'])->name('assignments.index');
+    Route::get('/assignments/{id}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
 });
 
 // ---------- Student ----------
@@ -71,13 +81,14 @@ Route::prefix('student')->name('student.')->middleware(['auth', 'role:student'])
     Route::get('/dashboard', fn() => Inertia::render('student/dashboard'))->name('dashboard');
 });
 
+
 // ---------- Authenticated ----------
 Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
     Route::middleware('role:student')->get('/student/dashboard', fn() => Inertia::render('student/dashboard'))->name('student.dashboard');
-    Route::middleware('role:teacher')->get('/teacher/dashboard', fn() => Inertia::render('teacher/dashboard'))->name('teacher.dashboard');
+    // Route::middleware('role:teacher')->get('/teacher/dashboard', fn() => Inertia::render('teacher/dashboard'))->name('teacher.dashboard');
     Route::middleware('role:admin')->get('/admin/dashboard', fn() => Inertia::render('admin/dashboard'))->name('admin.dashboard');
 
     // Courses
@@ -89,15 +100,17 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->middleware('role:admin,teacher')->name('courses.destroy');
 
     // Assignments
-    Route::get('/assignments', [AssignmentsController::class, 'show'])->name('assignments.index');
+    Route::get('/assignments', [AssignmentController::class, 'show'])->name('assignments.index');
     Route::get('/assignments/{courseId}', fn($courseId) => Inertia::render('per-assignments', [
         'auth' => ['user' => Auth::user()],
         'courseId' => $courseId,
     ]))->name('assignments.view');
-    Route::get('/assignments/new/{courseId}', [AssignmentsController::class, 'create'])->name('assignments.create');
-    Route::post('/assignments', [AssignmentsController::class, 'store'])->name('assignments.store');
-    Route::get('/assignments/{id}/edit', [AssignmentsController::class, 'edit'])->name('assignments.edit');
-    Route::put('/assignments/{id}', [AssignmentsController::class, 'update'])->name('assignments.update');
+    Route::get('/assignments/new/{courseId}', [AssignmentController::class, 'create'])->name('assignments.create');
+    Route::post('/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
+    // Route::post('/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
+
+    Route::get('/assignments/{id}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
+    Route::put('/assignments/{id}', [AssignmentController::class, 'update'])->name('assignments.update');
 
     // Sessions
     Route::middleware('role:admin,teacher')->group(function () {
@@ -124,9 +137,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Classroom (singular/public-facing)
     Route::get('/classroom', [ClassroomController::class, 'index'])->name('classrooms.index');
-    
+
     Route::post('/admin/classrooms', [ClassroomController::class, 'store'])->middleware('role:admin,teacher')->name('admin.classrooms.store');
-    
+
 
 
 
@@ -145,7 +158,7 @@ Route::middleware(['auth'])->group(function () {
         'auth' => ['user' => Auth::user()],
         'courseId' => $courseId,
     ]))->name('forum.show');
-    Route::get('/discussion/{courseId}', fn($courseId) => Inertia::render('discussion', [
+    Route::get('/discussion', fn($courseId) => Inertia::render('discussion', [
         'user' => ['user' => Auth::user()],
         'courseId' => $courseId,
     ]))->name('discussion');
@@ -153,17 +166,19 @@ Route::middleware(['auth'])->group(function () {
 
 // ---------- Assignment Slideshow ----------
 Route::prefix('assignments')->middleware('auth')->group(function () {
-    Route::get('/{course}/{courseId}/slideshow', fn($course, $courseId) => Inertia::render('assignmentPage/assignmentSlideshow', [
-        'course' => $course,
-        'courseId' => $courseId,
-    ]))->name('assignments.slideshow');
+    Route::get('/{course}/{courseId}/slideshow', function($course, $courseId) {
+        $classroom = Classes::findOrFail($courseId);
 
-    Route::get('/{course}/{courseId}', fn($course, $courseId) => Inertia::render('per-assignments', [
-        'course' => $course,
-        'courseId' => $courseId,
-    ]))->name('assignments.show');
+        return Inertia::render('assignmentPage/assignmentSlideshow', [
+            'course' => $course,
+            'courseId' => $courseId,
+            'classroom'=> $classes,
+        ]);
+    })->name('assignments.slideshow');
 });
 
+Route::get('/courses/{id}/slideshow', [ClassroomController::class, 'slideshow'])
+    ->name('courses.slideshow');
 // ---------- Course Slideshow ----------
 Route::prefix('courses')->middleware('auth')->group(function () {
     Route::get('/{course}/slideshow', fn($course) => Inertia::render('slideshow', [
@@ -184,29 +199,29 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/student/dashboard', fn() => Inertia::render('student/dashboard'))->name('student.dashboard');
     });
 
-    Route::middleware(['role:teacher'])->group(function () {
-        Route::get('/teacher/dashboard', fn() => Inertia::render('teacher/dashboard'))->name('teacher.dashboard');
-    });
+    // Route::middleware(['role:teacher'])->group(function () {
+    //     Route::get('/teacher/dashboard', fn() => Inertia::render('teacher/dashboard'))->name('teacher.dashboard');
+    // });
 
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
 
         // User Management Routes
-        Route::prefix('admin/users')->name('admin.users.')->group(function () {
-            Route::get('/', [App\Http\Controllers\Admin\UserManagementController::class, 'index'])->name('index');
-            Route::get('/create', [App\Http\Controllers\Admin\UserManagementController::class, 'create'])->name('create');
-            Route::post('/', [App\Http\Controllers\Admin\UserManagementController::class, 'store'])->name('store');
-            Route::get('/{user}', [App\Http\Controllers\Admin\UserManagementController::class, 'show'])->name('show');
-            Route::get('/{user}/edit', [App\Http\Controllers\Admin\UserManagementController::class, 'edit'])->name('edit');
-            Route::put('/{user}', [App\Http\Controllers\Admin\UserManagementController::class, 'update'])->name('update');
-            Route::delete('/{user}', [App\Http\Controllers\Admin\UserManagementController::class, 'destroy'])->name('destroy');
-            Route::patch('/{user}/toggle-status', [App\Http\Controllers\Admin\UserManagementController::class, 'toggleStatus'])->name('toggle-status');
-            Route::post('/bulk-action', [App\Http\Controllers\Admin\UserManagementController::class, 'bulkAction'])->name('bulk-action');
+        // Route::prefix('admin/users')->name('admin.users.')->group(function () {
+        //     Route::get('/', [App\Http\Controllers\Admin\UserManagementController::class, 'index'])->name('index');
+        //     Route::get('/create', [App\Http\Controllers\Admin\UserManagementController::class, 'create'])->name('create');
+        //     Route::post('/', [App\Http\Controllers\Admin\UserManagementController::class, 'store'])->name('store');
+        //     Route::get('/{user}', [App\Http\Controllers\Admin\UserManagementController::class, 'show'])->name('show');
+        //     Route::get('/{user}/edit', [App\Http\Controllers\Admin\UserManagementController::class, 'edit'])->name('edit');
+        //     Route::put('/{user}', [App\Http\Controllers\Admin\UserManagementController::class, 'update'])->name('update');
+        //     Route::delete('/{user}', [App\Http\Controllers\Admin\UserManagementController::class, 'destroy'])->name('destroy');
+        //     Route::patch('/{user}/toggle-status', [App\Http\Controllers\Admin\UserManagementController::class, 'toggleStatus'])->name('toggle-status');
+        //     Route::post('/bulk-action', [App\Http\Controllers\Admin\UserManagementController::class, 'bulkAction'])->name('bulk-action');
 
-            // AJAX endpoints for ID generation
-            Route::post('/get-next-id', [App\Http\Controllers\Admin\UserManagementController::class, 'getNextId'])->name('get-next-id');
-            Route::get('/role-statistics', [App\Http\Controllers\Admin\UserManagementController::class, 'getRoleStatistics'])->name('role-statistics');
-        });
+        //     // AJAX endpoints for ID generation
+        //     Route::post('/get-next-id', [App\Http\Controllers\Admin\UserManagementController::class, 'getNextId'])->name('get-next-id');
+        //     Route::get('/role-statistics', [App\Http\Controllers\Admin\UserManagementController::class, 'getRoleStatistics'])->name('role-statistics');
+        // });
 
         // Materials Management Routes
         Route::prefix('admin/materials')->name('admin.materials.')->group(function () {
@@ -223,15 +238,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/add/materials', [App\Http\Controllers\Admin\MaterialsController::class, 'create'])->name('admin.add.materials');
 
         // Course Management Routes
-        Route::prefix('admin/courses')->name('admin.courses.')->group(function () {
-            Route::get('/', [App\Http\Controllers\Admin\CourseManagementController::class, 'index'])->name('index');
-            Route::get('/create', [App\Http\Controllers\Admin\CourseManagementController::class, 'create'])->name('create');
-            Route::post('/', [App\Http\Controllers\Admin\CourseManagementController::class, 'store'])->name('store');
-            Route::get('/{course}', [App\Http\Controllers\Admin\CourseManagementController::class, 'show'])->name('show');
-            Route::get('/{course}/edit', [App\Http\Controllers\Admin\CourseManagementController::class, 'edit'])->name('edit');
-            Route::put('/{course}', [App\Http\Controllers\Admin\CourseManagementController::class, 'update'])->name('update');
-            Route::delete('/{course}', [App\Http\Controllers\Admin\CourseManagementController::class, 'destroy'])->name('destroy');
-        });
+        // Route::prefix('admin/courses')->name('admin.courses.')->group(function () {
+        //     Route::get('/', [App\Http\Controllers\Admin\CourseManagementController::class, 'index'])->name('index');
+        //     Route::get('/create', [App\Http\Controllers\Admin\CourseManagementController::class, 'create'])->name('create');
+        //     Route::post('/', [App\Http\Controllers\Admin\CourseManagementController::class, 'store'])->name('store');
+        //     Route::get('/{course}', [App\Http\Controllers\Admin\CourseManagementController::class, 'show'])->name('show');
+        //     Route::get('/{course}/edit', [App\Http\Controllers\Admin\CourseManagementController::class, 'edit'])->name('edit');
+        //     Route::put('/{course}', [App\Http\Controllers\Admin\CourseManagementController::class, 'update'])->name('update');
+        //     Route::delete('/{course}', [App\Http\Controllers\Admin\CourseManagementController::class, 'destroy'])->name('destroy');
+        // });
 
         // System Settings Routes
         Route::prefix('admin/settings')->name('admin.settings.')->group(function () {

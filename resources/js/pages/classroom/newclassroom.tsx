@@ -13,7 +13,7 @@ interface PageProps {
     auth: {
         user: UserModel;
     };
-    allClassroom: ClassroomType[];
+    allClassrooms: ClassroomType[];
     [key: string]: any;
 }
 

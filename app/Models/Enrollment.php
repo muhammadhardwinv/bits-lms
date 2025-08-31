@@ -10,7 +10,7 @@ class Enrollment extends Model
 {
     use HasFactory;
 
-    protected $table = 'enrollments';
+    protected $table = "enrollments";
 
     protected $fillable = [
         'student_id',
@@ -35,6 +35,10 @@ class Enrollment extends Model
      */
     public function course(): BelongsTo
     {
-        return $this->belongsTo(Course::class, 'course_id', 'id');
+        return $this->belongsTo(Courses::class, 'course_id', 'id');
+    }
+
+    public function score(){
+        return $this->hasOne(CourseScore::class, 'course_enrollment_id');
     }
 }

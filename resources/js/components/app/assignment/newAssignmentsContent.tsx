@@ -37,7 +37,7 @@ export default function NewAssignmentsContent() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4 py-10">
+        <div className="bg-flex min-h-screen items-center justify-center px-4 py-10">
             <Card className="w-full max-w-4xl rounded-2xl border p-6 shadow-md">
                 <CardHeader className="space-y-2 text-center">
                     <CardTitle className="text-2xl font-bold">{assignment.title}</CardTitle>

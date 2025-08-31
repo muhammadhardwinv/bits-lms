@@ -20,7 +20,7 @@ export default function Discussion() {
         <>
             <Head title={`Discussion - ${courseId}`} />
             <ContentLayout user={auth.user}>
-                <CourseGradeTop courseId={courseId} />
+                <CourseGradeTop courseId={courseId} courseName="Course Name" />
                 <DiscussionContent courseId={courseId} />
             </ContentLayout>
         </>

@@ -12,99 +12,33 @@ class Assignment extends Model
 {
     use HasFactory;
 
+    protected $table = "assignments";
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    public $timestamps = false;
     protected $fillable = [
+        'id',
+        'session_id',
         'course_id',
         'title',
         'description',
-        'type',
         'due_date',
+        'attempt_limit',
+        'type',
         'max_points',
         'instructions',
         'attachment_url',
+        'created_at',
+        'updated_at',
     ];
 
-    protected $casts = [
-        'due_date' => 'datetime',
-        'max_points' => 'integer',
-    ];
-
-    /**
-     * Get the course this assignment belongs to
-     */
-    public function course(): BelongsTo
+    public function session()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(CourseSession::class, 'session_id');
     }
 
-    /**
-     * Get the submissions for this assignment
-     */
-    public function submissions(): HasMany
+    public function course()
     {
-        return $this->hasMany(AssignmentSubmission::class);
-    }
-
-    /**
-     * Check if the assignment is overdue
-     */
-    public function isOverdue(): bool
-    {
-        return $this->due_date < now();
-    }
-
-    /**
-     * Get days until due date
-     */
-    public function getDaysUntilDueAttribute(): int
-    {
-        if ($this->isOverdue()) {
-            return 0;
-        }
-        
-        return now()->diffInDays($this->due_date);
-    }
-
-    /**
-     * Get submission statistics
-     */
-    public function getSubmissionStatsAttribute(): array
-    {
-        $totalStudents = $this->course->enrollments()->count();
-        $submittedCount = $this->submissions()->count();
-        $gradedCount = $this->submissions()->whereNotNull('grade')->count();
-
-        return [
-            'total_students' => $totalStudents,
-            'submitted' => $submittedCount,
-            'graded' => $gradedCount,
-            'pending_submission' => $totalStudents - $submittedCount,
-            'pending_grading' => $submittedCount - $gradedCount,
-            'submission_rate' => $totalStudents > 0 ? round(($submittedCount / $totalStudents) * 100, 2) : 0,
-        ];
-    }
-
-    /**
-     * Scope for assignments due soon
-     */
-    public function scopeDueSoon($query, $days = 7)
-    {
-        return $query->where('due_date', '>=', now())
-                    ->where('due_date', '<=', now()->addDays($days));
-    }
-
-    /**
-     * Scope for overdue assignments
-     */
-    public function scopeOverdue($query)
-    {
-        return $query->where('due_date', '<', now());
-    }
-
-    /**
-     * Scope for assignments by course
-     */
-    public function scopeByCourse($query, $courseId)
-    {
-        return $query->where('course_id', $courseId);
+        return $this->belongsTo(Course::class, 'course_id', 'id');
     }
 }

@@ -9,17 +9,17 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { courses } from '@/lib/newAssignment';
+// import { courses } from '@/lib/newAssignment';
 import { Link } from '@inertiajs/react';
 import { Download } from 'lucide-react';
-import { Tooltip } from 'recharts';
+// import { Tooltip } from 'recharts';
 
 interface Props {
     courseId: string;
 }
 
-const course = courses[0]; // optional: filter based on courseId if needed
-const safeCourseName = course.courseName.replace(/\s+/g, '-').toLowerCase();
+// const course = courses[0]; // optional: filter based on courseId if needed
+// const safeCourseName = course.courseName.replace(/\s+/g, '-').toLowerCase();
 const handleDownload = () => {
     const link = document.createElement('a');
     link.href = '/files/Powerpoint.pdf';
@@ -35,7 +35,7 @@ export default function StudentCard({ courseId }: Props) {
                 <AlertDialogTrigger asChild>
                     <div className="gap flex flex-row items-center justify-start">
                         <a className="flex cursor-pointer flex-row items-center gap-3 rounded-sm px-1 py-1 text-white hover:bg-black dark:text-white">
-                            <h2> PPT - Introduction to {course.courseName}</h2>
+                            <h2> PPT - Introduction to </h2>
                         </a>
                         <a className="flex cursor-pointer flex-row">
                             <div className="group relative mb-1 ml-2 items-center">
@@ -83,7 +83,7 @@ export default function StudentCard({ courseId }: Props) {
                     <AlertDialogFooter>
                         <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                         <AlertDialogAction asChild>
-                            <Link className="cursor-pointer" href={`/discussion/${courseId}`}>
+                            <Link className="cursor-pointer" href={`/classroom/{id}`}>
                                 Yes
                             </Link>
                         </AlertDialogAction>

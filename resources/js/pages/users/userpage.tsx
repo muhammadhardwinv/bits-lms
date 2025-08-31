@@ -1,6 +1,19 @@
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { ContentLayout } from '@/layouts/content-layout';
 import { UserModel } from '@/lib/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 interface PageProps {
@@ -31,6 +44,7 @@ function getRoleColor(role: string): string {
 export default function UsePage() {
     const { auth, users } = usePage<PageProps>().props;
     const [search, setSearch] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const filteredUsers = useMemo(() => {
         return users.filter(
@@ -41,11 +55,23 @@ export default function UsePage() {
         );
     }, [search, users]);
 
+    const handleUpdateUser = (id: string) => {
+        router.visit(route('admin.users.edit', id))
+        console.log('coba');
+    };
+
+    const handleDeleteUser = async (id: string) => {
+        setIsLoading(true);
+        await router.delete(`/users/${id}`, {
+            onFinish: () => setIsLoading(false),
+        });
+    };
+
     return (
         <ContentLayout user={auth.user}>
             <Head title="User Lists" />
 
-            <div className="px-6 py-4">
+            <div className="h-full w-full overflow-y-auto bg-gradient-to-br from-white to-blue-50 p-8 shadow-lg dark:from-[#121212] dark:to-[#1f1f1f]">
                 <h1 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white">User Lists</h1>
                 <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                     Showing {filteredUsers.length} of {users.length} users
@@ -68,8 +94,63 @@ export default function UsePage() {
                         {filteredUsers.map((user: UserModel) => (
                             <div
                                 key={user.id}
-                                className="flex min-w-[20px] flex-shrink-0 items-center gap-4 rounded-xl border border-gray-200 bg-white p-2 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+                                className="relative flex min-w-[20px] flex-shrink-0 items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
                             >
+                                {/* Action Buttons - Top Right */}
+                                <div className="absolute top-2 right-2 flex flex-col gap-1">
+                                    {/* Edit Button with AlertDialog */}
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button
+                                                size="icon"
+                                                variant="outline"
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="cursor-pointer hover:bg-white dark:hover:bg-slate-700"
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Edit user?</AlertDialogTitle>
+                                                <AlertDialogDescription>Do you want to edit this user&apos;s details?</AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => handleUpdateUser(user.id)}>Confirm</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+
+                                    {/* Delete Button with AlertDialog */}
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button
+                                                size="icon"
+                                                variant="destructive"
+                                                disabled={isLoading}
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="cursor-pointer"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Delete user?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    Are you sure you want to delete this user? This action cannot be undone.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => handleDeleteUser(user.id)}>Confirm</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </div>
+
+                                {/* User Info */}
                                 <img
                                     src={generateAvatar(user.id)}
                                     alt={`Avatar of ${user.name}`}

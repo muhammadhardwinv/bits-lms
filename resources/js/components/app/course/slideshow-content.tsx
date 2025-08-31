@@ -1,24 +1,22 @@
-import { ForumContentType, forumContents } from '@/lib/forumContent';
+import { CourseModel } from '@/lib/types';
 import { usePage } from '@inertiajs/react';
+import { Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Download } from 'lucide-react';
 
+// Static slides (mocked)
 const slidePages = Array.from({ length: 18 }, (_, i) => `/assets/slides/${i + 1}.png`);
+interface PageProps {
+    allCourse: CourseModel;
+    [key: string]: any;
+}
 
-export default function SlideshowContent() {
-    const { props } = usePage();
-    const courseId = props.course as string;
-    const courseData = forumContents.find((course: ForumContentType) => course.courseId === courseId);
-
-    if (!courseData) {
-        return <div className="text-center text-red-500">Course not found</div>;
-    }
-
+export default function CourseSlideshow() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [nowAutoplay, setAutoplay] = useState(false);
+    const { props } = usePage<PageProps>();
 
     useEffect(() => {
         if (!nowAutoplay) return;
@@ -35,34 +33,37 @@ export default function SlideshowContent() {
     const handleDownload = () => {
         const link = document.createElement('a');
         link.href = '/files/Powerpoint.pdf';
-        link.download = 'Powerpoint.pdf'; // optional: force download name
+        link.download = 'Powerpoint.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
 
+    if (!classroom) {
+        return <div className="text-center text-gray-500">Loading classroom info...</div>;
+    }
+
     return (
         <div className="w-full space-y-8">
             <div className="mx-auto mb-6 flex w-full flex-col items-center gap-8 px-4 lg:px-6">
-                {/* --- Combined Title and Info Block --- */}
-                <div className="flex w-full flex-row items-center justify-center gap-6 text-center">
+                {/* --- Title and Info Block --- */}
+                {/* <div className="flex w-full flex-row items-center justify-center gap-6 text-center">
                     <div className="flex flex-col items-center space-y-1">
-                        <h1 className="text-xl font-bold">{courseData.forumTitle}</h1>
+                        <h1 className="text-xl font-bold">{classroom.name}</h1>
                         <p className="text-md text-gray-600">
-                            {courseData.courseName}, {courseData.courseId}
+                            {classroom.id}-LEC, {classroom.course_id}
                         </p>
                     </div>
-
-                    {/* Vertical separator */}
                     <div className="mx-4 h-12 w-px bg-gray-200" />
-
                     <div className="flex flex-col items-center space-y-1">
-                        <p className="text-md font-semibold">{courseData.lecturerName}</p>
-                        <p className="text-sm text-gray-500">{courseData.lecturerId}</p>
+                        <p className="text-md font-semibold">{classroom.teacher_id}</p>
                     </div>
+                </div> */}
+                <div>
+                    <h1>{classroom.name}</h1>
                 </div>
 
-                {/* --- Slide Image Display --- */}
+                {/* --- Slide Display --- */}
                 <Card className="h-full max-h-[95vh] w-full max-w-[90vw] overflow-hidden rounded-2xl shadow-xl">
                     <CardContent className="p-4">
                         <div className="flex items-center justify-center">
@@ -78,7 +79,7 @@ export default function SlideshowContent() {
                     </CardContent>
                 </Card>
 
-                {/* --- Control Buttons --- */}
+                {/* --- Controls --- */}
                 <div className="flex w-full flex-row items-center justify-center gap-4">
                     <Button onClick={() => setCurrentSlide(0)} variant="secondary">
                         ⏮ First
@@ -96,6 +97,8 @@ export default function SlideshowContent() {
                         Last ⏭
                     </Button>
                 </div>
+
+                {/* --- Download + Jump --- */}
                 <div className="flex flex-row items-center gap-4">
                     <button
                         onClick={handleDownload}

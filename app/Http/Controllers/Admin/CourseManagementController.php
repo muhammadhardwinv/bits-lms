@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Course;
+use App\Models\Courses;
 use App\Models\User;
 use App\Models\Subject;
 use App\Models\Semester;
@@ -20,7 +20,7 @@ class CourseManagementController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Course::with(['teacher', 'subject', 'semester', 'class']);
+        $query = Courses::with(['teacher', 'subject', 'semester', 'class']);
 
         // Filter by status
         if ($request->filled('status')) {
@@ -74,15 +74,15 @@ class CourseManagementController extends Controller
     public function create()
     {
         $teachers = User::where('role', 'teacher')->get(['id', 'name']);
-        $subjects = Subject::all(['id', 'name', 'code']);
-        $semesters = Semester::all(['id', 'name']);
-        $classes = ClassModel::all(['id', 'name']);
+        // $subjects = Subject::all(['id', 'name', 'code']);
+        // $semesters = Semester::all(['id', 'name']);
+        // $classes = ClassModel::all(['id', 'name']);
 
         return Inertia::render('admin/courses/create', [
             'teachers' => $teachers,
-            'subjects' => $subjects,
-            'semesters' => $semesters,
-            'classes' => $classes,
+            // 'subjects' => $subjects,
+            // 'semesters' => $semesters,
+            // 'classes' => $classes,
         ]);
     }
 

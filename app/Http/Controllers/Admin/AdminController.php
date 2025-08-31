@@ -94,7 +94,7 @@ class AdminController extends Controller
     {
         $dbConnection = $this->checkDatabaseConnection();
         $storageSpace = $this->getStorageInfo();
-        
+
         return [
             'database' => $dbConnection,
             'storage' => $storageSpace,
@@ -123,7 +123,7 @@ class AdminController extends Controller
         $storagePath = storage_path();
         $freeBytes = disk_free_space($storagePath);
         $totalBytes = disk_total_space($storagePath);
-        
+
         return [
             'free' => $this->formatBytes($freeBytes),
             'total' => $this->formatBytes($totalBytes),
@@ -137,11 +137,11 @@ class AdminController extends Controller
     private function formatBytes($bytes, $precision = 2)
     {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
-        
+
         for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
             $bytes /= 1024;
         }
-        
+
         return round($bytes, $precision) . ' ' . $units[$i];
     }
 }

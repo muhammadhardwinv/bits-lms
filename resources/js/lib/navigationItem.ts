@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react';
 import {
+    BookOpen,
     BoxIcon,
     ClipboardList,
     Goal,
@@ -20,9 +21,9 @@ export function redirectRoutes(courses: { courseId: string }[]) {
 }
 export const AdminNavItems = [
     { title: 'Dashboard', url: '/admin/dashboard', icon: LayoutDashboardIcon },
-    { title: 'Add User', url: '/admin/users/create', icon: User },
-    { title: 'Add Course', url: '/admin/courses/create', icon: BoxIcon },
-    { title: 'Add Classrooms', url: '/classroom/create', icon: Goal },
+    { title: 'Manage User', url: '/admin/users/', icon: User },
+    { title: 'Manage Course', url: '/courses', icon: BookOpen },
+    { title: 'Manage Classroom ', url: '/admin/classroom/', icon: Goal },
 ];
 4;
 

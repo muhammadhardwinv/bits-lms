@@ -15,7 +15,8 @@ export function ContentLayout({ user, children }: ContentLayoutProps) {
 
     return (
         <SidebarProvider>
-            <ContentSidebar role={role} />
+            <ContentSidebar />
+            {/* <ContentSidebar role={role} /> */}
             <main className="w-full">
                 <SidebarTrigger />
                 {children}

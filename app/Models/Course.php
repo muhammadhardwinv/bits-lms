@@ -11,34 +11,11 @@ class Course extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     */
     protected $table = "courses";
-
-    /**
-     * The primary key for the model.
-     */
     protected $primaryKey = 'id';
-
-    /**
-     * The "type" of the primary key ID.
-     */
     protected $keyType = 'string';
+    public $timestamps = false;
 
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     */
-    public $incrementing = false;
-
-    /**
-     * Indicates if the model should be timestamped.
-     */
-    public $timestamps = true;
-
-    /**
-     * The attributes that are mass assignable.
-     */
     protected $fillable = [
         'id',
         'name',
@@ -49,7 +26,10 @@ class Course extends Model
         'schedule',
         'max_students',
         'status',
+        'created_at',
+        'updated_at'
     ];
+
 
     /**
      * Get the teacher that teaches this course
@@ -90,4 +70,35 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'student_id');
     }
+
+    public function sessions()
+    {
+        return $this->hasMany(CourseSession::class);
+    }
+
+    public function materials(){
+        return $this->belongsToMany(Material::class);
+    }
+
+     public function course_sessions()
+    {
+        return $this->hasMany(\App\Models\CourseSession::class, 'course_id', 'id');
+    }
+
+    public function classes()
+    {
+    return $this->belongsToMany(Classes::class, 'class_course_teacher', 'course_id', 'class_id')
+                ->withPivot('teacher_id');
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class, 'course_id', 'id');
+    }
+
+
+    // public function classrooms()
+    // {
+    //     return $this->hasMany(Classroom::class, 'course_id', 'id');
+    // }
 }

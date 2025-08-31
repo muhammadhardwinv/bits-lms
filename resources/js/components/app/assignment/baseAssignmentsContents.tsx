@@ -29,7 +29,7 @@ export default function AssignmentsContent({ title, items, icon, link, allCourse
     const courseIdFromItems = items.length > 0 ? items[0].course_id : (allCourse[0]?.id ?? '');
 
     function handleDeleteAssignment(id: string | number) {
-        if (confirm('Are you sure you want to delete this course?')) {
+        if (confirm('Confirm delete this course?')) {
             const toastStatus = toast.loading('Deleting course...');
             setIsLoading(true);
 
@@ -60,14 +60,16 @@ export default function AssignmentsContent({ title, items, icon, link, allCourse
     }
 
     return (
-        <div className="flex w-full flex-row">
-            <div className="flex min-h-screen w-full justify-center">
-                <div className="h-[90vh] w-full overflow-y-auto bg-gradient-to-br from-white to-blue-50 p-8 shadow-lg dark:from-[#121212] dark:to-[#1f1f1f]">
+        <div className="flex min-h-screen w-full flex-row">
+            <div className="flex w-full justify-center px-4 py-4">
+                <div className="h-[90vh] w-full overflow-y-auto  p-8 dark:from-[#121212] dark:to-[#1f1f1f]">
                     <div className="mb-6 flex items-center justify-between">
                         <div className="flex w-full items-center justify-between gap-3">
                             <div className="flex flex-row items-center">
-                                <ClipboardList className="mx-2 h-5 w-5 text-[#F2951B] dark:text-[#F2951B]" />
-                                <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+                                <ClipboardList className="mr-3 h-7 w-7 text-[#F2951B] dark:text-[#F2951B]" />
+                                <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
+                                    {['admin', 'teacher'].includes(user.role) ? 'Manage Assignment' : 'Your Assignment'}
+                                </h2>
                             </div>
 
                             {(user.role === 'admin' || user.role === 'teacher') && courseIdFromItems && (
@@ -104,47 +106,46 @@ export default function AssignmentsContent({ title, items, icon, link, allCourse
                                             }}
                                             className="cursor-pointer transition-shadow duration-200 hover:shadow-lg focus:ring-2 focus:ring-ring focus:outline-none"
                                         >
-                                            <div className="flex flex-row">
-                                                <CardContent className="space-y-3">
-                                                    <div className="flex items-center justify-between">
-                                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{assignment.title}</h3>
-                                                        <Badge variant="secondary" className="text-xs">
-                                                            Attempt Limit: {assignment.attempt_limit}
-                                                        </Badge>
-                                                    </div>
-
-                                                    <p className="text-sm text-gray-700 dark:text-gray-300">
-                                                        <span className="bg-gradient-to-r from-[#F2951B] to-[#FFD599] bg-clip-text font-medium text-transparent">
-                                                            Session ID: {assignment.session_id}
-                                                        </span>
-                                                    </p>
-
-                                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                        {assignment.description || 'No description provided for this thread.'}
-                                                    </p>
-
-                                                    <p className="text-xs text-gray-400 dark:text-gray-500">📅 Due: {assignment.due_date}</p>
-                                                </CardContent>
-                                                <div className="flex flex-col">
-                                                    <Button
-                                                        size="icon"
-                                                        variant="outline"
-                                                        onClick={() => handleUpdateAssignment(assignment.id)} // ✅
-                                                        className="cursor-pointer hover:bg-white dark:hover:bg-slate-700"
-                                                    >
-                                                        <Pencil className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button
-                                                        className="cursor-pointer"
-                                                        size="icon"
-                                                        variant="destructive"
-                                                        disabled={isLoading}
-                                                        onClick={() => handleDeleteAssignment(assignment.id)} // ✅
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
+                                            <CardContent className="flex flex-col space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{assignment.title}</h3>
+                                                    <Badge variant="secondary" className="text-xs">
+                                                        Attempt Limit: {assignment.attempt_limit}
+                                                    </Badge>
                                                 </div>
-                                            </div>
+
+                                                <p className="text-sm text-gray-700 dark:text-gray-300">
+                                                    <span className="bg-gradient-to-r from-[#F2951B] to-[#FFD599] bg-clip-text font-medium text-transparent">
+                                                        Session ID: {assignment.session_id}
+                                                    </span>
+                                                </p>
+
+                                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                    {assignment.description || 'No description provided for this thread.'}
+                                                </p>
+
+                                                <div className="flex items-center justify-between">
+                                                    <p className="text-xs text-gray-400 dark:text-gray-500">📅 Due: {assignment.due_date}</p>
+                                                    <div className="flex gap-2">
+                                                        <Button
+                                                            size="icon"
+                                                            variant="outline"
+                                                            onClick={() => handleUpdateAssignment(assignment.id)}
+                                                            className="cursor-pointer hover:bg-white dark:hover:bg-slate-700"
+                                                        >
+                                                            <Pencil className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button
+                                                            size="icon"
+                                                            variant="destructive"
+                                                            disabled={isLoading}
+                                                            onClick={() => handleDeleteAssignment(assignment.id)}
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
                                         </Card>
                                     </a>
                                 );
